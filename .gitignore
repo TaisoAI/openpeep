@@ -1,0 +1,19 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Node
+frontend/node_modules/
+frontend/.next/
+
+# OS
+.DS_Store
+
+# Config (user-specific)
+openpeep.config.json
+
+# Brand assets with trademark issues (keep locally, don't ship)
+brand/mascot-variants/apple.png
+brand/mascot-variants/apple-park.png
+brand/mascot-variants/apple-pirate.png
