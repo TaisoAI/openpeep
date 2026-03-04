@@ -5,6 +5,7 @@ interface FileTreeProps {
   root: string;
   onFileSelect: (fullPath: string) => void;
   selectedPath?: string;
+  showHidden?: boolean;
 }
 
 interface TreeNode extends FileEntry {
@@ -16,6 +17,7 @@ export default function FileTree({
   root,
   onFileSelect,
   selectedPath,
+  showHidden = false,
 }: FileTreeProps) {
   const [nodes, setNodes] = useState<TreeNode[]>([]);
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
@@ -23,7 +25,7 @@ export default function FileTree({
   const loadDirectory = useCallback(
     async (path: string): Promise<TreeNode[]> => {
       try {
-        const { entries } = await api.listFiles(root, path);
+        const { entries } = await api.listFiles(root, path, showHidden);
         return entries.map((entry) => ({
           ...entry,
           fullPath: `${root}/${entry.path}`,
@@ -32,7 +34,7 @@ export default function FileTree({
         return [];
       }
     },
-    [root]
+    [root, showHidden]
   );
 
   useEffect(() => {

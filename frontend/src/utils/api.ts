@@ -19,12 +19,14 @@ export const api = {
       spaces: Space[];
       defaultStatuses: string[];
       theme: ThemeConfig;
+      showHiddenFiles: boolean;
     }>("/sources"),
 
   updateSources: (payload: {
     spaces?: Space[];
     defaultStatuses?: string[];
     theme?: ThemeConfig;
+    showHiddenFiles?: boolean;
   }) =>
     fetchJSON<{ saved: boolean }>("/sources", {
       method: "PUT",
@@ -32,9 +34,9 @@ export const api = {
     }),
 
   // Files
-  listFiles: (root: string, path = "") =>
+  listFiles: (root: string, path = "", showHidden = false) =>
     fetchJSON<{ entries: FileEntry[] }>(
-      `/files?root=${encodeURIComponent(root)}&path=${encodeURIComponent(path)}`
+      `/files?root=${encodeURIComponent(root)}&path=${encodeURIComponent(path)}&showHidden=${showHidden}`
     ),
 
   readFile: (path: string) =>
