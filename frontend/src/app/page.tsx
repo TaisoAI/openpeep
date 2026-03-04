@@ -318,6 +318,7 @@ export default function Home() {
               file={selectedFile}
               peep={activePeep}
               onSaveStatus={setSaveStatus}
+              statuses={displaySpace?.statuses}
             />
           </>
         )}
