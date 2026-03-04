@@ -4,8 +4,60 @@ from pathlib import Path
 import json
 import subprocess
 import sys
+import time
+import os
 
 router = APIRouter()
+
+# Cache for last-modified scans: {folder_path: (scan_time, iso_string)}
+_last_modified_cache: dict[str, tuple[float, str | None]] = {}
+_CACHE_TTL = 60  # seconds
+
+
+def _get_folder_created(folder: Path) -> str | None:
+    """Get folder creation date (birthtime on macOS, fallback to mtime)."""
+    try:
+        st = folder.stat()
+        ts = getattr(st, "st_birthtime", None) or st.st_mtime
+        from datetime import datetime, timezone
+        return datetime.fromtimestamp(ts, tz=timezone.utc).isoformat()
+    except Exception:
+        return None
+
+
+def _get_folder_last_modified(folder: Path) -> str | None:
+    """Get the most recent file modification time in a folder (cached)."""
+    key = str(folder)
+    now = time.time()
+    cached = _last_modified_cache.get(key)
+    if cached and (now - cached[0]) < _CACHE_TTL:
+        return cached[1]
+
+    latest = 0.0
+    try:
+        for root, _dirs, files in os.walk(folder):
+            # Skip hidden dirs
+            _dirs[:] = [d for d in _dirs if not d.startswith(".")]
+            for f in files:
+                if f.startswith("."):
+                    continue
+                try:
+                    mt = os.path.getmtime(os.path.join(root, f))
+                    if mt > latest:
+                        latest = mt
+                except OSError:
+                    continue
+    except OSError:
+        pass
+
+    if latest > 0:
+        from datetime import datetime, timezone
+        result = datetime.fromtimestamp(latest, tz=timezone.utc).isoformat()
+    else:
+        result = None
+
+    _last_modified_cache[key] = (now, result)
+    return result
 
 
 @router.get("/files")
@@ -30,8 +82,10 @@ def list_files(root: str = Query(...), path: str = Query("")):
             "isDir": item.is_dir(),
             "size": item.stat().st_size if item.is_file() else None,
         }
-        # Check for project.json in directories
+        # Enrich directories with project metadata and dates
         if item.is_dir():
+            entry["createdAt"] = _get_folder_created(item)
+            entry["lastModified"] = _get_folder_last_modified(item)
             pj = item / "project.json"
             if pj.exists():
                 try:

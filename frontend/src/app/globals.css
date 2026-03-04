@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+:root {
+  --font-sans: "DM Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+code, pre, .font-mono {
+  font-family: var(--font-mono);
+}
+
 @theme inline {
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
@@ -43,77 +56,135 @@
    ============================================ */
 [data-theme="macos"] {
   --bg-app: #1a1a1e;
-  --bg-toolbar: rgba(30, 30, 36, 0.72);
-  --bg-surface: rgba(28, 28, 34, 0.65);
-  --bg-sidebar: rgba(24, 24, 30, 0.55);
-  --bg-elevated: rgba(38, 38, 46, 0.7);
-  --bg-hover: rgba(55, 55, 65, 0.5);
-  --bg-card: rgba(42, 42, 52, 0.5);
-  --bg-card-hover: rgba(55, 55, 68, 0.55);
-  --bg-modal: rgba(32, 32, 40, 0.85);
-  --bg-input: rgba(18, 18, 24, 0.6);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-subtle: rgba(255, 255, 255, 0.04);
+  --bg-toolbar: rgba(30, 30, 36, 0.55);
+  --bg-surface: rgba(28, 28, 34, 0.45);
+  --bg-sidebar: rgba(24, 24, 30, 0.40);
+  --bg-elevated: rgba(45, 45, 56, 0.50);
+  --bg-hover: rgba(65, 65, 78, 0.40);
+  --bg-card: rgba(48, 48, 62, 0.35);
+  --bg-card-hover: rgba(62, 62, 78, 0.42);
+  --bg-modal: #1c1c24;
+  --bg-input: rgba(18, 18, 24, 0.50);
+  --border: rgba(255, 255, 255, 0.10);
+  --border-subtle: rgba(255, 255, 255, 0.06);
   --text-primary: #f5f5f7;
-  --text-secondary: #98989f;
+  --text-secondary: #a0a0a8;
   --text-tertiary: #636366;
-  --radius: 12px;
-  --radius-sm: 10px;
-  --radius-xs: 8px;
+  --radius: 20px;
+  --radius-sm: 14px;
+  --radius-xs: 10px;
+  --radius-pill: 9999px;
 }
 
 [data-theme="macos"] .toolbar-glass {
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: saturate(200%) blur(30px);
+  -webkit-backdrop-filter: saturate(200%) blur(30px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   background: var(--bg-toolbar);
 }
 
 [data-theme="macos"] .sidebar-glass {
-  backdrop-filter: saturate(150%) blur(16px);
-  -webkit-backdrop-filter: saturate(150%) blur(16px);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
   background: var(--bg-sidebar);
 }
 
 [data-theme="macos"] .modal-glass {
-  backdrop-filter: saturate(180%) blur(40px);
-  -webkit-backdrop-filter: saturate(180%) blur(40px);
+  backdrop-filter: saturate(200%) blur(50px);
+  -webkit-backdrop-filter: saturate(200%) blur(50px);
   background: var(--bg-modal);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius);
   box-shadow:
-    0 24px 80px rgba(0, 0, 0, 0.5),
-    0 0 0 0.5px rgba(255, 255, 255, 0.1) inset;
+    0 32px 100px rgba(0, 0, 0, 0.55),
+    0 0 0 0.5px rgba(255, 255, 255, 0.15) inset,
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
 }
 
 [data-theme="macos"] .card-glass {
   background: var(--bg-card);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  backdrop-filter: saturate(160%) blur(12px);
+  -webkit-backdrop-filter: saturate(160%) blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.15),
+    0 0 0 0.5px rgba(255, 255, 255, 0.06) inset;
+  transition: all 0.2s ease;
 }
 
 [data-theme="macos"] .card-glass:hover {
   background: var(--bg-card-hover);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    0 0 0 0.5px rgba(255, 255, 255, 0.10) inset;
+  transform: translateY(-1px);
+}
+
+/* Liquid glass pill controls — macOS only */
+[data-theme="macos"] .pill-glass {
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  background: rgba(45, 45, 56, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: var(--radius-pill);
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.15),
+    0 0 0 0.5px rgba(255, 255, 255, 0.06) inset;
+  transition: all 0.2s ease;
+}
+
+[data-theme="macos"] .pill-glass:hover {
+  background: rgba(58, 58, 72, 0.50);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* Column glass panels — macOS only */
+[data-theme="macos"] .column-glass {
+  backdrop-filter: saturate(160%) blur(16px);
+  -webkit-backdrop-filter: saturate(160%) blur(16px);
+  background: rgba(30, 30, 40, 0.30);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* macOS light */
 [data-theme="macos"][data-mode="light"] {
   --bg-app: #ececec;
-  --bg-toolbar: rgba(236, 236, 236, 0.72);
-  --bg-surface: rgba(255, 255, 255, 0.65);
-  --bg-sidebar: rgba(244, 244, 246, 0.55);
-  --bg-elevated: rgba(255, 255, 255, 0.8);
+  --bg-toolbar: rgba(255, 255, 255, 0.55);
+  --bg-surface: rgba(255, 255, 255, 0.50);
+  --bg-sidebar: rgba(255, 255, 255, 0.40);
+  --bg-elevated: rgba(255, 255, 255, 0.65);
   --bg-hover: rgba(0, 0, 0, 0.04);
-  --bg-card: rgba(255, 255, 255, 0.6);
-  --bg-card-hover: rgba(255, 255, 255, 0.8);
-  --bg-modal: rgba(248, 248, 250, 0.88);
-  --bg-input: rgba(255, 255, 255, 0.8);
-  --border: rgba(0, 0, 0, 0.1);
-  --border-subtle: rgba(0, 0, 0, 0.05);
+  --bg-card: rgba(255, 255, 255, 0.50);
+  --bg-card-hover: rgba(255, 255, 255, 0.70);
+  --bg-modal: rgba(255, 255, 255, 0.78);
+  --bg-input: rgba(255, 255, 255, 0.70);
+  --border: rgba(0, 0, 0, 0.10);
+  --border-subtle: rgba(0, 0, 0, 0.06);
   --text-primary: #1d1d1f;
   --text-secondary: #6e6e73;
   --text-tertiary: #aeaeb2;
   color-scheme: light;
+}
+
+[data-theme="macos"][data-mode="light"] .pill-glass {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.06),
+    0 0 0 0.5px rgba(255, 255, 255, 0.8) inset;
+}
+
+[data-theme="macos"][data-mode="light"] .pill-glass:hover {
+  background: rgba(255, 255, 255, 0.70);
+}
+
+[data-theme="macos"][data-mode="light"] .column-glass {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(0, 0, 0, 0.06);
 }
 
 /* ============================================
@@ -315,9 +386,10 @@ body {
    Use these instead of Tailwind rounded-* for
    elements that should respect the OS theme
    ============================================ */
-.radius     { border-radius: var(--radius); }
-.radius-sm  { border-radius: var(--radius-sm); }
-.radius-xs  { border-radius: var(--radius-xs); }
+.radius      { border-radius: var(--radius); }
+.radius-sm   { border-radius: var(--radius-sm); }
+.radius-xs   { border-radius: var(--radius-xs); }
+.radius-pill { border-radius: var(--radius-pill, 9999px); }
 
 /* ============================================
    ADDITIONAL WINDOWS DISTINCTIONS

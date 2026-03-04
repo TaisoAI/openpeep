@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useRef, useEffect } from "react";
 import { Space } from "@/utils/api";
 
@@ -30,7 +28,7 @@ export default function SpaceSwitcher({
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 px-2.5 h-7 rounded-lg bg-elevated hover:bg-hover border border-border-subtle text-sm text-primary transition-all"
+        className="flex items-center gap-2 px-3 h-8 pill-glass text-sm text-primary"
       >
         <span className="text-base leading-none">{activeSpace?.icon || "🌐"}</span>
         <span className="font-medium text-xs">{activeSpace?.name || "All Spaces"}</span>
@@ -52,7 +50,7 @@ export default function SpaceSwitcher({
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 mt-1.5 w-52 bg-elevated border border-border rounded-xl shadow-2xl shadow-black/40 z-50 overflow-hidden animate-scale-in">
+        <div className="absolute top-full left-0 mt-2 w-56 modal-glass z-50 overflow-hidden animate-scale-in" style={{ background: "#1c1c24" }}>
           <div className="p-1">
             {spaces.map((space) => (
               <button
@@ -74,9 +72,6 @@ export default function SpaceSwitcher({
                 </span>
               </button>
             ))}
-          </div>
-          <div className="border-t border-border mx-1" />
-          <div className="p-1">
             <button
               className={`w-full text-left px-2.5 py-2 text-xs rounded-lg flex items-center gap-2.5 transition-colors ${
                 !activeSpace

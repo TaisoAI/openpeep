@@ -29,3 +29,19 @@ def update_sources(payload: dict):
         config["theme"] = payload["theme"]
     save_config(config)
     return {"saved": True}
+
+
+@router.get("/session")
+def get_session():
+    """Return last saved session state."""
+    config = load_config()
+    return config.get("sessionState", {})
+
+
+@router.put("/session")
+def save_session(payload: dict):
+    """Save session state to config."""
+    config = load_config()
+    config["sessionState"] = payload
+    save_config(config)
+    return {"saved": True}

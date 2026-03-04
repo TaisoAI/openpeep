@@ -1,6 +1,4 @@
-"use client";
-
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef } from "react";
 import { api, FileData, PeepManifest } from "@/utils/api";
 
 interface PreviewPaneProps {
@@ -15,11 +13,15 @@ export default function PreviewPane({
   onSaveStatus,
 }: PreviewPaneProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const iframeReady = useRef(false);
+  const fileRef = useRef(file);
+  fileRef.current = file;
 
-  const handleIframeLoad = useCallback(() => {
-    if (!iframeRef.current || !file || !peep) return;
+  const peepRef = useRef(peep);
+  peepRef.current = peep;
 
-    // Inject host theme CSS variables into the iframe
+  function injectTheme() {
+    if (!iframeRef.current) return;
     try {
       const rootStyles = getComputedStyle(document.documentElement);
       const vars = [
@@ -32,25 +34,51 @@ export default function PreviewPane({
         body { background: var(--bg-app) !important; color: var(--text-primary) !important; }`;
       const doc = iframeRef.current.contentDocument;
       if (doc) {
+        const existing = doc.getElementById('peep-theme');
+        if (existing) existing.remove();
         const style = doc.createElement('style');
         style.id = 'peep-theme';
         style.textContent = css;
         doc.head.appendChild(style);
       }
-    } catch { /* cross-origin fallback — peep uses its own colors */ }
+    } catch { /* cross-origin fallback */ }
+  }
 
+  function sendFileToIframe(f: FileData) {
+    if (!iframeRef.current) return;
     iframeRef.current.contentWindow?.postMessage(
       {
         type: "peep:init",
-        filePath: file.path,
-        content: file.content || null,
-        fileName: file.name,
-        ext: file.ext,
-        binary: file.binary,
+        filePath: f.path,
+        content: f.content || null,
+        fileName: f.name,
+        ext: f.ext,
+        binary: f.binary,
       },
       "*"
     );
-  }, [file, peep]);
+  }
+
+  // When iframe loads for the first time, inject theme and send current file
+  function handleIframeLoad() {
+    iframeReady.current = true;
+    injectTheme();
+    if (fileRef.current) {
+      sendFileToIframe(fileRef.current);
+    }
+  }
+
+  // Reset iframeReady when peep changes (iframe remounts via key)
+  useEffect(() => {
+    iframeReady.current = false;
+  }, [peep?.id]);
+
+  // When file changes and iframe is already loaded, send new data
+  useEffect(() => {
+    if (iframeReady.current && file) {
+      sendFileToIframe(file);
+    }
+  }, [file]);
 
   useEffect(() => {
     const handleMessage = async (event: MessageEvent) => {
@@ -59,9 +87,9 @@ export default function PreviewPane({
 
       switch (type) {
         case "peep:save":
-          if (file) {
+          if (fileRef.current) {
             try {
-              await api.saveFile(file.path, payload.content);
+              await api.saveFile(fileRef.current.path, payload.content);
               onSaveStatus?.("Saved");
             } catch {
               onSaveStatus?.("Save failed");
@@ -73,7 +101,7 @@ export default function PreviewPane({
 
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [file, onSaveStatus]);
+  }, [onSaveStatus]);
 
   if (!file || !peep) {
     return (
@@ -95,6 +123,7 @@ export default function PreviewPane({
   return (
     <div className="flex-1 flex flex-col min-h-0">
       <iframe
+        key={peep.id}
         ref={iframeRef}
         src={iframeSrc}
         onLoad={handleIframeLoad}

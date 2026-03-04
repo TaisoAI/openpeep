@@ -1,4 +1,4 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000/api";
 
 async function fetchJSON<T>(path: string, options?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
@@ -67,6 +67,15 @@ export const api = {
     fetchJSON<{ uninstalled: boolean }>(`/peeps/${peepId}`, {
       method: "DELETE",
     }),
+
+  // Session
+  getSession: () => fetchJSON<SessionState>("/session"),
+
+  saveSession: (session: SessionState) =>
+    fetchJSON<{ saved: boolean }>("/session", {
+      method: "PUT",
+      body: JSON.stringify(session),
+    }),
 };
 
 // Types
@@ -76,11 +85,20 @@ export interface Space {
   accentColor?: string;
   roots: string[];
   statuses: string[];
+  hiddenStatuses?: string[];
+}
+
+export interface SessionState {
+  view?: string;
+  spaceName?: string | null;
+  browseRoot?: string;
+  selectedPath?: string;
 }
 
 export interface ThemeConfig {
   mode: "light" | "dark";
   style: "macos" | "windows" | "linux";
+  showLogo?: boolean;
 }
 
 export interface FileEntry {
@@ -89,6 +107,8 @@ export interface FileEntry {
   isDir: boolean;
   size: number | null;
   project?: Record<string, unknown>;
+  createdAt?: string;
+  lastModified?: string;
 }
 
 export interface FileData {

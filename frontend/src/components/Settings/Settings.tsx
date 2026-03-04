@@ -1,6 +1,4 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { api, Space, ThemeConfig } from "@/utils/api";
 
 interface SettingsProps {
@@ -118,16 +116,30 @@ export default function Settings({
     setDirty(true);
   }
 
+  const [addingStatusFor, setAddingStatusFor] = useState<number | null>(null);
+  const [newStatusName, setNewStatusName] = useState("");
+  const newStatusRef = useRef<HTMLInputElement>(null);
+
   function addStatus(index: number) {
-    const status = prompt("Enter new status column name:");
-    if (!status) return;
-    const updated = [...spaces];
-    updated[index] = {
-      ...updated[index],
-      statuses: [...updated[index].statuses, status],
-    };
-    setSpaces(updated);
-    setDirty(true);
+    setAddingStatusFor(index);
+    setNewStatusName("");
+    setTimeout(() => newStatusRef.current?.focus(), 0);
+  }
+
+  function commitAddStatus() {
+    if (addingStatusFor === null) return;
+    const name = newStatusName.trim();
+    if (name) {
+      const updated = [...spaces];
+      updated[addingStatusFor] = {
+        ...updated[addingStatusFor],
+        statuses: [...updated[addingStatusFor].statuses, name],
+      };
+      setSpaces(updated);
+      setDirty(true);
+    }
+    setAddingStatusFor(null);
+    setNewStatusName("");
   }
 
   function removeStatus(spaceIndex: number, statusIndex: number) {
@@ -232,6 +244,32 @@ export default function Settings({
                     onClick={toggleTheme}
                   >
                     {theme.mode === "dark" ? "🌙 Dark" : "☀️ Light"}
+                  </button>
+                </div>
+                <div className="flex items-center gap-3 bg-surface border border-border-subtle rounded-xl p-3 mt-2">
+                  <span className="text-[13px] text-primary flex-1 font-medium">
+                    Show Logo
+                  </span>
+                  <button
+                    className={`w-9 h-5 rounded-full transition-all relative ${
+                      theme.showLogo !== false
+                        ? "bg-accent"
+                        : "bg-elevated border border-border-subtle"
+                    }`}
+                    onClick={async () => {
+                      const newTheme: ThemeConfig = {
+                        ...theme,
+                        showLogo: theme.showLogo === false ? true : false,
+                      };
+                      await api.updateSources({ theme: newTheme });
+                      onThemeChanged(newTheme);
+                    }}
+                  >
+                    <span
+                      className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-all ${
+                        theme.showLogo !== false ? "left-[18px]" : "left-0.5"
+                      }`}
+                    />
                   </button>
                 </div>
               </div>
@@ -426,6 +464,21 @@ export default function Settings({
                               </button>
                             </span>
                           ))}
+                          {addingStatusFor === i && (
+                            <input
+                              ref={newStatusRef}
+                              type="text"
+                              value={newStatusName}
+                              onChange={(e) => setNewStatusName(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") commitAddStatus();
+                                if (e.key === "Escape") { setAddingStatusFor(null); setNewStatusName(""); }
+                              }}
+                              onBlur={commitAddStatus}
+                              placeholder="Column name"
+                              className="bg-input text-[11px] text-primary px-2 py-1 rounded-lg border border-accent outline-none w-28"
+                            />
+                          )}
                         </div>
                       </div>
 

@@ -1,12 +1,12 @@
-"use client";
-
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { api, Space, FileEntry } from "@/utils/api";
 import ProjectCard from "./ProjectCard";
 
 interface BoardProps {
   space: Space;
   onProjectSelect: (root: string, path: string) => void;
+  hiddenStatuses?: string[];
+  onProjectCountsChange?: (counts: Record<string, number>) => void;
 }
 
 interface ProjectEntry extends FileEntry {
@@ -14,7 +14,7 @@ interface ProjectEntry extends FileEntry {
   root: string;
 }
 
-export default function Board({ space, onProjectSelect }: BoardProps) {
+export default function Board({ space, onProjectSelect, hiddenStatuses = [], onProjectCountsChange }: BoardProps) {
   const [projects, setProjects] = useState<ProjectEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [dragItem, setDragItem] = useState<ProjectEntry | null>(null);
@@ -49,11 +49,20 @@ export default function Board({ space, onProjectSelect }: BoardProps) {
     setLoading(false);
   }
 
+  // Report project counts to parent for the space switcher
+  useEffect(() => {
+    if (!onProjectCountsChange || projects.length === 0) return;
+    const counts: Record<string, number> = {};
+    for (const status of space.statuses) {
+      counts[status] = projects.filter((p) => p.status === status).length;
+    }
+    onProjectCountsChange(counts);
+  }, [projects, space.statuses, onProjectCountsChange]);
+
   const handleDragStart = useCallback(
     (e: React.DragEvent, project: ProjectEntry) => {
       setDragItem(project);
       e.dataTransfer.effectAllowed = "move";
-      // Make the drag image slightly transparent
       if (e.currentTarget instanceof HTMLElement) {
         e.currentTarget.style.opacity = "0.5";
       }
@@ -123,110 +132,118 @@ export default function Board({ space, onProjectSelect }: BoardProps) {
     [dragItem]
   );
 
-  const columns = space.statuses;
+  const visibleColumns = space.statuses.filter(
+    (s) => !hiddenStatuses.includes(s)
+  );
   const hasProjects = projects.length > 0;
 
   return (
-    <div className="flex-1 flex min-h-0">
-      {loading ? (
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-tertiary text-sm animate-fade-in">
-            Loading...
+    <div className="flex-1 flex flex-col min-h-0">
+      {/* Board content */}
+      <div className="flex-1 flex min-h-0">
+        {loading ? (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-tertiary text-sm animate-fade-in">
+              Loading...
+            </div>
           </div>
-        </div>
-      ) : !hasProjects ? (
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-center animate-fade-in">
-            <img
-              src="/peep-icon.png"
-              alt=""
-              className="w-16 h-16 mx-auto mb-4 opacity-20"
-            />
-            <p className="text-secondary text-sm font-medium mb-1">
-              No projects yet
-            </p>
-            <p className="text-tertiary text-xs max-w-[240px]">
-              Add root folders in Settings to see your projects on the board
-            </p>
+        ) : !hasProjects ? (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center animate-fade-in">
+              <img
+                src="/peep-icon.png"
+                alt=""
+                className="w-16 h-16 mx-auto mb-4 opacity-20"
+              />
+              <p className="text-secondary text-sm font-medium mb-1">
+                No projects yet
+              </p>
+              <p className="text-tertiary text-xs max-w-[240px]">
+                Add root folders in Settings to see your projects on the board
+              </p>
+            </div>
           </div>
-        </div>
-      ) : (
-        <div className="flex gap-3 p-4 overflow-x-auto flex-1">
-          {columns.map((status, i) => {
-            const columnProjects = projects.filter((p) => p.status === status);
-            const isOver = dropTarget === status;
-            const isDragSource = dragItem?.status === status;
+        ) : (
+          <div className="flex gap-3 p-4 pt-2 overflow-x-auto flex-1">
+            {visibleColumns.map((status, i) => {
+              const columnProjects = projects.filter((p) => p.status === status);
+              const isOver = dropTarget === status;
+              const isDragSource = dragItem?.status === status;
 
-            return (
-              <div
-                key={status}
-                className={`flex-shrink-0 w-64 flex flex-col animate-fade-in radius border transition-all duration-200 ${
-                  isOver && !isDragSource
-                    ? "bg-accent/8 border-accent/30"
-                    : "bg-surface/30 border-border-subtle"
-                }`}
-                style={{ animationDelay: `${i * 50}ms` }}
-                onDragOver={(e) => handleDragOver(e, status)}
-                onDragLeave={handleDragLeave}
-                onDrop={(e) => handleDrop(e, status)}
-              >
-                {/* Column header */}
-                <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border-subtle">
-                  <div
-                    className="w-2 h-2 rounded-full"
-                    style={{
-                      backgroundColor:
-                        i === 0
-                          ? "var(--text-tertiary)"
-                          : i === columns.length - 1
-                          ? "var(--text-tertiary)"
-                          : "var(--accent)",
-                      opacity: i === 0 || i === columns.length - 1 ? 0.5 : 1,
-                    }}
-                  />
-                  <h2 className="text-[11px] font-semibold text-secondary uppercase tracking-wider">
-                    {status}
-                  </h2>
-                  {columnProjects.length > 0 && (
-                    <span className="text-[10px] text-tertiary bg-elevated px-1.5 py-0.5 rounded-full font-mono ml-auto">
-                      {columnProjects.length}
-                    </span>
-                  )}
-                </div>
-
-                {/* Column body */}
-                <div className="flex-1 flex flex-col gap-1.5 p-2 min-h-[80px]">
-                  {columnProjects.map((project) => (
+              return (
+                <div
+                  key={status}
+                  className={`flex-shrink-0 w-72 flex flex-col animate-fade-in column-glass transition-all duration-200 ${
+                    isOver && !isDragSource
+                      ? "!bg-accent/8 !border-accent/30"
+                      : ""
+                  }`}
+                  style={{ animationDelay: `${i * 50}ms` }}
+                  onDragOver={(e) => handleDragOver(e, status)}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, status)}
+                >
+                  {/* Column header */}
+                  <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border-subtle">
                     <div
-                      key={`${project.root}/${project.path}`}
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, project)}
-                      onDragEnd={handleDragEnd}
-                      className="cursor-grab active:cursor-grabbing"
-                    >
-                      <ProjectCard
-                        name={project.name}
-                        path={project.path}
-                        project={project.project}
-                        onClick={() =>
-                          onProjectSelect(project.root, project.path)
-                        }
-                      />
-                    </div>
-                  ))}
-                  {columnProjects.length === 0 && (
-                    <div className="flex-1 flex items-center justify-center py-6">
-                      <p className="text-[11px] text-tertiary/50 italic">
-                        Drop here
-                      </p>
-                    </div>
-                  )}
+                      className="w-2 h-2 rounded-full"
+                      style={{
+                        backgroundColor:
+                          i === 0
+                            ? "var(--text-tertiary)"
+                            : i === visibleColumns.length - 1
+                            ? "var(--text-tertiary)"
+                            : "var(--accent)",
+                        opacity:
+                          i === 0 || i === visibleColumns.length - 1 ? 0.5 : 1,
+                      }}
+                    />
+                    <h2 className="text-[11px] font-semibold text-secondary uppercase tracking-wider">
+                      {status}
+                    </h2>
+                    {columnProjects.length > 0 && (
+                      <span className="text-[10px] text-tertiary bg-elevated px-1.5 py-0.5 rounded-full font-mono ml-auto">
+                        {columnProjects.length}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Column body */}
+                  <div className="flex-1 flex flex-col gap-1.5 p-2 min-h-[80px]">
+                    {columnProjects.map((project) => (
+                      <div
+                        key={`${project.root}/${project.path}`}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, project)}
+                        onDragEnd={handleDragEnd}
+                        className="cursor-grab active:cursor-grabbing"
+                      >
+                        <ProjectCard
+                          name={project.name}
+                          path={project.path}
+                          project={project.project}
+                          createdAt={project.createdAt}
+                          lastModified={project.lastModified}
+                          onClick={() =>
+                            onProjectSelect(project.root, project.path)
+                          }
+                        />
+                      </div>
+                    ))}
+                    {columnProjects.length === 0 && (
+                      <div className="flex-1 flex items-center justify-center py-6">
+                        <p className="text-[11px] text-tertiary/50 italic">
+                          Drop here
+                        </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
