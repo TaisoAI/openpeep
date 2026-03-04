@@ -1,0 +1,19 @@
+{
+  "name": "openpeep",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Project-based file explorer with rich previews",
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "./venv/bin/uvicorn backend.main:app --reload --port 8000",
+    "setup": "npm run setup:backend && npm run setup:frontend",
+    "setup:backend": "python3 -m venv venv && ./venv/bin/pip install -r backend/requirements.txt",
+    "setup:frontend": "cd frontend && npm install",
+    "build": "cd frontend && npm run build",
+    "lint": "cd frontend && npm run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

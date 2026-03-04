@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Editor</title>
+  <script src="../_sdk/peep-sdk.js"></script>
+  <style>
+    :root {
+      --bg-app: #1e1e1e;
+      --bg-toolbar: #252526;
+      --bg-elevated: #333;
+      --bg-hover: #444;
+      --border: #333;
+      --border-subtle: #555;
+      --text-primary: #d4d4d4;
+      --text-secondary: #ccc;
+      --text-tertiary: #888;
+      --accent: #0078d4;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg-app);
+      color: var(--text-primary);
+      font: 14px/1.6 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--bg-toolbar);
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+    .toolbar button {
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+      padding: 4px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .toolbar button:hover { background: var(--bg-hover); }
+    .toolbar button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .toolbar .spacer { flex: 1; }
+    .toolbar .status { font-size: 11px; color: var(--text-tertiary); }
+    .toolbar .error { color: #f44; }
+    .toolbar .valid { color: #4c4; }
+    #editor {
+      flex: 1;
+      width: 100%;
+      padding: 12px 16px;
+      background: transparent;
+      color: var(--text-primary);
+      border: none;
+      resize: none;
+      outline: none;
+      font: inherit;
+      tab-size: 2;
+    }
+    #editor:read-only { cursor: default; }
+    #editor:not(:read-only) { background: var(--bg-elevated); }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button id="btn-view" class="active" onclick="setMode('view')">View</button>
+    <button id="btn-edit" onclick="setMode('edit')">Edit</button>
+    <button onclick="formatJSON()">Format</button>
+    <button onclick="minifyJSON()">Minify</button>
+    <span class="spacer"></span>
+    <span class="status" id="validation"></span>
+    <span class="status" id="status"></span>
+  </div>
+  <textarea id="editor" readonly spellcheck="false"></textarea>
+  <script>
+    let currentMode = 'view';
+    let originalContent = '';
+    let saveTimeout = null;
+
+    function setMode(mode) {
+      currentMode = mode;
+      const editor = document.getElementById('editor');
+      editor.readOnly = mode === 'view';
+      document.getElementById('btn-view').classList.toggle('active', mode === 'view');
+      document.getElementById('btn-edit').classList.toggle('active', mode === 'edit');
+    }
+
+    function validateJSON() {
+      const el = document.getElementById('validation');
+      try {
+        JSON.parse(document.getElementById('editor').value);
+        el.textContent = 'Valid JSON';
+        el.className = 'status valid';
+      } catch (e) {
+        el.textContent = e.message.replace('JSON.parse: ', '');
+        el.className = 'status error';
+      }
+    }
+
+    function formatJSON() {
+      const editor = document.getElementById('editor');
+      try {
+        const parsed = JSON.parse(editor.value);
+        editor.value = JSON.stringify(parsed, null, 2);
+        validateJSON();
+      } catch {}
+    }
+
+    function minifyJSON() {
+      const editor = document.getElementById('editor');
+      try {
+        const parsed = JSON.parse(editor.value);
+        editor.value = JSON.stringify(parsed);
+        validateJSON();
+      } catch {}
+    }
+
+    function autoSave() {
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => {
+        const content = document.getElementById('editor').value;
+        if (content !== originalContent) {
+          PeepSDK.save(content);
+          document.getElementById('status').textContent = 'Saved';
+          setTimeout(() => { document.getElementById('status').textContent = ''; }, 2000);
+        }
+      }, 1000);
+    }
+
+    PeepSDK.on('init', ({ content, fileName }) => {
+      originalContent = content || '';
+      const editor = document.getElementById('editor');
+      // Auto-format on load
+      try {
+        editor.value = JSON.stringify(JSON.parse(originalContent), null, 2);
+      } catch {
+        editor.value = originalContent;
+      }
+      document.getElementById('status').textContent = fileName;
+      validateJSON();
+      PeepSDK.ready();
+    });
+
+    PeepSDK.on('file-changed', ({ content }) => {
+      if (currentMode === 'view') {
+        originalContent = content;
+        try {
+          document.getElementById('editor').value = JSON.stringify(JSON.parse(content), null, 2);
+        } catch {
+          document.getElementById('editor').value = content;
+        }
+        validateJSON();
+      }
+    });
+
+    document.getElementById('editor').addEventListener('input', () => {
+      validateJSON();
+      if (currentMode === 'edit') autoSave();
+    });
+  </script>
+</body>
+</html>

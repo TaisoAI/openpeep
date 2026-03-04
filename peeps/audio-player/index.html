@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio Player</title>
+  <script src="../_sdk/peep-sdk.js"></script>
+  <style>
+    :root {
+      --bg-app: #1e1e1e;
+      --bg-toolbar: #252526;
+      --bg-elevated: #333;
+      --bg-hover: #444;
+      --border: #333;
+      --border-subtle: #555;
+      --text-primary: #d4d4d4;
+      --text-secondary: #ccc;
+      --text-tertiary: #888;
+      --accent: #0078d4;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg-app);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #eee;
+      text-align: center;
+      max-width: 80%;
+      word-break: break-word;
+    }
+    canvas {
+      width: 80%;
+      max-width: 600px;
+      height: 120px;
+      border-radius: 8px;
+    }
+    audio {
+      width: 80%;
+      max-width: 600px;
+      outline: none;
+    }
+    .info {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="title" id="title"></div>
+  <canvas id="waveform"></canvas>
+  <audio id="player" controls preload="metadata"></audio>
+  <div class="info" id="info"></div>
+  <script>
+    let audioCtx, analyser, source, animFrame;
+
+    PeepSDK.on('init', ({ filePath, fileName }) => {
+      const player = document.getElementById('player');
+      const info = document.getElementById('info');
+      const backendUrl = 'http://localhost:8000';
+
+      document.getElementById('title').textContent = fileName.replace(/\.[^.]+$/, '');
+      player.src = `${backendUrl}/api/file/raw?path=${encodeURIComponent(filePath)}`;
+
+      player.onloadedmetadata = () => {
+        info.textContent = formatDuration(player.duration);
+        PeepSDK.ready();
+      };
+
+      // Waveform visualization on play
+      player.onplay = () => {
+        if (!audioCtx) {
+          audioCtx = new AudioContext();
+          analyser = audioCtx.createAnalyser();
+          analyser.fftSize = 256;
+          source = audioCtx.createMediaElementSource(player);
+          source.connect(analyser);
+          analyser.connect(audioCtx.destination);
+        }
+        drawWaveform();
+      };
+
+      player.onpause = () => cancelAnimationFrame(animFrame);
+
+      player.onerror = () => {
+        info.textContent = `Cannot play: ${fileName}`;
+        PeepSDK.ready();
+      };
+    });
+
+    function drawWaveform() {
+      const canvas = document.getElementById('waveform');
+      const ctx = canvas.getContext('2d');
+      canvas.width = canvas.offsetWidth * 2;
+      canvas.height = canvas.offsetHeight * 2;
+
+      const bufferLength = analyser.frequencyBinCount;
+      const dataArray = new Uint8Array(bufferLength);
+
+      function draw() {
+        animFrame = requestAnimationFrame(draw);
+        analyser.getByteFrequencyData(dataArray);
+
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg-app').trim() || '#1e1e1e';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const barW = (canvas.width / bufferLength) * 2;
+        let x = 0;
+        for (let i = 0; i < bufferLength; i++) {
+          const barH = (dataArray[i] / 255) * canvas.height;
+          const hue = (i / bufferLength) * 60 + 200;
+          ctx.fillStyle = `hsl(${hue}, 70%, ${40 + (dataArray[i] / 255) * 30}%)`;
+          ctx.fillRect(x, canvas.height - barH, barW - 1, barH);
+          x += barW;
+        }
+      }
+      draw();
+    }
+
+    function formatDuration(s) {
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return `${m}:${sec.toString().padStart(2, '0')}`;
+    }
+  </script>
+</body>
+</html>

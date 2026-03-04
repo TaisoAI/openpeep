@@ -1,0 +1,14 @@
+{
+  "id": "model-viewer",
+  "name": "3D Model Viewer",
+  "version": "1.0.0",
+  "description": "Preview 3D models (glTF, GLB, USDZ) with orbit controls",
+  "author": "OpenPeep",
+  "entry": "index.html",
+  "builtin": true,
+  "priority": 0,
+  "capabilities": ["view"],
+  "matches": {
+    "extensions": [".glb", ".gltf", ".usdz", ".usd", ".usda", ".usdc", ".obj", ".fbx", ".stl", ".3ds", ".dae"]
+  }
+}

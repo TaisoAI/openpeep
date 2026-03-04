@@ -1,0 +1,18 @@
+{
+  "spaces": [
+    {
+      "name": "My Projects",
+      "icon": "📁",
+      "roots": ["~/Projects"],
+      "statuses": ["Idea", "Planning", "In Progress", "Analyze", "Archive"]
+    }
+  ],
+  "defaultStatuses": ["Idea", "Planning", "In Progress", "Analyze", "Archive"],
+  "fileAssociations": {
+    "overrides": []
+  },
+  "peepSettings": {},
+  "peephub": {
+    "url": "https://api.peephub.ai"
+  }
+}

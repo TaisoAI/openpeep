@@ -1,0 +1,14 @@
+{
+  "id": "video-player",
+  "name": "Video Player",
+  "version": "1.0.0",
+  "description": "Play video files with native controls",
+  "author": "OpenPeep",
+  "entry": "index.html",
+  "builtin": true,
+  "priority": 0,
+  "capabilities": ["view"],
+  "matches": {
+    "extensions": [".mp4", ".mov", ".webm", ".m4v", ".mkv", ".avi", ".ogv", ".3gp"]
+  }
+}

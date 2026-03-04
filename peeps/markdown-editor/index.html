@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown Editor</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="../_sdk/peep-sdk.js"></script>
+  <style>
+    :root {
+      --bg-app: #1e1e1e;
+      --bg-toolbar: #252526;
+      --bg-elevated: #333;
+      --bg-hover: #444;
+      --border: #333;
+      --border-subtle: #555;
+      --text-primary: #d4d4d4;
+      --text-secondary: #ccc;
+      --text-tertiary: #888;
+      --accent: #0078d4;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg-app);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--bg-toolbar);
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+    .toolbar button {
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+      padding: 4px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .toolbar button:hover { background: var(--bg-hover); }
+    .toolbar button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .toolbar .spacer { flex: 1; }
+    .toolbar .status { font-size: 11px; color: var(--text-tertiary); }
+    .content { flex: 1; overflow: hidden; display: flex; }
+    #preview {
+      flex: 1;
+      padding: 24px 32px;
+      overflow-y: auto;
+      line-height: 1.7;
+    }
+    #preview h1, #preview h2, #preview h3 { color: #fff; margin: 1em 0 0.5em; }
+    #preview h1 { font-size: 1.8em; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+    #preview h2 { font-size: 1.4em; }
+    #preview p { margin: 0.8em 0; }
+    #preview code { background: var(--bg-elevated); padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+    #preview pre { background: var(--bg-elevated); padding: 16px; border-radius: 6px; overflow-x: auto; margin: 1em 0; }
+    #preview pre code { background: none; padding: 0; }
+    #preview a { color: var(--accent); }
+    #preview img { max-width: 100%; border-radius: 4px; }
+    #preview blockquote { border-left: 3px solid var(--border-subtle); padding-left: 16px; color: var(--text-tertiary); margin: 1em 0; }
+    #preview ul, #preview ol { padding-left: 24px; margin: 0.8em 0; }
+    #preview table { border-collapse: collapse; margin: 1em 0; width: 100%; }
+    #preview th, #preview td { border: 1px solid var(--bg-hover); padding: 8px 12px; text-align: left; }
+    #preview th { background: var(--bg-elevated); }
+    #editor-area {
+      flex: 1;
+      padding: 12px 16px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font: 14px/1.6 'SF Mono', 'Fira Code', monospace;
+      color: var(--text-primary);
+      outline: none;
+      display: none;
+    }
+    .mode-edit #preview { display: none; }
+    .mode-edit #editor-area { display: block; }
+    .mode-split #preview { width: 50%; border-left: 1px solid var(--border); }
+    .mode-split #editor-area { display: block; width: 50%; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button id="btn-view" class="active" onclick="setMode('view')">View</button>
+    <button id="btn-edit" onclick="setMode('edit')">Edit</button>
+    <button id="btn-split" onclick="setMode('split')">Split</button>
+    <span class="spacer"></span>
+    <span class="status" id="status"></span>
+  </div>
+  <div class="content" id="content">
+    <pre id="editor-area" contenteditable="true"></pre>
+    <div id="preview"></div>
+  </div>
+  <script>
+    let currentMode = 'view';
+    let rawContent = '';
+    let saveTimeout = null;
+
+    function setMode(mode) {
+      currentMode = mode;
+      document.body.className = `mode-${mode}`;
+      document.querySelectorAll('.toolbar button').forEach(b => b.classList.remove('active'));
+      document.getElementById(`btn-${mode}`).classList.add('active');
+
+      if (mode === 'view' || mode === 'split') {
+        renderMarkdown();
+      }
+    }
+
+    function renderMarkdown() {
+      const src = currentMode === 'view' ? rawContent : document.getElementById('editor-area').textContent;
+      document.getElementById('preview').innerHTML = marked.parse(src || '');
+    }
+
+    function autoSave() {
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => {
+        const content = document.getElementById('editor-area').textContent;
+        if (content !== rawContent) {
+          rawContent = content;
+          PeepSDK.save(content);
+          document.getElementById('status').textContent = 'Saved';
+          setTimeout(() => { document.getElementById('status').textContent = ''; }, 2000);
+        }
+      }, 1000);
+    }
+
+    PeepSDK.on('init', ({ content, fileName }) => {
+      rawContent = content || '';
+      document.getElementById('editor-area').textContent = rawContent;
+      document.getElementById('status').textContent = fileName;
+      setMode('view');
+      PeepSDK.ready();
+    });
+
+    PeepSDK.on('file-changed', ({ content }) => {
+      rawContent = content;
+      if (currentMode === 'view') renderMarkdown();
+      else if (currentMode === 'split') renderMarkdown();
+    });
+
+    document.getElementById('editor-area').addEventListener('input', () => {
+      autoSave();
+      if (currentMode === 'split') renderMarkdown();
+    });
+  </script>
+</body>
+</html>

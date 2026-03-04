@@ -1,0 +1,14 @@
+{
+  "id": "html-preview",
+  "name": "HTML Preview",
+  "version": "1.0.0",
+  "description": "Preview HTML files in a sandboxed frame",
+  "author": "OpenPeep",
+  "entry": "index.html",
+  "builtin": true,
+  "priority": 0,
+  "capabilities": ["view"],
+  "matches": {
+    "extensions": [".html", ".htm"]
+  }
+}

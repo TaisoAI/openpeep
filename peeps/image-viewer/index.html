@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Viewer</title>
+  <script src="../_sdk/peep-sdk.js"></script>
+  <style>
+    :root {
+      --bg-app: #1e1e1e;
+      --bg-toolbar: #252526;
+      --bg-elevated: #333;
+      --bg-hover: #444;
+      --border: #333;
+      --border-subtle: #555;
+      --text-primary: #d4d4d4;
+      --text-secondary: #ccc;
+      --text-tertiary: #888;
+      --accent: #0078d4;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg-app);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      image-rendering: auto;
+    }
+    .checkerboard {
+      background-image:
+        linear-gradient(45deg, #2a2a2a 25%, transparent 25%),
+        linear-gradient(-45deg, #2a2a2a 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #2a2a2a 75%),
+        linear-gradient(-45deg, transparent 75%, #2a2a2a 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    }
+    .info {
+      position: fixed;
+      bottom: 8px;
+      right: 12px;
+      color: var(--text-tertiary);
+      font: 12px/1 monospace;
+    }
+  </style>
+</head>
+<body>
+  <img id="preview" />
+  <div class="info" id="info"></div>
+  <script>
+    PeepSDK.on('init', ({ filePath, ext }) => {
+      const img = document.getElementById('preview');
+      const info = document.getElementById('info');
+
+      // Load image via backend raw file endpoint
+      const backendUrl = 'http://localhost:8000';
+      img.src = `${backendUrl}/api/file/raw?path=${encodeURIComponent(filePath)}`;
+
+      // Show transparency checkerboard for PNGs/SVGs
+      if (['.png', '.svg', '.webp'].includes(ext)) {
+        document.body.classList.add('checkerboard');
+      }
+
+      img.onload = () => {
+        info.textContent = `${img.naturalWidth} \u00d7 ${img.naturalHeight}`;
+        PeepSDK.ready();
+      };
+
+      img.onerror = () => {
+        info.textContent = 'Failed to load image';
+        PeepSDK.ready();
+      };
+    });
+  </script>
+</body>
+</html>

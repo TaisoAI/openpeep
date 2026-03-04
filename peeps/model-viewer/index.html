@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Model Viewer</title>
+  <script src="../_sdk/peep-sdk.js"></script>
+  <!-- Google's model-viewer web component — handles glTF/GLB/USDZ natively -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <style>
+    :root {
+      --bg-app: #1e1e1e;
+      --bg-toolbar: #252526;
+      --bg-elevated: #333;
+      --bg-hover: #444;
+      --border: #333;
+      --border-subtle: #555;
+      --text-primary: #d4d4d4;
+      --text-secondary: #ccc;
+      --text-tertiary: #888;
+      --accent: #0078d4;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg-app);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--bg-toolbar);
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+    .toolbar .status { font-size: 11px; color: var(--text-tertiary); font-family: monospace; }
+    .toolbar .spacer { flex: 1; }
+    .toolbar button {
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+      padding: 4px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .toolbar button:hover { background: var(--bg-hover); }
+    model-viewer {
+      flex: 1;
+      width: 100%;
+      background-color: var(--bg-app);
+      --poster-color: var(--bg-app);
+    }
+    .fallback {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-tertiary);
+      font-family: -apple-system, sans-serif;
+      font-size: 14px;
+      text-align: center;
+      padding: 32px;
+    }
+    .fallback .icon { font-size: 48px; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <span class="status" id="filename"></span>
+    <span class="spacer"></span>
+    <button onclick="resetCamera()">Reset View</button>
+  </div>
+  <model-viewer
+    id="viewer"
+    camera-controls
+    auto-rotate
+    shadow-intensity="1"
+    environment-image="neutral"
+    style="display:none"
+  ></model-viewer>
+  <div class="fallback" id="fallback" style="display:none">
+    <div>
+      <div class="icon">📦</div>
+      <div id="fallback-msg">Loading model...</div>
+    </div>
+  </div>
+  <script>
+    const SUPPORTED_NATIVE = ['.glb', '.gltf', '.usdz'];
+
+    function resetCamera() {
+      const viewer = document.getElementById('viewer');
+      viewer.cameraOrbit = 'auto auto auto';
+      viewer.cameraTarget = 'auto auto auto';
+    }
+
+    PeepSDK.on('init', ({ filePath, fileName, ext }) => {
+      const backendUrl = 'http://localhost:8000';
+      const fileUrl = `${backendUrl}/api/file/raw?path=${encodeURIComponent(filePath)}`;
+      document.getElementById('filename').textContent = fileName;
+
+      if (SUPPORTED_NATIVE.includes(ext)) {
+        const viewer = document.getElementById('viewer');
+        viewer.src = fileUrl;
+        viewer.style.display = 'block';
+
+        viewer.addEventListener('load', () => PeepSDK.ready());
+        viewer.addEventListener('error', () => {
+          viewer.style.display = 'none';
+          showFallback(`Could not load ${fileName}`);
+          PeepSDK.ready();
+        });
+      } else {
+        showFallback(`Format "${ext}" requires conversion.\nNatively supported: .glb, .gltf, .usdz`);
+        PeepSDK.ready();
+      }
+    });
+
+    function showFallback(msg) {
+      document.getElementById('fallback').style.display = 'flex';
+      document.getElementById('fallback-msg').textContent = msg;
+    }
+  </script>
+</body>
+</html>
