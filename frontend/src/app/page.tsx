@@ -311,6 +311,20 @@ export default function Home() {
                 root={browseRoot}
                 onFileSelect={openFile}
                 selectedPath={selectedPath}
+                peeps={peeps}
+                onFileDeleted={(path) => {
+                  if (selectedPath === path || selectedPath?.startsWith(path + "/")) {
+                    setSelectedFile(null);
+                    setActivePeep(null);
+                    setSelectedPath("");
+                  }
+                }}
+                onFileRenamed={(oldPath, newPath) => {
+                  if (selectedPath === oldPath) {
+                    setSelectedPath(newPath);
+                    openFile(newPath);
+                  }
+                }}
               />
             </aside>
 

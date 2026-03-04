@@ -54,6 +54,17 @@ export const api = {
       body: JSON.stringify({ root, path, status }),
     }),
 
+  deleteFile: (path: string) =>
+    fetchJSON<{ deleted: boolean }>(`/file?path=${encodeURIComponent(path)}`, {
+      method: "DELETE",
+    }),
+
+  renameFile: (path: string, newName: string) =>
+    fetchJSON<{ renamed: boolean; newPath: string }>("/file/rename", {
+      method: "PUT",
+      body: JSON.stringify({ path, newName }),
+    }),
+
   rawFileUrl: (path: string) =>
     `${API_BASE}/file/raw?path=${encodeURIComponent(path)}`,
 

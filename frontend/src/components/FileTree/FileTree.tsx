@@ -1,10 +1,14 @@
-import { useState, useEffect, useCallback } from "react";
-import { api, FileEntry } from "@/utils/api";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
+import { api, FileEntry, PeepManifest } from "@/utils/api";
 
 interface FileTreeProps {
   root: string;
   onFileSelect: (fullPath: string) => void;
   selectedPath?: string;
+  onFileDeleted?: (path: string) => void;
+  onFileRenamed?: (oldPath: string, newPath: string) => void;
+  peeps?: PeepManifest[];
 }
 
 interface TreeNode extends FileEntry {
@@ -12,13 +16,77 @@ interface TreeNode extends FileEntry {
   fullPath: string;
 }
 
+interface ContextMenuState {
+  x: number;
+  y: number;
+  node: TreeNode;
+}
+
+function formatSize(bytes: number | null): string {
+  if (bytes === null || bytes === undefined) return "—";
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function formatDate(iso: string | undefined): string {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  return d.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }) + " " + d.toLocaleTimeString(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function getFileType(name: string): string {
+  const ext = name.includes(".") ? name.substring(name.lastIndexOf(".")).toLowerCase() : "";
+  const types: Record<string, string> = {
+    ".md": "Markdown", ".txt": "Text", ".json": "JSON", ".yaml": "YAML", ".yml": "YAML",
+    ".js": "JavaScript", ".ts": "TypeScript", ".tsx": "TypeScript React", ".jsx": "JavaScript React",
+    ".py": "Python", ".html": "HTML", ".css": "CSS", ".scss": "SCSS",
+    ".png": "PNG Image", ".jpg": "JPEG Image", ".jpeg": "JPEG Image", ".gif": "GIF Image",
+    ".svg": "SVG Image", ".webp": "WebP Image", ".heic": "HEIC Image",
+    ".mp4": "MP4 Video", ".mov": "QuickTime Video", ".webm": "WebM Video",
+    ".mp3": "MP3 Audio", ".wav": "WAV Audio", ".m4a": "M4A Audio",
+    ".pdf": "PDF Document", ".zip": "ZIP Archive", ".tar": "TAR Archive",
+  };
+  return types[ext] || (ext ? `${ext.slice(1).toUpperCase()} File` : "File");
+}
+
+function findPeepForFile(name: string, peeps: PeepManifest[]): PeepManifest | null {
+  const ext = name.includes(".") ? name.substring(name.lastIndexOf(".")).toLowerCase() : "";
+  // Check filename patterns first
+  for (const peep of peeps) {
+    if (peep.matches.fileNames?.some((pattern) => {
+      const regex = new RegExp("^" + pattern.replace(/\*/g, ".*").replace(/\?/g, ".") + "$", "i");
+      return regex.test(name);
+    })) return peep;
+  }
+  // Then extension
+  if (ext) {
+    const extMatches = peeps.filter((p) => p.matches.extensions?.includes(ext));
+    if (extMatches.length > 0) return extMatches.sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0))[0];
+  }
+  return null;
+}
+
 export default function FileTree({
   root,
   onFileSelect,
   selectedPath,
+  onFileDeleted,
+  onFileRenamed,
+  peeps = [],
 }: FileTreeProps) {
   const [nodes, setNodes] = useState<TreeNode[]>([]);
   const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
+  const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
+  const [renamingPath, setRenamingPath] = useState<string | null>(null);
+  const [renameValue, setRenameValue] = useState("");
 
   const loadDirectory = useCallback(
     async (path: string): Promise<TreeNode[]> => {
@@ -64,6 +132,83 @@ export default function FileTree({
     }
   };
 
+  const handleContextMenu = useCallback(
+    (e: React.MouseEvent, node: TreeNode) => {
+      e.preventDefault();
+      e.stopPropagation();
+      // Clamp to viewport
+      const x = Math.min(e.clientX, window.innerWidth - 220);
+      const y = Math.min(e.clientY, window.innerHeight - 300);
+      setContextMenu({ x, y, node });
+    },
+    []
+  );
+
+  const refreshParent = useCallback(
+    async (nodePath: string) => {
+      const parentPath = nodePath.includes("/")
+        ? nodePath.substring(0, nodePath.lastIndexOf("/"))
+        : "";
+      const children = await loadDirectory(parentPath);
+      if (parentPath === "") {
+        setNodes(children);
+      } else {
+        setNodes((prev) => updateNodeChildren(prev, parentPath, children));
+      }
+    },
+    [loadDirectory]
+  );
+
+  const handleDelete = useCallback(
+    async (node: TreeNode) => {
+      try {
+        await api.deleteFile(node.fullPath);
+        await refreshParent(node.path);
+        onFileDeleted?.(node.fullPath);
+      } catch (err) {
+        console.error("Failed to delete:", err);
+      }
+      setContextMenu(null);
+    },
+    [refreshParent, onFileDeleted]
+  );
+
+  const handleRename = useCallback(
+    (node: TreeNode) => {
+      setRenamingPath(node.path);
+      setRenameValue(node.name);
+      setContextMenu(null);
+    },
+    []
+  );
+
+  const commitRename = useCallback(
+    async (node: TreeNode) => {
+      const trimmed = renameValue.trim();
+      if (!trimmed || trimmed === node.name) {
+        setRenamingPath(null);
+        return;
+      }
+      try {
+        const { newPath } = await api.renameFile(node.fullPath, trimmed);
+        await refreshParent(node.path);
+        onFileRenamed?.(node.fullPath, newPath);
+      } catch (err) {
+        console.error("Failed to rename:", err);
+      }
+      setRenamingPath(null);
+    },
+    [renameValue, refreshParent, onFileRenamed]
+  );
+
+  const handleCopyPath = useCallback(
+    (node: TreeNode) => {
+      navigator.clipboard.writeText(node.fullPath).catch(() => {});
+      setContextMenu(null);
+    },
+    []
+  );
+
   return (
     <div className="text-xs overflow-y-auto h-full select-none py-1">
       {nodes.map((node) => (
@@ -74,8 +219,29 @@ export default function FileTree({
           expanded={expandedPaths}
           selectedPath={selectedPath}
           onClick={handleClick}
+          onContextMenu={handleContextMenu}
+          renamingPath={renamingPath}
+          renameValue={renameValue}
+          onRenameChange={setRenameValue}
+          onRenameCommit={commitRename}
+          onRenameCancel={() => setRenamingPath(null)}
         />
       ))}
+
+      {contextMenu &&
+        createPortal(
+          <ContextMenu
+            x={contextMenu.x}
+            y={contextMenu.y}
+            node={contextMenu.node}
+            peeps={peeps}
+            onClose={() => setContextMenu(null)}
+            onDelete={handleDelete}
+            onRename={handleRename}
+            onCopyPath={handleCopyPath}
+          />,
+          document.body
+        )}
     </div>
   );
 }
@@ -86,16 +252,44 @@ function TreeNodeView({
   expanded,
   selectedPath,
   onClick,
+  onContextMenu,
+  renamingPath,
+  renameValue,
+  onRenameChange,
+  onRenameCommit,
+  onRenameCancel,
 }: {
   node: TreeNode;
   depth: number;
   expanded: Set<string>;
   selectedPath?: string;
   onClick: (node: TreeNode) => void;
+  onContextMenu: (e: React.MouseEvent, node: TreeNode) => void;
+  renamingPath: string | null;
+  renameValue: string;
+  onRenameChange: (v: string) => void;
+  onRenameCommit: (node: TreeNode) => void;
+  onRenameCancel: () => void;
 }) {
   const isExpanded = expanded.has(node.path);
   const isSelected = node.fullPath === selectedPath;
+  const isRenaming = renamingPath === node.path;
   const indent = depth * 14;
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isRenaming) {
+      setTimeout(() => {
+        const el = inputRef.current;
+        if (el) {
+          el.focus();
+          // Select name without extension for files
+          const dotIdx = node.isDir ? -1 : el.value.lastIndexOf(".");
+          el.setSelectionRange(0, dotIdx > 0 ? dotIdx : el.value.length);
+        }
+      }, 0);
+    }
+  }, [isRenaming, node.isDir]);
 
   return (
     <div>
@@ -107,13 +301,27 @@ function TreeNodeView({
         }`}
         style={{ paddingLeft: `${indent + 8}px` }}
         onClick={() => onClick(node)}
+        onContextMenu={(e) => onContextMenu(e, node)}
       >
         <span className="w-3 text-center text-[9px] text-tertiary shrink-0">
           {node.isDir ? (isExpanded ? "▾" : "▸") : ""}
         </span>
-        <span className="truncate font-medium">
-          {node.name}
-        </span>
+        {isRenaming ? (
+          <input
+            ref={inputRef}
+            className="bg-input text-primary text-xs px-1 py-0 rounded border border-accent outline-none flex-1 min-w-0 font-medium"
+            value={renameValue}
+            onChange={(e) => onRenameChange(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") onRenameCommit(node);
+              if (e.key === "Escape") onRenameCancel();
+            }}
+            onBlur={() => onRenameCommit(node)}
+            onClick={(e) => e.stopPropagation()}
+          />
+        ) : (
+          <span className="truncate font-medium">{node.name}</span>
+        )}
       </div>
       {node.isDir && isExpanded && node.children && (
         <div>
@@ -125,9 +333,194 @@ function TreeNodeView({
               expanded={expanded}
               selectedPath={selectedPath}
               onClick={onClick}
+              onContextMenu={onContextMenu}
+              renamingPath={renamingPath}
+              renameValue={renameValue}
+              onRenameChange={onRenameChange}
+              onRenameCommit={onRenameCommit}
+              onRenameCancel={onRenameCancel}
             />
           ))}
         </div>
+      )}
+    </div>
+  );
+}
+
+function ContextMenu({
+  x,
+  y,
+  node,
+  peeps,
+  onClose,
+  onDelete,
+  onRename,
+  onCopyPath,
+}: {
+  x: number;
+  y: number;
+  node: TreeNode;
+  peeps: PeepManifest[];
+  onClose: () => void;
+  onDelete: (node: TreeNode) => void;
+  onRename: (node: TreeNode) => void;
+  onCopyPath: (node: TreeNode) => void;
+}) {
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [confirming, setConfirming] = useState(false);
+  const matchedPeep = node.isDir ? null : findPeepForFile(node.name, peeps);
+
+  // Close on click outside or Escape
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [onClose]);
+
+  const menuItem =
+    "w-full text-left px-2.5 py-1.5 text-[11px] rounded-md flex items-center gap-2 transition-colors";
+
+  return (
+    <div
+      ref={menuRef}
+      className="fixed w-56 modal-glass z-[9999] animate-scale-in p-1"
+      style={{ top: y, left: x }}
+    >
+      {/* Info header */}
+      <div className="px-2.5 py-2 border-b border-border-subtle mb-1">
+        <div className="text-[11px] font-semibold text-primary truncate">
+          {node.name}
+        </div>
+        <div className="text-[10px] text-tertiary mt-1.5 space-y-1">
+          <div className="flex justify-between">
+            <span>Type</span>
+            <span className="text-secondary">{node.isDir ? "Folder" : getFileType(node.name)}</span>
+          </div>
+          {!node.isDir && node.size !== null && (
+            <div className="flex justify-between">
+              <span>Size</span>
+              <span className="text-secondary">{formatSize(node.size)}</span>
+            </div>
+          )}
+          {node.createdAt && (
+            <div className="flex justify-between">
+              <span>Created</span>
+              <span className="text-secondary">{formatDate(node.createdAt)}</span>
+            </div>
+          )}
+          {node.lastModified && (
+            <div className="flex justify-between">
+              <span>Modified</span>
+              <span className="text-secondary">{formatDate(node.lastModified)}</span>
+            </div>
+          )}
+          {matchedPeep && (
+            <div className="flex justify-between">
+              <span>Peep</span>
+              <span className="text-accent font-medium">{matchedPeep.name}</span>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Actions */}
+      <button
+        className={`${menuItem} text-secondary hover:bg-hover hover:text-primary`}
+        onClick={() => onRename(node)}
+      >
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+        </svg>
+        Rename
+      </button>
+
+      <button
+        className={`${menuItem} text-secondary hover:bg-hover hover:text-primary`}
+        onClick={() => onCopyPath(node)}
+      >
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect width="14" height="14" x="8" y="8" rx="2" />
+          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+        </svg>
+        Copy Path
+      </button>
+
+      <div className="border-t border-border-subtle my-1 mx-1" />
+
+      {confirming ? (
+        <div className="px-2.5 py-2">
+          <div className="text-[11px] text-secondary mb-2">
+            Delete{" "}
+            <span className="font-semibold text-primary">{node.name}</span>?
+            {node.isDir && (
+              <span className="text-tertiary"> This will delete all contents.</span>
+            )}
+          </div>
+          <div className="flex gap-1.5">
+            <button
+              className="flex-1 text-[11px] font-medium px-2 py-1 rounded-md bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors"
+              onClick={() => onDelete(node)}
+            >
+              Delete
+            </button>
+            <button
+              className="flex-1 text-[11px] font-medium px-2 py-1 rounded-md bg-elevated text-secondary hover:text-primary transition-colors"
+              onClick={() => setConfirming(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : (
+        <button
+          className={`${menuItem} text-red-400/70 hover:bg-red-500/10 hover:text-red-400`}
+          onClick={() => setConfirming(true)}
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M3 6h18" />
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+          </svg>
+          Delete
+        </button>
       )}
     </div>
   );

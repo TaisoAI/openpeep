@@ -76,13 +76,13 @@ def list_files(root: str = Query(...), path: str = Query("")):
     for item in sorted(target.iterdir(), key=lambda x: (not x.is_dir(), x.name.lower())):
         if item.name.startswith("."):
             continue
+        st = item.stat()
         entry = {
             "name": item.name,
             "path": str(item.relative_to(base)),
             "isDir": item.is_dir(),
-            "size": item.stat().st_size if item.is_file() else None,
+            "size": st.st_size if item.is_file() else None,
         }
-        # Enrich directories with project metadata and dates
         if item.is_dir():
             entry["createdAt"] = _get_folder_created(item)
             entry["lastModified"] = _get_folder_last_modified(item)
@@ -92,6 +92,12 @@ def list_files(root: str = Query(...), path: str = Query("")):
                     entry["project"] = json.loads(pj.read_text())
                 except Exception:
                     pass
+        else:
+            # File dates
+            from datetime import datetime, timezone
+            birth = getattr(st, "st_birthtime", None) or st.st_mtime
+            entry["createdAt"] = datetime.fromtimestamp(birth, tz=timezone.utc).isoformat()
+            entry["lastModified"] = datetime.fromtimestamp(st.st_mtime, tz=timezone.utc).isoformat()
         entries.append(entry)
 
     return {"entries": entries, "path": path, "root": root}
@@ -180,6 +186,42 @@ def update_project_status(payload: dict):
     project_data["status"] = status
     pj_file.write_text(json.dumps(project_data, indent=2))
     return {"saved": True, "status": status}
+
+
+@router.delete("/file")
+def delete_file(path: str = Query(...)):
+    """Delete a file or folder."""
+    file_path = Path(path).expanduser().resolve()
+
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="Path not found")
+
+    import shutil
+    if file_path.is_dir():
+        shutil.rmtree(file_path)
+    else:
+        file_path.unlink()
+
+    return {"deleted": True, "path": str(file_path)}
+
+
+@router.put("/file/rename")
+def rename_file(payload: dict):
+    """Rename a file or folder (same directory)."""
+    old_path = Path(payload["path"]).expanduser().resolve()
+    new_name = payload.get("newName", "").strip()
+
+    if not old_path.exists():
+        raise HTTPException(status_code=404, detail="Path not found")
+    if not new_name or "/" in new_name or "\\" in new_name or ".." in new_name:
+        raise HTTPException(status_code=400, detail="Invalid name")
+
+    new_path = old_path.parent / new_name
+    if new_path.exists():
+        raise HTTPException(status_code=409, detail="A file with that name already exists")
+
+    old_path.rename(new_path)
+    return {"renamed": True, "oldPath": str(old_path), "newPath": str(new_path)}
 
 
 @router.get("/pick-folder")
