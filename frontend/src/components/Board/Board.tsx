@@ -142,7 +142,7 @@ export default function Board({ space, onProjectSelect, hiddenStatuses = [], onP
 
   // Build column list: configured statuses + Uncategorized if there are orphaned projects
   const allColumns = uncategorized.length > 0
-    ? [...space.statuses, "Uncategorized"]
+    ? ["Uncategorized", ...space.statuses]
     : space.statuses;
   const visibleColumns = allColumns.filter(
     (s) => !hiddenStatuses.includes(s)
