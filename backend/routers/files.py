@@ -61,7 +61,13 @@ def _get_folder_last_modified(folder: Path) -> str | None:
 
 
 @router.get("/files")
-def list_files(root: str = Query(...), path: str = Query("")):
+def list_files(
+    root: str = Query(...),
+    path: str = Query(""),
+    showHidden: bool = Query(False),
+    sort: str = Query("name"),
+    sortDir: str = Query(""),
+):
     """List directory contents."""
     base = Path(root).expanduser().resolve()
     target = (base / path).resolve()
@@ -73,8 +79,8 @@ def list_files(root: str = Query(...), path: str = Query("")):
         raise HTTPException(status_code=404, detail="Directory not found")
 
     entries = []
-    for item in sorted(target.iterdir(), key=lambda x: (not x.is_dir(), x.name.lower())):
-        if item.name.startswith("."):
+    for item in target.iterdir():
+        if not showHidden and item.name.startswith("."):
             continue
         entry = {
             "name": item.name,
@@ -82,7 +88,6 @@ def list_files(root: str = Query(...), path: str = Query("")):
             "isDir": item.is_dir(),
             "size": item.stat().st_size if item.is_file() else None,
         }
-        # Enrich directories with project metadata and dates
         if item.is_dir():
             entry["createdAt"] = _get_folder_created(item)
             entry["lastModified"] = _get_folder_last_modified(item)
@@ -94,7 +99,30 @@ def list_files(root: str = Query(...), path: str = Query("")):
                     pass
         entries.append(entry)
 
-    return {"entries": entries, "path": path, "root": root}
+    # Default sort direction: asc for name/type, desc for date/size
+    if not sortDir:
+        sortDir = "desc" if sort in ("modified", "created", "size") else "asc"
+    reverse = sortDir == "desc"
+
+    def sort_key(e):
+        if sort == "modified":
+            return e.get("lastModified") or ""
+        elif sort == "created":
+            return e.get("createdAt") or ""
+        elif sort == "size":
+            return e.get("size") or 0
+        elif sort == "type":
+            name = e["name"]
+            dot = name.rfind(".")
+            return name[dot:].lower() if dot > 0 else ""
+        else:  # name
+            return e["name"].lower()
+
+    # Separate dirs and files, sort each group independently
+    dirs = sorted([e for e in entries if e["isDir"]], key=sort_key, reverse=reverse)
+    files = sorted([e for e in entries if not e["isDir"]], key=sort_key, reverse=reverse)
+
+    return {"entries": dirs + files, "path": path, "root": root}
 
 
 @router.get("/file")
