@@ -179,7 +179,7 @@ export default function Home() {
 
   return (
     <div
-      className="h-screen flex flex-col bg-app"
+      className="h-screen w-screen overflow-hidden flex flex-col bg-app"
       data-theme={theme.style || "macos"}
       data-mode={theme.mode || "dark"}
     >
@@ -272,24 +272,22 @@ export default function Home() {
 
         {/* Toolbar actions */}
         <div className="flex items-center gap-1.5 ml-1">
-          <button
-            className="h-8 px-3 text-xs font-medium text-secondary hover:text-primary pill-glass"
-            onClick={() => setPeepHubOpen(true)}
-          >
-            Peeps
-          </button>
           <SettingsButton
-            statuses={displaySpace?.statuses || []}
+            statuses={[
+              ...(displaySpace?.statuses || []),
+              ...("Uncategorized" in projectCounts ? ["Uncategorized"] : []),
+            ]}
             hiddenStatuses={hiddenStatuses}
             onHiddenStatusesChange={handleHiddenStatusesChange}
             projectCounts={projectCounts}
             onSettingsOpen={() => setSettingsOpen(true)}
+            onPeepsOpen={() => setPeepHubOpen(true)}
           />
         </div>
       </header>
 
       {/* Main content */}
-      <main className="flex-1 flex min-h-0">
+      <main className="flex-1 flex min-h-0 min-w-0 overflow-hidden">
         {view === "board" && displaySpace && (
           <Board
             space={displaySpace}

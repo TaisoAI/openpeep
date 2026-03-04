@@ -50,7 +50,7 @@ export default function SpaceSwitcher({
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 mt-2 w-56 modal-glass z-50 overflow-hidden animate-scale-in" style={{ background: "#1c1c24" }}>
+        <div className="absolute top-full left-0 mt-2 w-56 modal-glass z-50 overflow-hidden animate-scale-in" style={{ background: "#2c2c2e" }}>
           <div className="p-1">
             {spaces.map((space) => (
               <button

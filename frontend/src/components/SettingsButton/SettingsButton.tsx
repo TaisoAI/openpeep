@@ -7,6 +7,7 @@ interface SettingsButtonProps {
   onHiddenStatusesChange: (hidden: string[]) => void;
   projectCounts: Record<string, number>;
   onSettingsOpen: () => void;
+  onPeepsOpen: () => void;
 }
 
 export default function SettingsButton({
@@ -15,6 +16,7 @@ export default function SettingsButton({
   onHiddenStatusesChange,
   projectCounts,
   onSettingsOpen,
+  onPeepsOpen,
 }: SettingsButtonProps) {
   const [open, setOpen] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
@@ -91,7 +93,7 @@ export default function SettingsButton({
           <div
             ref={dropRef}
             className="fixed w-52 modal-glass z-[9999] animate-scale-in"
-            style={{ top: pos.top, right: pos.right, background: "#1c1c24" }}
+            style={{ top: pos.top, right: pos.right, background: "#2c2c2e" }}
           >
             {/* Column visibility */}
             {statuses.length > 0 && (
@@ -150,9 +152,33 @@ export default function SettingsButton({
               </>
             )}
 
-            {/* Open full settings */}
+            {/* Actions */}
             <div className="border-t border-border mx-2" />
             <div className="p-1">
+              <button
+                className="w-full text-left px-2.5 py-2 text-xs rounded-lg flex items-center gap-2.5 text-secondary hover:bg-hover hover:text-primary transition-colors"
+                onClick={() => {
+                  onPeepsOpen();
+                  setOpen(false);
+                }}
+              >
+                <svg
+                  width="13"
+                  height="13"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="3" y="3" width="7" height="7" />
+                  <rect x="14" y="3" width="7" height="7" />
+                  <rect x="14" y="14" width="7" height="7" />
+                  <rect x="3" y="14" width="7" height="7" />
+                </svg>
+                <span className="font-medium">Peeps...</span>
+              </button>
               <button
                 className="w-full text-left px-2.5 py-2 text-xs rounded-lg flex items-center gap-2.5 text-secondary hover:bg-hover hover:text-primary transition-colors"
                 onClick={() => {

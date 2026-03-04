@@ -11,6 +11,9 @@ frontend/.next/
 # OS
 .DS_Store
 
+# Git worktrees
+.worktrees/
+
 # Config (user-specific)
 openpeep.config.json
 

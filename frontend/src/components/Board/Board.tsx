@@ -49,15 +49,23 @@ export default function Board({ space, onProjectSelect, hiddenStatuses = [], onP
     setLoading(false);
   }
 
-  // Report project counts to parent for the space switcher
+  // Compute uncategorized projects (status doesn't match any column)
+  const uncategorized = projects.filter(
+    (p) => !space.statuses.includes(p.status)
+  );
+
+  // Report project counts to parent for the settings dropdown
   useEffect(() => {
     if (!onProjectCountsChange || projects.length === 0) return;
     const counts: Record<string, number> = {};
     for (const status of space.statuses) {
       counts[status] = projects.filter((p) => p.status === status).length;
     }
+    if (uncategorized.length > 0) {
+      counts["Uncategorized"] = uncategorized.length;
+    }
     onProjectCountsChange(counts);
-  }, [projects, space.statuses, onProjectCountsChange]);
+  }, [projects, space.statuses, uncategorized.length, onProjectCountsChange]);
 
   const handleDragStart = useCallback(
     (e: React.DragEvent, project: ProjectEntry) => {
@@ -132,13 +140,17 @@ export default function Board({ space, onProjectSelect, hiddenStatuses = [], onP
     [dragItem]
   );
 
-  const visibleColumns = space.statuses.filter(
+  // Build column list: configured statuses + Uncategorized if there are orphaned projects
+  const allColumns = uncategorized.length > 0
+    ? [...space.statuses, "Uncategorized"]
+    : space.statuses;
+  const visibleColumns = allColumns.filter(
     (s) => !hiddenStatuses.includes(s)
   );
   const hasProjects = projects.length > 0;
 
   return (
-    <div className="flex-1 flex flex-col min-h-0">
+    <div className="flex-1 flex flex-col min-h-0 min-w-0 overflow-hidden">
       {/* Board content */}
       <div className="flex-1 flex min-h-0">
         {loading ? (
@@ -164,9 +176,12 @@ export default function Board({ space, onProjectSelect, hiddenStatuses = [], onP
             </div>
           </div>
         ) : (
-          <div className="flex gap-3 p-4 pt-2 overflow-x-auto flex-1">
+          <div className="overflow-auto flex-1 p-4 pt-2">
+            <div className="flex gap-3 items-stretch min-h-full">
             {visibleColumns.map((status, i) => {
-              const columnProjects = projects.filter((p) => p.status === status);
+              const columnProjects = status === "Uncategorized"
+                ? uncategorized
+                : projects.filter((p) => p.status === status);
               const isOver = dropTarget === status;
               const isDragSource = dragItem?.status === status;
 
@@ -241,6 +256,7 @@ export default function Board({ space, onProjectSelect, hiddenStatuses = [], onP
                 </div>
               );
             })}
+            </div>
           </div>
         )}
       </div>

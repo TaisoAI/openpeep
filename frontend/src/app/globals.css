@@ -51,103 +51,105 @@ code, pre, .font-mono {
 }
 
 /* ============================================
-   macOS — Sequoia vibrancy
-   Frosted glass, generous rounding, soft depth
+   macOS 26 Tahoe — Liquid Glass
+   Translucent glass with clear elevation stepping
+   Based on Apple HIG system colors + WWDC25 specs
    ============================================ */
 [data-theme="macos"] {
-  --bg-app: #1a1a1e;
-  --bg-toolbar: rgba(30, 30, 36, 0.55);
-  --bg-surface: rgba(28, 28, 34, 0.45);
-  --bg-sidebar: rgba(24, 24, 30, 0.40);
-  --bg-elevated: rgba(45, 45, 56, 0.50);
-  --bg-hover: rgba(65, 65, 78, 0.40);
-  --bg-card: rgba(48, 48, 62, 0.35);
-  --bg-card-hover: rgba(62, 62, 78, 0.42);
-  --bg-modal: #1c1c24;
-  --bg-input: rgba(18, 18, 24, 0.50);
-  --border: rgba(255, 255, 255, 0.10);
-  --border-subtle: rgba(255, 255, 255, 0.06);
+  /* Apple dark mode elevation ramp */
+  --bg-app: #000000;
+  --bg-toolbar: rgba(44, 44, 46, 0.72);
+  --bg-surface: #1c1c1e;
+  --bg-sidebar: rgba(28, 28, 30, 0.80);
+  --bg-elevated: #3a3a3c;
+  --bg-hover: rgba(99, 99, 102, 0.32);
+  --bg-card: rgba(255, 255, 255, 0.08);
+  --bg-card-hover: rgba(255, 255, 255, 0.12);
+  --bg-modal: #2c2c2e;
+  --bg-input: #1c1c1e;
+  /* Apple separator + border colors */
+  --border: #38383a;
+  --border-subtle: rgba(255, 255, 255, 0.10);
+  /* Apple system label colors */
   --text-primary: #f5f5f7;
-  --text-secondary: #a0a0a8;
-  --text-tertiary: #636366;
-  --radius: 20px;
-  --radius-sm: 14px;
-  --radius-xs: 10px;
+  --text-secondary: #ebebf5a0;
+  --text-tertiary: #ebebf54d;
+  /* Generous Tahoe rounding */
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
   --radius-pill: 9999px;
 }
 
 [data-theme="macos"] .toolbar-glass {
-  backdrop-filter: saturate(200%) blur(30px);
-  -webkit-backdrop-filter: saturate(200%) blur(30px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.15);
   background: var(--bg-toolbar);
 }
 
 [data-theme="macos"] .sidebar-glass {
-  backdrop-filter: saturate(180%) blur(24px);
-  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
   background: var(--bg-sidebar);
 }
 
 [data-theme="macos"] .modal-glass {
-  backdrop-filter: saturate(200%) blur(50px);
-  -webkit-backdrop-filter: saturate(200%) blur(50px);
+  backdrop-filter: saturate(180%) blur(40px);
+  -webkit-backdrop-filter: saturate(180%) blur(40px);
   background: var(--bg-modal);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 0.5px solid rgba(255, 255, 255, 0.20);
   border-radius: var(--radius);
   box-shadow:
-    0 32px 100px rgba(0, 0, 0, 0.55),
-    0 0 0 0.5px rgba(255, 255, 255, 0.15) inset,
-    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+    0 24px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 0.5px rgba(255, 255, 255, 0.12) inset,
+    0 1px 0 rgba(255, 255, 255, 0.06) inset;
 }
 
 [data-theme="macos"] .card-glass {
   background: var(--bg-card);
-  backdrop-filter: saturate(160%) blur(12px);
-  -webkit-backdrop-filter: saturate(160%) blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 0.5px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-sm);
   box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.15),
+    0 1px 3px rgba(0, 0, 0, 0.20),
     0 0 0 0.5px rgba(255, 255, 255, 0.06) inset;
   transition: all 0.2s ease;
 }
 
 [data-theme="macos"] .card-glass:hover {
   background: var(--bg-card-hover);
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.18);
   box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.3),
     0 0 0 0.5px rgba(255, 255, 255, 0.10) inset;
   transform: translateY(-1px);
 }
 
 /* Liquid glass pill controls — macOS only */
 [data-theme="macos"] .pill-glass {
-  backdrop-filter: saturate(180%) blur(16px);
-  -webkit-backdrop-filter: saturate(180%) blur(16px);
-  background: rgba(45, 45, 56, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  background: rgba(120, 120, 128, 0.24);
+  border: 0.5px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--radius-pill);
   box-shadow:
-    0 1px 4px rgba(0, 0, 0, 0.15),
     0 0 0 0.5px rgba(255, 255, 255, 0.06) inset;
   transition: all 0.2s ease;
 }
 
 [data-theme="macos"] .pill-glass:hover {
-  background: rgba(58, 58, 72, 0.50);
-  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(120, 120, 128, 0.36);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 /* Column glass panels — macOS only */
 [data-theme="macos"] .column-glass {
-  backdrop-filter: saturate(160%) blur(16px);
-  -webkit-backdrop-filter: saturate(160%) blur(16px);
-  background: rgba(30, 30, 40, 0.30);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: saturate(160%) blur(12px);
+  -webkit-backdrop-filter: saturate(160%) blur(12px);
+  background: rgba(28, 28, 30, 0.65);
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 /* macOS light */

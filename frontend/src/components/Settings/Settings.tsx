@@ -47,6 +47,11 @@ export default function Settings({
   const [spaces, setSpaces] = useState<Space[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [dirty, setDirty] = useState(false);
+  const [addingStatusFor, setAddingStatusFor] = useState<number | null>(null);
+  const [newStatusName, setNewStatusName] = useState("");
+  const newStatusRef = useRef<HTMLInputElement>(null);
+  const [dragStatus, setDragStatus] = useState<{ spaceIndex: number; statusIndex: number } | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (open) {
@@ -115,10 +120,6 @@ export default function Settings({
     setSpaces(updated);
     setDirty(true);
   }
-
-  const [addingStatusFor, setAddingStatusFor] = useState<number | null>(null);
-  const [newStatusName, setNewStatusName] = useState("");
-  const newStatusRef = useRef<HTMLInputElement>(null);
 
   function addStatus(index: number) {
     setAddingStatusFor(index);
@@ -440,15 +441,68 @@ export default function Settings({
                             + Add
                           </button>
                         </div>
-                        <div className="flex flex-wrap gap-1">
+                        <div className="space-y-0.5">
                           {space.statuses.map((status, si) => (
-                            <span
-                              key={si}
-                              className="flex items-center gap-1 bg-elevated text-[11px] text-secondary px-2 py-1 rounded-lg border border-border-subtle group"
+                            <div
+                              key={status}
+                              draggable
+                              onDragStart={(e) => {
+                                setDragStatus({ spaceIndex: i, statusIndex: si });
+                                e.dataTransfer.effectAllowed = "move";
+                                if (e.currentTarget instanceof HTMLElement) {
+                                  e.currentTarget.style.opacity = "0.4";
+                                }
+                              }}
+                              onDragEnd={(e) => {
+                                if (e.currentTarget instanceof HTMLElement) {
+                                  e.currentTarget.style.opacity = "1";
+                                }
+                                setDragStatus(null);
+                                setDragOverIndex(null);
+                              }}
+                              onDragOver={(e) => {
+                                e.preventDefault();
+                                e.dataTransfer.dropEffect = "move";
+                                if (dragOverIndex !== si) setDragOverIndex(si);
+                              }}
+                              onDrop={(e) => {
+                                e.preventDefault();
+                                if (dragStatus && dragStatus.spaceIndex === i && dragStatus.statusIndex !== si) {
+                                  const updated = [...spaces];
+                                  const statuses = [...updated[i].statuses];
+                                  const [moved] = statuses.splice(dragStatus.statusIndex, 1);
+                                  statuses.splice(si, 0, moved);
+                                  updated[i] = { ...updated[i], statuses };
+                                  setSpaces(updated);
+                                  setDirty(true);
+                                }
+                                setDragStatus(null);
+                                setDragOverIndex(null);
+                              }}
+                              className={`flex items-center gap-2 text-[11px] text-secondary px-2.5 py-1.5 rounded-lg border transition-all cursor-grab active:cursor-grabbing group ${
+                                dragStatus && dragOverIndex === si && dragStatus.statusIndex !== si
+                                  ? "border-accent/50 bg-accent/8"
+                                  : "bg-elevated border-border-subtle"
+                              }`}
                             >
-                              {status}
+                              {/* Drag handle */}
+                              <svg
+                                width="8"
+                                height="10"
+                                viewBox="0 0 8 10"
+                                fill="currentColor"
+                                className="text-tertiary shrink-0"
+                              >
+                                <circle cx="2" cy="2" r="1" />
+                                <circle cx="6" cy="2" r="1" />
+                                <circle cx="2" cy="5" r="1" />
+                                <circle cx="6" cy="5" r="1" />
+                                <circle cx="2" cy="8" r="1" />
+                                <circle cx="6" cy="8" r="1" />
+                              </svg>
+                              <span className="flex-1">{status}</span>
                               <button
-                                className="text-tertiary hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all ml-0.5"
+                                className="text-tertiary hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"
                                 onClick={() => removeStatus(i, si)}
                               >
                                 <svg
@@ -462,7 +516,7 @@ export default function Settings({
                                   <path d="M2 2l8 8M10 2l-8 8" />
                                 </svg>
                               </button>
-                            </span>
+                            </div>
                           ))}
                           {addingStatusFor === i && (
                             <input
