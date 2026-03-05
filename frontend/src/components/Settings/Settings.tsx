@@ -10,6 +10,12 @@ interface SettingsProps {
   onThemeChanged: (theme: ThemeConfig) => void;
   showHiddenFiles: boolean;
   onShowHiddenFilesChanged: (show: boolean) => void;
+  devMode: boolean;
+  onDevModeChanged: (devMode: boolean) => void;
+  peephubUrl: string;
+  onPeephubUrlChanged: (url: string) => void;
+  peephubApiKey: string;
+  onPeephubApiKeyChanged: (key: string) => void;
 }
 
 type Tab = "general" | "spaces";
@@ -22,13 +28,21 @@ const OS_STYLES: { id: ThemeConfig["style"]; label: string; desc: string }[] = [
 
 const ACCENT_COLORS = [
   { name: "amber", color: "#f59e0b" },
-  { name: "blue", color: "#3b82f6" },
-  { name: "purple", color: "#8b5cf6" },
-  { name: "pink", color: "#ec4899" },
-  { name: "red", color: "#ef4444" },
   { name: "orange", color: "#f97316" },
-  { name: "green", color: "#22c55e" },
+  { name: "red", color: "#ef4444" },
+  { name: "rose", color: "#f43f5e" },
+  { name: "pink", color: "#ec4899" },
+  { name: "fuchsia", color: "#d946ef" },
+  { name: "purple", color: "#8b5cf6" },
+  { name: "indigo", color: "#6366f1" },
+  { name: "blue", color: "#3b82f6" },
+  { name: "sky", color: "#0ea5e9" },
+  { name: "cyan", color: "#06b6d4" },
   { name: "teal", color: "#14b8a6" },
+  { name: "emerald", color: "#10b981" },
+  { name: "green", color: "#22c55e" },
+  { name: "lime", color: "#84cc16" },
+  { name: "yellow", color: "#eab308" },
 ];
 
 const DEFAULT_STATUSES = [
@@ -47,6 +61,12 @@ export default function Settings({
   onThemeChanged,
   showHiddenFiles,
   onShowHiddenFilesChanged,
+  devMode,
+  onDevModeChanged,
+  peephubUrl,
+  onPeephubUrlChanged,
+  peephubApiKey,
+  onPeephubApiKeyChanged,
 }: SettingsProps) {
   const [tab, setTab] = useState<Tab>("general");
   const [spaces, setSpaces] = useState<Space[]>([]);
@@ -319,6 +339,78 @@ export default function Settings({
                   ))}
                 </div>
               </div>
+
+              <div>
+                <h3 className="text-[11px] font-semibold text-tertiary uppercase tracking-wider mb-2">
+                  Developer
+                </h3>
+                <div className="flex items-center gap-3 bg-surface border border-border-subtle rounded-xl p-3">
+                  <span className="text-[13px] text-primary flex-1 font-medium">
+                    Dev Mode
+                  </span>
+                  <button
+                    className={`w-9 h-5 rounded-full transition-all relative ${
+                      devMode
+                        ? "bg-accent"
+                        : "bg-elevated border border-border-subtle"
+                    }`}
+                    onClick={async () => {
+                      const next = !devMode;
+                      await api.updateSources({ devMode: next });
+                      onDevModeChanged(next);
+                    }}
+                  >
+                    <span
+                      className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-all ${
+                        devMode ? "left-[18px]" : "left-0.5"
+                      }`}
+                    />
+                  </button>
+                </div>
+                {devMode && (<>
+                  <div className="flex items-center gap-3 bg-surface border border-border-subtle rounded-xl p-3 mt-2">
+                    <span className="text-[13px] text-primary flex-1 font-medium">
+                      PeepHub URL
+                    </span>
+                    <input
+                      className="w-64 bg-elevated border border-border-subtle rounded-lg px-2.5 py-1.5 text-[12px] text-primary font-mono outline-none focus:border-accent/50 transition-colors"
+                      value={peephubUrl}
+                      onChange={(e) => onPeephubUrlChanged(e.target.value)}
+                      onBlur={async () => {
+                        await api.updateSources({ peephub: { url: peephubUrl, apiKey: peephubApiKey } });
+                      }}
+                      onKeyDown={async (e) => {
+                        if (e.key === "Enter") {
+                          await api.updateSources({ peephub: { url: peephubUrl, apiKey: peephubApiKey } });
+                          (e.target as HTMLInputElement).blur();
+                        }
+                      }}
+                      placeholder="https://api.peephub.ai"
+                    />
+                  </div>
+                  <div className="flex items-center gap-3 bg-surface border border-border-subtle rounded-xl p-3 mt-2">
+                    <span className="text-[13px] text-primary flex-1 font-medium">
+                      API Key
+                    </span>
+                    <input
+                      type="password"
+                      className="w-64 bg-elevated border border-border-subtle rounded-lg px-2.5 py-1.5 text-[12px] text-primary font-mono outline-none focus:border-accent/50 transition-colors"
+                      value={peephubApiKey}
+                      onChange={(e) => onPeephubApiKeyChanged(e.target.value)}
+                      onBlur={async () => {
+                        await api.updateSources({ peephub: { url: peephubUrl, apiKey: peephubApiKey } });
+                      }}
+                      onKeyDown={async (e) => {
+                        if (e.key === "Enter") {
+                          await api.updateSources({ peephub: { url: peephubUrl, apiKey: peephubApiKey } });
+                          (e.target as HTMLInputElement).blur();
+                        }
+                      }}
+                      placeholder="Enter API key"
+                    />
+                  </div>
+                </>)}
+              </div>
             </div>
           )}
 
@@ -385,11 +477,11 @@ export default function Settings({
                         <label className="text-[10px] text-tertiary uppercase tracking-wider font-semibold">
                           Accent Color
                         </label>
-                        <div className="flex gap-1.5 mt-1.5">
+                        <div className="flex flex-wrap gap-1.5 mt-1.5">
                           {ACCENT_COLORS.map((ac) => (
                             <button
                               key={ac.name}
-                              className={`w-6 h-6 rounded-full transition-all ${
+                              className={`w-5 h-5 rounded-full transition-all ${
                                 space.accentColor === ac.name
                                   ? "ring-2 ring-white ring-offset-2 ring-offset-surface scale-110"
                                   : "hover:scale-110"

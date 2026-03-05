@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 import { api, Space, FileData, PeepManifest, ThemeConfig, SessionState } from "@/utils/api";
 import { resolvePeep } from "@/utils/peep-resolver";
 import SpaceSwitcher from "@/components/SpaceSwitcher/SpaceSwitcher";
@@ -9,9 +10,28 @@ import PreviewPane from "@/components/PreviewPane/PreviewPane";
 import PeepHub from "@/components/PeepHub/PeepHub";
 import Settings from "@/components/Settings/Settings";
 import SettingsButton from "@/components/SettingsButton/SettingsButton";
-import { Home as HomeIcon } from "lucide-react";
+import { Home as HomeIcon, Copy, FolderOpen } from "lucide-react";
 
 type View = "board" | "browse";
+
+const ACCENT_MAP: Record<string, { color: string; hover: string; soft: string }> = {
+  amber:   { color: "#f59e0b", hover: "#fbbf24", soft: "#f59e0b18" },
+  orange:  { color: "#f97316", hover: "#fb923c", soft: "#f9731618" },
+  red:     { color: "#ef4444", hover: "#f87171", soft: "#ef444418" },
+  rose:    { color: "#f43f5e", hover: "#fb7185", soft: "#f43f5e18" },
+  pink:    { color: "#ec4899", hover: "#f472b6", soft: "#ec489918" },
+  fuchsia: { color: "#d946ef", hover: "#e879f9", soft: "#d946ef18" },
+  purple:  { color: "#8b5cf6", hover: "#a78bfa", soft: "#8b5cf618" },
+  indigo:  { color: "#6366f1", hover: "#818cf8", soft: "#6366f118" },
+  blue:    { color: "#3b82f6", hover: "#60a5fa", soft: "#3b82f618" },
+  sky:     { color: "#0ea5e9", hover: "#38bdf8", soft: "#0ea5e918" },
+  cyan:    { color: "#06b6d4", hover: "#22d3ee", soft: "#06b6d418" },
+  teal:    { color: "#14b8a6", hover: "#2dd4bf", soft: "#14b8a618" },
+  emerald: { color: "#10b981", hover: "#34d399", soft: "#10b98118" },
+  green:   { color: "#22c55e", hover: "#4ade80", soft: "#22c55e18" },
+  lime:    { color: "#84cc16", hover: "#a3e635", soft: "#84cc1618" },
+  yellow:  { color: "#eab308", hover: "#facc15", soft: "#eab30818" },
+};
 
 function formatBreadcrumb(folderName: string): string {
   const withoutDate = folderName.replace(/^\d{4}-\d{2}-\d{2}_/, "");
@@ -32,6 +52,9 @@ export default function Home() {
   const [showHiddenFiles, setShowHiddenFiles] = useState(false);
   const [hiddenStatuses, setHiddenStatuses] = useState<string[]>([]);
   const [projectCounts, setProjectCounts] = useState<Record<string, number>>({});
+  const [devMode, setDevMode] = useState(false);
+  const [peephubUrl, setPeephubUrl] = useState("https://api.peephub.ai");
+  const [peephubApiKey, setPeephubApiKey] = useState("");
 
   // Track which view the user was on before drilling into a project
   const viewBeforeBrowse = useRef<View>("board");
@@ -44,12 +67,18 @@ export default function Home() {
   const [expandedPaths, setExpandedPaths] = useState<string[]>([]);
   const [sidebarWidth, setSidebarWidth] = useState(240);
   const resizing = useRef(false);
+  const [breadcrumbMenu, setBreadcrumbMenu] = useState<{ x: number; y: number } | null>(null);
+  const [projectInfo, setProjectInfo] = useState<Record<string, unknown> | null>(null);
+  const breadcrumbMenuRef = useRef<HTMLDivElement>(null);
 
   const loadSources = useCallback(async () => {
     const data = await api.getSources();
     setSpaces(data.spaces);
     setTheme(data.theme || { mode: "dark", style: "macos" });
     setShowHiddenFiles(data.showHiddenFiles || false);
+    setDevMode(data.devMode || false);
+    setPeephubUrl(data.peephub?.url || "https://api.peephub.ai");
+    setPeephubApiKey(data.peephub?.apiKey || "");
     return data.spaces;
   }, []);
 
@@ -121,22 +150,46 @@ export default function Home() {
     });
   }, [loadSources]);
 
-  // Apply theme attributes to document root so CSS selectors work
+  // Apply theme attributes to document root so CSS selectors work.
+  // Also cache to localStorage so the inline FOUC-prevention script in
+  // index.html can apply the right theme before React mounts.
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme.style || "macos");
+    const style = theme.style || "macos";
+    document.documentElement.setAttribute("data-theme", style);
+    localStorage.setItem("openpeep-theme-style", style);
+
+    const setMode = (resolved: string) => {
+      document.documentElement.setAttribute("data-mode", resolved);
+      document.documentElement.style.colorScheme = resolved;
+      localStorage.setItem("openpeep-theme-mode", resolved);
+    };
 
     if (theme.mode === "auto") {
       const mq = window.matchMedia("(prefers-color-scheme: dark)");
-      const apply = () => {
-        document.documentElement.setAttribute("data-mode", mq.matches ? "dark" : "light");
-      };
+      const apply = () => setMode(mq.matches ? "dark" : "light");
       apply();
       mq.addEventListener("change", apply);
       return () => mq.removeEventListener("change", apply);
     } else {
-      document.documentElement.setAttribute("data-mode", theme.mode || "dark");
+      setMode(theme.mode || "dark");
     }
   }, [theme]);
+
+  // Apply space accent color to CSS variables
+  useEffect(() => {
+    const root = document.documentElement;
+    const ac = activeSpace?.accentColor && ACCENT_MAP[activeSpace.accentColor];
+    if (ac) {
+      root.style.setProperty("--accent", ac.color);
+      root.style.setProperty("--accent-hover", ac.hover);
+      root.style.setProperty("--accent-soft", ac.soft);
+    } else {
+      // Reset to theme defaults
+      root.style.removeProperty("--accent");
+      root.style.removeProperty("--accent-hover");
+      root.style.removeProperty("--accent-soft");
+    }
+  }, [activeSpace?.accentColor]);
 
   const openFile = useCallback(
     async (fullPath: string) => {
@@ -191,6 +244,43 @@ export default function Home() {
     setView("browse");
   };
 
+  // Load project.json info when browseRoot changes
+  useEffect(() => {
+    if (!browseRoot) { setProjectInfo(null); return; }
+    api.readFile(`${browseRoot}/project.json`).then((f) => {
+      try { setProjectInfo(JSON.parse(f.content || "{}")); } catch { setProjectInfo(null); }
+    }).catch(() => setProjectInfo(null));
+  }, [browseRoot]);
+
+  const handleBreadcrumbContext = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    const x = Math.min(e.clientX, window.innerWidth - 240);
+    const y = Math.min(e.clientY, window.innerHeight - 200);
+    setBreadcrumbMenu({ x, y });
+  }, []);
+
+  const copyBrowsePath = useCallback(() => {
+    if (browseRoot) navigator.clipboard.writeText(browseRoot).catch(() => {});
+    setBreadcrumbMenu(null);
+  }, [browseRoot]);
+
+  // Close breadcrumb menu on click outside / Escape
+  useEffect(() => {
+    if (!breadcrumbMenu) return;
+    const handleClick = (e: MouseEvent) => {
+      if (breadcrumbMenuRef.current && !breadcrumbMenuRef.current.contains(e.target as Node)) {
+        setBreadcrumbMenu(null);
+      }
+    };
+    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") setBreadcrumbMenu(null); };
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [breadcrumbMenu]);
+
   const handleSpacesChanged = async () => {
     const newSpaces = await loadSources();
     if (activeSpace) {
@@ -223,11 +313,9 @@ export default function Home() {
   return (
     <div
       className="h-screen w-screen overflow-hidden flex flex-col bg-app"
-      data-theme={theme.style || "macos"}
-      data-mode={theme.mode || "dark"}
     >
       {/* Toolbar */}
-      <header className="toolbar-glass flex items-center gap-2 px-3 h-12 shrink-0 relative z-20">
+      <header className="toolbar-glass flex items-center gap-2 px-3 h-12 shrink-0 relative z-20 toolbar-accent">
         {/* Logo / Home */}
         {theme.showLogo !== false && (
           <button
@@ -247,7 +335,16 @@ export default function Home() {
         <SpaceSwitcher
           spaces={spaces}
           activeSpace={activeSpace}
-          onSelect={setActiveSpace}
+          onSelect={(space) => {
+            setActiveSpace(space);
+            // Reset browse state when switching workspaces
+            setBrowseRoot("");
+            setSelectedFile(null);
+            setActivePeep(null);
+            setSelectedPath("");
+            setExpandedPaths([]);
+            setView("board");
+          }}
         />
 
         {/* Breadcrumb */}
@@ -261,7 +358,10 @@ export default function Home() {
               <HomeIcon size={14} />
             </button>
             <span className="text-border-subtle">/</span>
-            <span className="text-secondary font-medium truncate max-w-[200px]">
+            <span
+              className="text-secondary font-medium truncate max-w-[200px] cursor-default"
+              onContextMenu={handleBreadcrumbContext}
+            >
               {formatBreadcrumb(browseRoot.split("/").pop() || "")}
             </span>
             {selectedFile && (
@@ -403,7 +503,69 @@ export default function Home() {
         onThemeChanged={setTheme}
         showHiddenFiles={showHiddenFiles}
         onShowHiddenFilesChanged={setShowHiddenFiles}
+        devMode={devMode}
+        onDevModeChanged={setDevMode}
+        peephubUrl={peephubUrl}
+        onPeephubUrlChanged={setPeephubUrl}
+        peephubApiKey={peephubApiKey}
+        onPeephubApiKeyChanged={setPeephubApiKey}
       />
+
+      {/* Breadcrumb context menu */}
+      {breadcrumbMenu && createPortal(
+        <div
+          ref={breadcrumbMenuRef}
+          className="fixed w-56 modal-glass z-[9999] animate-scale-in p-1"
+          style={{ top: breadcrumbMenu.y, left: breadcrumbMenu.x }}
+        >
+          {/* Project info header */}
+          <div className="px-2.5 py-2 border-b border-border-subtle mb-1">
+            <div className="flex items-center gap-1.5 text-[11px] font-semibold text-primary truncate">
+              <FolderOpen size={12} className="text-accent shrink-0" />
+              {formatBreadcrumb(browseRoot.split("/").pop() || "")}
+            </div>
+            {projectInfo && (
+              <div className="text-[10px] text-tertiary mt-1.5 space-y-1">
+                {typeof projectInfo.description === "string" && (
+                  <div className="text-secondary leading-relaxed line-clamp-2">
+                    {projectInfo.description}
+                  </div>
+                )}
+                {typeof projectInfo.type === "string" && (
+                  <div className="flex justify-between">
+                    <span>Type</span>
+                    <span className="text-secondary">{projectInfo.type}</span>
+                  </div>
+                )}
+                {typeof projectInfo.status === "string" && (
+                  <div className="flex justify-between">
+                    <span>Status</span>
+                    <span className="text-accent font-medium">{projectInfo.status}</span>
+                  </div>
+                )}
+              </div>
+            )}
+            <div className="text-[10px] text-tertiary mt-1.5">
+              <div className="flex justify-between">
+                <span>Path</span>
+                <span className="text-secondary truncate max-w-[140px] ml-2" title={browseRoot}>
+                  {browseRoot.split("/").slice(-2).join("/")}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <button
+            className="w-full text-left px-2.5 py-1.5 text-[11px] rounded-md flex items-center gap-2 transition-colors text-secondary hover:bg-hover hover:text-primary"
+            onClick={copyBrowsePath}
+          >
+            <Copy size={12} />
+            Copy Path
+          </button>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }

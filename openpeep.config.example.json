@@ -12,7 +12,9 @@
     "overrides": []
   },
   "peepSettings": {},
+  "devMode": false,
   "peephub": {
-    "url": "https://api.peephub.ai"
+    "url": "https://api.peephub.ai",
+    "apiKey": ""
   }
 }

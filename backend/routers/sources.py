@@ -15,6 +15,8 @@ def get_sources():
         ]),
         "theme": config.get("theme", {"mode": "dark", "style": "macos"}),
         "showHiddenFiles": config.get("showHiddenFiles", False),
+        "devMode": config.get("devMode", False),
+        "peephub": config.get("peephub", {"url": "https://api.peephub.ai"}),
     }
 
 
@@ -30,6 +32,10 @@ def update_sources(payload: dict):
         config["theme"] = payload["theme"]
     if "showHiddenFiles" in payload:
         config["showHiddenFiles"] = payload["showHiddenFiles"]
+    if "devMode" in payload:
+        config["devMode"] = payload["devMode"]
+    if "peephub" in payload:
+        config["peephub"] = payload["peephub"]
     save_config(config)
     return {"saved": True}
 

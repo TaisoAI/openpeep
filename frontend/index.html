@@ -12,6 +12,16 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <!-- Prevent flash of wrong theme before React mounts -->
+    <script>
+      (function() {
+        var style = localStorage.getItem('openpeep-theme-style') || 'macos';
+        var mode = localStorage.getItem('openpeep-theme-mode') || 'dark';
+        document.documentElement.setAttribute('data-theme', style);
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.style.colorScheme = mode;
+      })();
+    </script>
   </head>
   <body class="antialiased" style="font-family: 'DM Sans', sans-serif">
     <div id="root"></div>

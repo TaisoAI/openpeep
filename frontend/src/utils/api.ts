@@ -20,6 +20,8 @@ export const api = {
       defaultStatuses: string[];
       theme: ThemeConfig;
       showHiddenFiles: boolean;
+      devMode: boolean;
+      peephub: { url: string; apiKey?: string };
     }>("/sources"),
 
   updateSources: (payload: {
@@ -27,6 +29,8 @@ export const api = {
     defaultStatuses?: string[];
     theme?: ThemeConfig;
     showHiddenFiles?: boolean;
+    devMode?: boolean;
+    peephub?: { url: string; apiKey?: string };
   }) =>
     fetchJSON<{ saved: boolean }>("/sources", {
       method: "PUT",
@@ -87,6 +91,26 @@ export const api = {
   uninstallPeep: (peepId: string) =>
     fetchJSON<{ uninstalled: boolean }>(`/peeps/${peepId}`, {
       method: "DELETE",
+    }),
+
+  browsePeepHub: (params?: { q?: string; category?: string; sort?: string; page?: number; limit?: number }) => {
+    const sp = new URLSearchParams();
+    if (params?.q) sp.set("q", params.q);
+    if (params?.category) sp.set("category", params.category);
+    if (params?.sort) sp.set("sort", params.sort);
+    if (params?.page) sp.set("page", String(params.page));
+    if (params?.limit) sp.set("limit", String(params.limit));
+    const qs = sp.toString();
+    return fetchJSON<PeepHubBrowseResponse>(`/peephub/browse${qs ? `?${qs}` : ""}`);
+  },
+
+  getPeepSamples: (peepId: string) =>
+    fetchJSON<{ files: { name: string; content: string | null; binary?: boolean }[]; hasScreenshot: boolean }>(`/peep-samples/${peepId}`),
+
+  publishPeep: (peepPath: string, category?: string, tags?: string[]) =>
+    fetchJSON<{ peep: Record<string, unknown>; version: Record<string, unknown> }>("/peeps/publish", {
+      method: "POST",
+      body: JSON.stringify({ peepPath, category: category || "viewer", tags: tags || [] }),
     }),
 
   // Session
@@ -170,4 +194,28 @@ export interface PeepManifest {
   settings?: Record<string, unknown>;
   _path?: string;
   _tier?: "builtin" | "installed" | "project";
+}
+
+export interface PeepHubEntry {
+  id: string;
+  slug: string;
+  name: string;
+  description: string;
+  category: string;
+  iconUrl?: string;
+  screenshotUrl?: string;
+  thumbnailUrl?: string;
+  previewUrl?: string;
+  tags: string[];
+  latestVersion: string;
+  totalDownloads: number;
+  featured: boolean;
+  author: { name: string; avatarUrl?: string };
+}
+
+export interface PeepHubBrowseResponse {
+  peeps: PeepHubEntry[];
+  total: number;
+  page: number;
+  pages: number;
 }

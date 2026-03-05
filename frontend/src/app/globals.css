@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Wire Tailwind's dark: variant to our data-mode attribute */
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
+
 :root {
   --font-sans: "DM Sans", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
@@ -34,7 +37,6 @@ code, pre, .font-mono {
   --color-input: var(--bg-input);
 }
 
-@layer base {
 /* ============================================
    BASE TOKENS
    ============================================ */
@@ -376,7 +378,105 @@ code, pre, .font-mono {
   --accent-hover: #3584e4;
   color-scheme: light;
 }
-} /* end @layer base */
+/* end theme tokens and glass styles */
+
+/* ============================================
+   macOS Chrome/Chromium fixes
+   Safari renders backdrop-filter with rich vibrancy;
+   Chrome's blur looks flat/muddy with low-opacity BGs.
+   -webkit-touch-callout is Safari/WebKit-only, so
+   @supports not (...) targets Chrome & Firefox only.
+   ============================================ */
+@supports not (-webkit-touch-callout: none) {
+  [data-theme="macos"] {
+    --bg-toolbar: #1e1e20;
+    --bg-sidebar: #141416;
+    --bg-card: rgba(255, 255, 255, 0.06);
+    --bg-card-hover: rgba(255, 255, 255, 0.10);
+    --bg-modal: #1e1e20;
+  }
+
+  [data-theme="macos"] .toolbar-glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom-width: 1px;
+  }
+
+  [data-theme="macos"] .sidebar-glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  [data-theme="macos"] .card-glass {
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.10);
+  }
+
+  [data-theme="macos"] .modal-glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-width: 1px;
+  }
+
+  [data-theme="macos"] .pill-glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.12);
+    border-width: 1px;
+  }
+
+  [data-theme="macos"] .column-glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: #111113;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Light mode Chromium fixes */
+  [data-theme="macos"][data-mode="light"] {
+    --bg-toolbar: rgba(255, 255, 255, 0.88);
+    --bg-sidebar: rgba(245, 245, 245, 0.92);
+    --bg-card: rgba(255, 255, 255, 0.75);
+    --bg-card-hover: rgba(255, 255, 255, 0.88);
+    --bg-modal: rgba(255, 255, 255, 0.96);
+    --bg-elevated: rgba(255, 255, 255, 0.88);
+    --bg-input: rgba(255, 255, 255, 0.88);
+  }
+
+  [data-theme="macos"][data-mode="light"] .pill-glass {
+    background: rgba(255, 255, 255, 0.75);
+  }
+
+  [data-theme="macos"][data-mode="light"] .column-glass {
+    background: rgba(255, 255, 255, 0.65);
+  }
+}
+
+/* ============================================
+   TOOLBAR ACCENT GRADIENT
+   Subtle accent-colored glow at the bottom edge
+   ============================================ */
+.toolbar-accent::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent) 30%,
+    var(--accent) 70%,
+    transparent 100%
+  );
+  opacity: 0.4;
+}
+
+[data-mode="light"] .toolbar-accent::after {
+  opacity: 0.5;
+}
 
 /* ============================================
    GLOBAL STYLES

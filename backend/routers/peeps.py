@@ -2,8 +2,14 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import FileResponse
 from pathlib import Path
 from typing import Optional
+from pydantic import BaseModel
 import json
 import shutil
+import httpx
+import io
+import zipfile
+
+from backend.config import load_config
 
 router = APIRouter()
 
@@ -80,6 +86,132 @@ def _find_peep_dir(peep_id: str, workspace_root: Optional[str] = None) -> Option
 def list_peeps(root: str = Query("")):
     """Return all installed peep manifests."""
     return {"peeps": scan_peeps(root or None)}
+
+
+@router.get("/peephub/browse")
+def browse_peephub(
+    q: str = "",
+    category: str = "",
+    sort: str = "downloads",
+    page: int = 1,
+    limit: int = 20,
+):
+    """Proxy browse requests to the configured PeepHub server."""
+    config = load_config()
+    base_url = config.get("peephub", {}).get("url", "https://api.peephub.ai")
+    params = {"q": q, "category": category, "sort": sort, "page": page, "limit": limit}
+    params = {k: v for k, v in params.items() if v}
+    try:
+        resp = httpx.get(f"{base_url}/api/peeps", params=params, timeout=10)
+        resp.raise_for_status()
+        return resp.json()
+    except httpx.ConnectError:
+        raise HTTPException(status_code=502, detail=f"Cannot connect to PeepHub at {base_url}")
+    except httpx.TimeoutException:
+        raise HTTPException(status_code=504, detail="PeepHub request timed out")
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=f"PeepHub error: {e.response.text}")
+
+
+class PublishRequest(BaseModel):
+    peepPath: str
+    category: str = "viewer"
+    tags: list[str] = []
+
+
+@router.post("/peeps/publish")
+def publish_peep(req: PublishRequest):
+    """Zip a local peep and publish it to PeepHub."""
+    peep_dir = Path(req.peepPath)
+    manifest_path = peep_dir / "peep.json"
+
+    if not peep_dir.is_dir():
+        raise HTTPException(status_code=400, detail=f"Peep directory not found: {req.peepPath}")
+    if not manifest_path.exists():
+        raise HTTPException(status_code=400, detail="peep.json not found in peep directory")
+
+    # Validate manifest has required fields
+    try:
+        manifest = json.loads(manifest_path.read_text())
+    except Exception:
+        raise HTTPException(status_code=400, detail="peep.json is not valid JSON")
+
+    for field in ["id", "name", "version", "description", "entry", "capabilities", "matches"]:
+        if field not in manifest:
+            raise HTTPException(status_code=400, detail=f"peep.json missing required field: {field}")
+
+    # Zip the peep folder
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
+        for file_path in peep_dir.rglob("*"):
+            if file_path.is_file():
+                arcname = file_path.relative_to(peep_dir)
+                zf.write(file_path, arcname)
+    zip_bytes = buf.getvalue()
+
+    # Read config for PeepHub URL and API key
+    config = load_config()
+    peephub = config.get("peephub", {})
+    base_url = peephub.get("url", "https://api.peephub.ai")
+    api_key = peephub.get("apiKey", "")
+
+    if not api_key:
+        raise HTTPException(status_code=400, detail="PeepHub API key not configured. Set it in Settings → Dev Mode.")
+
+    # POST to PeepHub
+    pub_headers = {"Authorization": f"Bearer {api_key}"}
+    files = {"zip": ("peep.zip", zip_bytes, "application/zip")}
+    data: dict[str, str] = {"category": req.category}
+    if req.tags:
+        data["tags"] = ",".join(req.tags)
+
+    try:
+        resp = httpx.post(f"{base_url}/api/peeps", headers=pub_headers, files=files, data=data, timeout=30)
+        resp.raise_for_status()
+        return resp.json()
+    except httpx.ConnectError:
+        raise HTTPException(status_code=502, detail=f"Cannot connect to PeepHub at {base_url}")
+    except httpx.TimeoutException:
+        raise HTTPException(status_code=504, detail="PeepHub request timed out")
+    except httpx.HTTPStatusError as e:
+        detail = e.response.text
+        try:
+            body = e.response.json()
+            details = body.get("details", [])
+            detail = body.get("error", detail)
+            if details:
+                detail = f"{detail}: {'; '.join(details)}"
+        except Exception:
+            pass
+        raise HTTPException(status_code=e.response.status_code, detail=f"PeepHub: {detail}")
+
+
+@router.get("/peep-samples/{peep_id}")
+def get_peep_samples(peep_id: str):
+    """Return sample data files from a peep's samples/ directory."""
+    peeps = scan_peeps()
+    peep = next((p for p in peeps if p["id"] == peep_id), None)
+    if not peep or not peep.get("_path"):
+        raise HTTPException(status_code=404, detail="Peep not found")
+
+    samples_dir = Path(peep["_path"]) / "samples"
+    if not samples_dir.exists():
+        return {"files": [], "hasScreenshot": False}
+
+    files = []
+    has_screenshot = False
+    for f in sorted(samples_dir.iterdir()):
+        if f.is_file():
+            if f.name.startswith("screenshot"):
+                has_screenshot = True
+                continue
+            try:
+                content = f.read_text()
+                files.append({"name": f.name, "content": content})
+            except UnicodeDecodeError:
+                files.append({"name": f.name, "content": None, "binary": True})
+
+    return {"files": files, "hasScreenshot": has_screenshot}
 
 
 @router.get("/peeps/{peep_id}/{file_path:path}")

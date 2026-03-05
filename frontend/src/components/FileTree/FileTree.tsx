@@ -630,6 +630,28 @@ function ContextMenu({
         <div className="text-[11px] font-semibold text-primary truncate">
           {node.name}
         </div>
+        {/* Project details for folders with project.json */}
+        {node.isDir && node.project && (
+          <div className="text-[10px] text-tertiary mt-1.5 space-y-1 pb-1.5 mb-1.5 border-b border-border-subtle">
+            {typeof node.project.description === "string" && (
+              <div className="text-secondary leading-relaxed line-clamp-2">
+                {node.project.description}
+              </div>
+            )}
+            {typeof node.project.type === "string" && (
+              <div className="flex justify-between">
+                <span>Project Type</span>
+                <span className="text-secondary">{node.project.type}</span>
+              </div>
+            )}
+            {typeof node.project.status === "string" && (
+              <div className="flex justify-between">
+                <span>Status</span>
+                <span className="text-accent font-medium">{node.project.status}</span>
+              </div>
+            )}
+          </div>
+        )}
         <div className="text-[10px] text-tertiary mt-1.5 space-y-1">
           <div className="flex justify-between">
             <span>Type</span>
