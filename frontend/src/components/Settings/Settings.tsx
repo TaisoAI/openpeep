@@ -7,6 +7,8 @@ interface SettingsProps {
   onSpacesChanged: () => void;
   theme: ThemeConfig;
   onThemeChanged: (theme: ThemeConfig) => void;
+  showHiddenFiles: boolean;
+  onShowHiddenFilesChanged: (show: boolean) => void;
 }
 
 type Tab = "general" | "spaces";
@@ -42,6 +44,8 @@ export default function Settings({
   onSpacesChanged,
   theme,
   onThemeChanged,
+  showHiddenFiles,
+  onShowHiddenFilesChanged,
 }: SettingsProps) {
   const [tab, setTab] = useState<Tab>("spaces");
   const [spaces, setSpaces] = useState<Space[]>([]);
@@ -269,6 +273,35 @@ export default function Settings({
                     <span
                       className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-all ${
                         theme.showLogo !== false ? "left-[18px]" : "left-0.5"
+                      }`}
+                    />
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-[11px] font-semibold text-tertiary uppercase tracking-wider mb-2">
+                  File Browser
+                </h3>
+                <div className="flex items-center gap-3 bg-surface border border-border-subtle rounded-xl p-3">
+                  <span className="text-[13px] text-primary flex-1 font-medium">
+                    Show Hidden Files
+                  </span>
+                  <button
+                    className={`w-9 h-5 rounded-full transition-all relative ${
+                      showHiddenFiles
+                        ? "bg-accent"
+                        : "bg-elevated border border-border-subtle"
+                    }`}
+                    onClick={async () => {
+                      const next = !showHiddenFiles;
+                      await api.updateSources({ showHiddenFiles: next });
+                      onShowHiddenFilesChanged(next);
+                    }}
+                  >
+                    <span
+                      className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-all ${
+                        showHiddenFiles ? "left-[18px]" : "left-0.5"
                       }`}
                     />
                   </button>

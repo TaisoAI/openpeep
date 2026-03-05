@@ -1,0 +1,2594 @@
+[27843727ms] [ERROR] WebSocket connection to 'ws://localhost:3000/_next/webpack-hmr?id=gdSG9N0RIcnh0aQlLC0oD' failed:  @ http://localhost:3000/_next/static/chunks/9e883_next_dist_client_21c89b8d._.js:10878
+[31320476ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31320545ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31320594ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31320647ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31320696ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31320745ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31320793ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31320836ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31320886ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31320933ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31320981ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321028ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321076ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321123ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321171ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321209ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321256ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321296ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321344ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321390ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321438ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321486ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321534ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321580ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321629ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321677ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321725ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321772ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321820ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321868ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321914ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31321962ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322009ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322057ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322105ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322152ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322200ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322249ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322297ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322345ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322394ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322443ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322490ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322538ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322586ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322635ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322685ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322733ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322780ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322828ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322877ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322924ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31322971ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323019ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323067ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323115ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323163ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323212ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323259ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323307ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323355ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323405ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323452ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323501ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323549ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323598ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323646ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323692ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323739ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323786ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323833ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323881ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323930ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31323978ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324026ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324073ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324121ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324170ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324218ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324266ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324314ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324363ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324411ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324459ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324506ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324554ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324603ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324651ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324699ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324747ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324795ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324843ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324891ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324938ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31324986ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325036ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325084ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325131ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325179ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325226ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325273ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325321ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325369ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325419ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325466ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325514ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325562ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325603ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325647ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325693ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325741ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325789ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325837ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325885ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325932ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31325981ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326030ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326072ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326121ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326171ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326218ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326266ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326314ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326362ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326409ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326456ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326503ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326547ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326595ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326642ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326690ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326738ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326786ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326833ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326881ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326931ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31326978ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327025ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327066ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327115ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327164ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327212ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327260ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327307ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327354ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327403ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327450ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327498ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327546ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327585ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327631ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327680ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327728ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327776ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327824ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327871ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327918ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31327966ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31328014ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31328061ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31328108ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31328156ms] [ERROR] ./src/components/Nav.tsx:5:1
+Module not found: Can't resolve './ThemeToggle'
+  3 | import Link from "next/link";
+  4 | import { useSession, signIn, signOut } from "next-auth/react";
+> 5 | import ThemeToggle from "./ThemeToggle";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function Nav() {
+  8 |   const { data: session } = useSession();
+
+Import trace:
+  Server Component:
+    ./src/components/Nav.tsx
+    ./src/app/layout.tsx
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[31329005ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/:0

@@ -1,0 +1,30 @@
+[    9313ms] [ERROR] React has detected a change in the order of Hooks called by %s. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://react.dev/link/rules-of-hooks
+
+   Previous render            Next render
+   ------------------------------------------------------
+%s   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ Settings 1. useState                   useState
+2. useState                   useState
+3. useState                   useState
+4. useState                   useState
+5. useEffect                  useEffect
+6. undefined                  useState
+ @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f25cd07e:5591
+[    9319ms] Error: Rendered more hooks than during the previous render.
+    at updateWorkInProgressHook (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f25cd07e:5790:19)
+    at updateReducer (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f25cd07e:5884:20)
+    at Object.useState (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f25cd07e:18994:20)
+    at exports.useState (http://localhost:3000/node_modules/.vite/deps/chunk-3WPER5LJ.js?v=47dcb38d:960:36)
+    at Settings (http://localhost:3000/src/components/Settings/Settings.tsx:114:49)
+    at Object.react_stack_bottom_frame (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f25cd07e:18507:20)
+    at renderWithHooks (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f25cd07e:5652:24)
+    at updateFunctionComponent (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f25cd07e:7473:21)
+    at beginWork (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f25cd07e:8523:20)
+    at runWithFiberInDEV (http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f25cd07e:995:72)
+[    9319ms] [WARNING] %s
+
+%s
+ An error occurred in the <Settings> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=f25cd07e:6963
+[   26772ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/src/components/Settings/Settings.tsx?t=1772665911384:0
+[   26772ms] [ERROR] [vite] Failed to reload /src/components/Settings/Settings.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3000/@vite/client:881

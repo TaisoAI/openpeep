@@ -14,6 +14,7 @@ def get_sources():
             "Idea", "Planning", "In Progress", "Analyze", "Archive"
         ]),
         "theme": config.get("theme", {"mode": "dark", "style": "macos"}),
+        "showHiddenFiles": config.get("showHiddenFiles", False),
     }
 
 
@@ -27,6 +28,8 @@ def update_sources(payload: dict):
         config["defaultStatuses"] = payload["defaultStatuses"]
     if "theme" in payload:
         config["theme"] = payload["theme"]
+    if "showHiddenFiles" in payload:
+        config["showHiddenFiles"] = payload["showHiddenFiles"]
     save_config(config)
     return {"saved": True}
 

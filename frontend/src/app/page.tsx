@@ -28,6 +28,7 @@ export default function Home() {
   const [peepHubOpen, setPeepHubOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [theme, setTheme] = useState<ThemeConfig>({ mode: "dark", style: "macos" });
+  const [showHiddenFiles, setShowHiddenFiles] = useState(false);
   const [hiddenStatuses, setHiddenStatuses] = useState<string[]>([]);
   const [projectCounts, setProjectCounts] = useState<Record<string, number>>({});
 
@@ -44,6 +45,7 @@ export default function Home() {
     const data = await api.getSources();
     setSpaces(data.spaces);
     setTheme(data.theme || { mode: "dark", style: "macos" });
+    setShowHiddenFiles(data.showHiddenFiles || false);
     return data.spaces;
   }, []);
 
@@ -311,6 +313,7 @@ export default function Home() {
                 root={browseRoot}
                 onFileSelect={openFile}
                 selectedPath={selectedPath}
+                showHidden={showHiddenFiles}
                 peeps={peeps}
                 onFileDeleted={(path) => {
                   if (selectedPath === path || selectedPath?.startsWith(path + "/")) {
@@ -362,6 +365,8 @@ export default function Home() {
         onSpacesChanged={handleSpacesChanged}
         theme={theme}
         onThemeChanged={setTheme}
+        showHiddenFiles={showHiddenFiles}
+        onShowHiddenFilesChanged={setShowHiddenFiles}
       />
     </div>
   );

@@ -1,0 +1,3 @@
+[     172ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/files?root=~%2FProjects&path=:0
+[     173ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/files?root=~%2FProjects&path=:0
+[   73400ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/files?root=~%2FProjects&path=:0

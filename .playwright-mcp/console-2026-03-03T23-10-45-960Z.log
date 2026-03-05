@@ -1,0 +1,10 @@
+[     265ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/files?root=~%2FProjects&path=:0
+[     267ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/files?root=~%2FProjects&path=:0
+[   82229ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/files?root=~%2FProjects&path=:0
+[   82231ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/files?root=~%2FProjects&path=:0
+[  119530ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/files?root=~%2FProjects&path=:0
+[  119531ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/files?root=~%2FProjects&path=:0
+[  173813ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/files?root=~%2FProjects&path=:0
+[  210733ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/files?root=~%2FProjects&path=:0
+[  305059ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/files?root=~%2FProjects&path=:0
+[  305062ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:8000/api/files?root=~%2FProjects&path=:0

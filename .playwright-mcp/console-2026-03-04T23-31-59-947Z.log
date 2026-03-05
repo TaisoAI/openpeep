@@ -1,0 +1,2 @@
+[  301054ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/src/components/Board/Board.tsx?t=1772667420989:0
+[  301055ms] [ERROR] [vite] Failed to reload /src/components/Board/Board.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3000/@vite/client:881

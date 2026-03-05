@@ -1,0 +1,10 @@
+[  207977ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/src/app/page.tsx?t=1772668785944:0
+[  207977ms] [ERROR] [vite] Failed to reload /src/app/page.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3000/@vite/client:881
+[  207983ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/src/components/FileTree/FileTree.tsx?t=1772668785944:0
+[  207983ms] [ERROR] [vite] Failed to reload /src/components/FileTree/FileTree.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3000/@vite/client:881
+[  208043ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/src/components/FileTree/FileTree.tsx?t=1772668785946:0
+[  208044ms] [ERROR] [vite] Failed to reload /src/components/FileTree/FileTree.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3000/@vite/client:881
+[  208054ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/src/app/page.tsx?t=1772668785946:0
+[  208054ms] [ERROR] [vite] Failed to reload /src/app/page.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3000/@vite/client:881
+[  224129ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/src/components/FileTree/FileTree.tsx?t=1772668802107:0
+[  224129ms] [ERROR] [vite] Failed to reload /src/components/FileTree/FileTree.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:3000/@vite/client:881

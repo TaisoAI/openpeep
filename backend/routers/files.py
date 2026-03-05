@@ -61,7 +61,7 @@ def _get_folder_last_modified(folder: Path) -> str | None:
 
 
 @router.get("/files")
-def list_files(root: str = Query(...), path: str = Query("")):
+def list_files(root: str = Query(...), path: str = Query(""), showHidden: bool = Query(False)):
     """List directory contents."""
     base = Path(root).expanduser().resolve()
     target = (base / path).resolve()
@@ -74,7 +74,7 @@ def list_files(root: str = Query(...), path: str = Query("")):
 
     entries = []
     for item in sorted(target.iterdir(), key=lambda x: (not x.is_dir(), x.name.lower())):
-        if item.name.startswith("."):
+        if not showHidden and item.name.startswith("."):
             continue
         st = item.stat()
         entry = {
