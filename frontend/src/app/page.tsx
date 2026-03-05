@@ -40,6 +40,7 @@ export default function Home() {
   const [selectedFile, setSelectedFile] = useState<FileData | null>(null);
   const [activePeep, setActivePeep] = useState<PeepManifest | null>(null);
   const [selectedPath, setSelectedPath] = useState("");
+  const [expandedPaths, setExpandedPaths] = useState<string[]>([]);
 
   const loadSources = useCallback(async () => {
     const data = await api.getSources();
@@ -59,10 +60,11 @@ export default function Home() {
         spaceName: activeSpace?.name || null,
         browseRoot,
         selectedPath,
+        expandedPaths,
       }).catch(() => {});
     }, 500);
     return () => { if (sessionTimer.current) clearTimeout(sessionTimer.current); };
-  }, [view, activeSpace?.name, browseRoot, selectedPath]);
+  }, [view, activeSpace?.name, browseRoot, selectedPath, expandedPaths]);
 
   // Sync hiddenStatuses when active space changes
   useEffect(() => {
@@ -96,6 +98,7 @@ export default function Home() {
       // Restore view
       if (session.view === "board" || session.view === "browse") setView(session.view as View);
       if (session.browseRoot) setBrowseRoot(session.browseRoot);
+      if (session.expandedPaths) setExpandedPaths(session.expandedPaths);
 
       // Restore active space
       const restored = session.spaceName
@@ -141,6 +144,7 @@ export default function Home() {
     setSelectedFile(null);
     setActivePeep(null);
     setSelectedPath("");
+    setExpandedPaths([]);
     setView(viewBeforeBrowse.current);
   }, []);
 
@@ -315,6 +319,8 @@ export default function Home() {
                 selectedPath={selectedPath}
                 showHidden={showHiddenFiles}
                 peeps={peeps}
+                expandedPaths={expandedPaths}
+                onExpandedPathsChange={setExpandedPaths}
                 onFileDeleted={(path) => {
                   if (selectedPath === path || selectedPath?.startsWith(path + "/")) {
                     setSelectedFile(null);

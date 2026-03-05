@@ -10,6 +10,8 @@ interface FileTreeProps {
   onFileDeleted?: (path: string) => void;
   onFileRenamed?: (oldPath: string, newPath: string) => void;
   peeps?: PeepManifest[];
+  expandedPaths?: string[];
+  onExpandedPathsChange?: (paths: string[]) => void;
 }
 
 interface TreeNode extends FileEntry {
@@ -112,9 +114,18 @@ export default function FileTree({
   onFileDeleted,
   onFileRenamed,
   peeps = [],
+  expandedPaths: expandedPathsProp,
+  onExpandedPathsChange,
 }: FileTreeProps) {
   const [nodes, setNodes] = useState<TreeNode[]>([]);
-  const [expandedPaths, setExpandedPaths] = useState<Set<string>>(new Set());
+  const [expandedPaths, setExpandedPathsInternal] = useState<Set<string>>(
+    () => new Set(expandedPathsProp || [])
+  );
+
+  const setExpandedPaths = useCallback((next: Set<string>) => {
+    setExpandedPathsInternal(next);
+    onExpandedPathsChange?.(Array.from(next));
+  }, [onExpandedPathsChange]);
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
   const [renamingPath, setRenamingPath] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState("");
@@ -155,7 +166,28 @@ export default function FileTree({
   );
 
   useEffect(() => {
-    loadDirectory("").then((entries) => setNodes(entries));
+    loadDirectory("").then(async (entries) => {
+      // Restore expanded directories by loading their children
+      if (expandedPaths.size > 0) {
+        // Sort by depth so parents load before children
+        const sorted = Array.from(expandedPaths).sort(
+          (a, b) => a.split("/").length - b.split("/").length
+        );
+        let tree = entries;
+        for (const path of sorted) {
+          try {
+            const children = await loadDirectory(path);
+            tree = updateNodeChildren(tree, path, children);
+          } catch {
+            // Directory may no longer exist — skip
+          }
+        }
+        setNodes(tree);
+      } else {
+        setNodes(entries);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [root, loadDirectory]);
 
   const toggleDir = useCallback(

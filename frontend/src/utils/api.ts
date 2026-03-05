@@ -107,6 +107,7 @@ export interface SessionState {
   spaceName?: string | null;
   browseRoot?: string;
   selectedPath?: string;
+  expandedPaths?: string[];
 }
 
 export interface ThemeConfig {
