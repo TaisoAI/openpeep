@@ -23,28 +23,23 @@ export default function PreviewPane({
   const peepRef = useRef(peep);
   peepRef.current = peep;
 
-  function injectTheme() {
-    if (!iframeRef.current) return;
-    try {
-      const rootStyles = getComputedStyle(document.documentElement);
-      const vars = [
-        '--bg-app', '--bg-toolbar', '--bg-surface', '--bg-elevated',
-        '--bg-hover', '--bg-input', '--border', '--border-subtle',
-        '--text-primary', '--text-secondary', '--text-tertiary',
-        '--accent', '--accent-hover',
-      ];
-      const css = `:root { ${vars.map(v => `${v}: ${rootStyles.getPropertyValue(v).trim()}`).join('; ')}; }
-        body { background: var(--bg-app) !important; color: var(--text-primary) !important; }`;
-      const doc = iframeRef.current.contentDocument;
-      if (doc) {
-        const existing = doc.getElementById('peep-theme');
-        if (existing) existing.remove();
-        const style = doc.createElement('style');
-        style.id = 'peep-theme';
-        style.textContent = css;
-        doc.head.appendChild(style);
-      }
-    } catch { /* cross-origin fallback */ }
+  function sendThemeToIframe() {
+    if (!iframeRef.current?.contentWindow) return;
+    const rootStyles = getComputedStyle(document.documentElement);
+    const vars = [
+      '--bg-app', '--bg-toolbar', '--bg-surface', '--bg-elevated',
+      '--bg-hover', '--bg-input', '--border', '--border-subtle',
+      '--text-primary', '--text-secondary', '--text-tertiary',
+      '--accent', '--accent-hover',
+    ];
+    const theme: Record<string, string> = {};
+    for (const v of vars) {
+      theme[v] = rootStyles.getPropertyValue(v).trim();
+    }
+    iframeRef.current.contentWindow.postMessage(
+      { type: "peep:theme", theme },
+      "*"
+    );
   }
 
   function sendFileToIframe(f: FileData) {
@@ -57,6 +52,7 @@ export default function PreviewPane({
         fileName: f.name,
         ext: f.ext,
         binary: f.binary,
+        apiBase: import.meta.env.VITE_API_URL || "http://localhost:8000/api",
       },
       "*"
     );
@@ -65,7 +61,7 @@ export default function PreviewPane({
   // When iframe loads for the first time, inject theme and send current file
   function handleIframeLoad() {
     iframeReady.current = true;
-    injectTheme();
+    sendThemeToIframe();
     if (fileRef.current) {
       sendFileToIframe(fileRef.current);
     }

@@ -72,10 +72,17 @@ export const api = {
     `${API_BASE}/file/raw?path=${encodeURIComponent(path)}`,
 
   // Peeps
-  listPeeps: () => fetchJSON<{ peeps: PeepManifest[] }>("/peeps"),
+  listPeeps: (root?: string) => {
+    let url = "/peeps";
+    if (root) url += `?root=${encodeURIComponent(root)}`;
+    return fetchJSON<{ peeps: PeepManifest[] }>(url);
+  },
 
-  peepFileUrl: (peepId: string, filePath: string) =>
-    `${API_BASE}/peeps/${peepId}/${filePath}?v=${Date.now()}`,
+  peepFileUrl: (peepId: string, filePath: string, root?: string) => {
+    let url = `${API_BASE}/peeps/${peepId}/${filePath}?v=${Date.now()}`;
+    if (root) url += `&root=${encodeURIComponent(root)}`;
+    return url;
+  },
 
   uninstallPeep: (peepId: string) =>
     fetchJSON<{ uninstalled: boolean }>(`/peeps/${peepId}`, {
@@ -162,4 +169,5 @@ export interface PeepManifest {
   }>;
   settings?: Record<string, unknown>;
   _path?: string;
+  _tier?: "builtin" | "installed" | "project";
 }

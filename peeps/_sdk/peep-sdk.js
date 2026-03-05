@@ -48,6 +48,14 @@
     getInitData() {
       return this._initData;
     },
+
+    /** Construct a URL to load a raw file via the backend */
+    rawFileUrl(filePath) {
+      const base =
+        (this._initData && this._initData.apiBase) ||
+        "http://localhost:8000/api";
+      return `${base}/file/raw?path=${encodeURIComponent(filePath)}`;
+    },
   };
 
   // Listen for messages from the host app
@@ -59,6 +67,21 @@
       PeepSDK._initData = payload;
       if (PeepSDK._handlers["init"]) {
         PeepSDK._handlers["init"](payload);
+      }
+    } else if (type === "peep:theme") {
+      // Inject theme CSS variables from host app
+      var theme = payload.theme || {};
+      var css = ":root { " + Object.keys(theme).map(function(k) {
+        return k + ": " + theme[k];
+      }).join("; ") + "; }\nbody { background: var(--bg-app) !important; color: var(--text-primary) !important; }";
+      var existing = document.getElementById("peep-theme");
+      if (existing) existing.remove();
+      var style = document.createElement("style");
+      style.id = "peep-theme";
+      style.textContent = css;
+      document.head.appendChild(style);
+      if (PeepSDK._handlers["theme"]) {
+        PeepSDK._handlers["theme"](payload);
       }
     } else if (type === "peep:file-changed") {
       if (PeepSDK._handlers["file-changed"]) {
