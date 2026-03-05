@@ -252,9 +252,8 @@ export default function FileTree({
       {/* Sort header */}
       <div className="flex items-center px-2 py-1.5 border-b border-border-subtle shrink-0">
         <span className="text-[10px] text-tertiary uppercase tracking-wider font-semibold flex-1">Files</span>
-        <div className="relative">
+        <div className="relative" ref={sortButtonRef}>
           <button
-            ref={sortButtonRef}
             className="w-6 h-6 flex items-center justify-center text-tertiary hover:text-primary rounded-md hover:bg-hover transition-all"
             onClick={() => setShowSortMenu(!showSortMenu)}
             title="Sort files"

@@ -155,24 +155,83 @@ export default function ProjectViewer({ filePath, onSaveStatus, statuses = [] }:
         </div>
 
         {/* Extra fields (read-only display) */}
-        {extraFields.length > 0 && (
-          <div className="bg-surface border border-border-subtle rounded-xl p-4">
+        {extraFields.length > 0 && extraFields.map(([key, value]) => (
+          <div key={key} className="bg-surface border border-border-subtle rounded-xl p-4">
             <label className="text-[10px] text-tertiary uppercase tracking-wider font-semibold">
-              Other Fields
+              {key}
             </label>
-            <div className="space-y-2 mt-2">
-              {extraFields.map(([key, value]) => (
-                <div key={key} className="flex items-start gap-2">
-                  <span className="text-[11px] text-tertiary font-mono shrink-0">{key}:</span>
-                  <span className="text-[11px] text-secondary font-mono break-all">
-                    {typeof value === "object" ? JSON.stringify(value) : String(value)}
-                  </span>
-                </div>
-              ))}
+            <div className="mt-2">
+              {renderValue(value)}
             </div>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
+}
+
+function renderValue(value: unknown): JSX.Element {
+  // Array of objects → table
+  if (Array.isArray(value) && value.length > 0 && typeof value[0] === "object" && value[0] !== null) {
+    const keys = Object.keys(value[0] as Record<string, unknown>);
+    return (
+      <div className="overflow-x-auto rounded-lg border border-border-subtle">
+        <table className="w-full text-[11px]">
+          <thead>
+            <tr className="bg-elevated">
+              {keys.map((k) => (
+                <th key={k} className="text-left px-2.5 py-1.5 text-tertiary font-semibold border-b border-border-subtle">
+                  {k}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {value.map((row, i) => {
+              const obj = row as Record<string, unknown>;
+              return (
+                <tr key={i} className="border-b border-border-subtle last:border-0 hover:bg-hover transition-colors">
+                  {keys.map((k) => (
+                    <td key={k} className="px-2.5 py-1.5 text-secondary">
+                      {typeof obj[k] === "boolean" ? (
+                        <span className={obj[k] ? "text-emerald-400" : "text-tertiary"}>
+                          {obj[k] ? "Yes" : "No"}
+                        </span>
+                      ) : typeof obj[k] === "object" ? (
+                        JSON.stringify(obj[k])
+                      ) : (
+                        String(obj[k] ?? "")
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  // Simple array → comma list
+  if (Array.isArray(value)) {
+    return <span className="text-[11px] text-secondary">{value.map(String).join(", ")}</span>;
+  }
+
+  // Object → key-value pairs
+  if (typeof value === "object" && value !== null) {
+    return (
+      <div className="space-y-1">
+        {Object.entries(value as Record<string, unknown>).map(([k, v]) => (
+          <div key={k} className="flex items-start gap-2">
+            <span className="text-[11px] text-tertiary font-mono shrink-0">{k}:</span>
+            <span className="text-[11px] text-secondary break-all">{typeof v === "object" ? JSON.stringify(v) : String(v)}</span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Primitive
+  return <span className="text-[13px] text-secondary">{String(value)}</span>;
 }
