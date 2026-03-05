@@ -17,6 +17,8 @@
       --text-secondary: #ccc;
       --text-tertiary: #888;
       --accent: #0078d4;
+      --device-bezel: #1a1a1a;
+      --device-screen-border: #444;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -24,70 +26,336 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
+
+    /* Toolbar */
     .toolbar {
       display: flex;
-      gap: 8px;
-      padding: 8px 12px;
+      gap: 4px;
+      padding: 6px 10px;
       background: var(--bg-toolbar);
       border-bottom: 1px solid var(--border);
       align-items: center;
+      flex-shrink: 0;
     }
     .toolbar button {
       background: var(--bg-elevated);
       color: var(--text-secondary);
-      border: 1px solid var(--border-subtle);
-      padding: 4px 12px;
+      border: 1px solid transparent;
+      padding: 3px 10px;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     }
     .toolbar button:hover { background: var(--bg-hover); }
-    .toolbar button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .toolbar button.active { background: var(--accent); color: #fff; }
+    .toolbar .sep {
+      width: 1px; height: 16px; background: var(--border-subtle); margin: 0 4px;
+    }
     .toolbar .spacer { flex: 1; }
-    .toolbar .status { font-size: 11px; color: var(--text-tertiary); }
+    .toolbar .status { font-size: 10px; color: var(--text-tertiary); font-family: monospace; }
+
+    /* Device selector dropdown */
+    .device-select {
+      position: relative;
+    }
+    .device-select select {
+      appearance: none;
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      border: 1px solid transparent;
+      padding: 3px 22px 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      outline: none;
+    }
+    .device-select select:hover { background: var(--bg-hover); }
+    .device-select::after {
+      content: "▾";
+      position: absolute;
+      right: 7px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-tertiary);
+      font-size: 9px;
+      pointer-events: none;
+    }
+
+    /* Dimension label */
+    .dim-label {
+      font-size: 10px;
+      color: var(--text-tertiary);
+      font-family: monospace;
+      margin-left: 6px;
+    }
+
+    /* Frame container */
     #frame-container {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: auto;
-      padding: 16px;
+      min-height: 0;
+      position: relative;
     }
-    #preview-frame {
-      border: 1px solid var(--border);
+
+    /* Fill mode — edge to edge, no scaling */
+    body.mode-fill #frame-container { padding: 0; }
+    body.mode-fill #preview-frame {
+      width: 100%; height: 100%; border: none; border-radius: 0;
+    }
+
+    /* Fit mode — scale page to fit visible area */
+    body.mode-fit #frame-container {
+      padding: 0; overflow: hidden;
+    }
+    body.mode-fit #preview-frame {
+      border: none; border-radius: 0;
+      transform-origin: 0 0;
+      /* width/height/transform set by JS */
+    }
+
+    /* Device mode — centered frame with device chrome */
+    body.mode-device #frame-container {
+      padding: 24px;
+      background: repeating-conic-gradient(#222 0% 25%, #1a1a1a 0% 50%) 50% / 16px 16px;
+    }
+    .device-frame {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+    body.mode-device .device-frame { display: flex; }
+
+    .device-chrome {
+      background: var(--device-bezel);
+      border-radius: 20px;
+      padding: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.06);
+    }
+    .device-chrome.phone { border-radius: 28px; padding: 10px; }
+    .device-chrome .notch {
+      width: 80px; height: 6px; background: var(--device-bezel);
+      border-radius: 3px; margin: 0 auto 8px;
+    }
+    .device-chrome .home-bar {
+      width: 60px; height: 4px; background: #555;
+      border-radius: 2px; margin: 6px auto 0;
+    }
+    .device-chrome iframe {
+      display: block;
+      border: 1px solid var(--device-screen-border);
+      border-radius: 4px;
       background: #fff;
-      transition: width 0.2s, height 0.2s;
     }
-    .fit-width #preview-frame { width: 100%; height: 100%; }
-    .desktop #preview-frame { width: 1280px; height: 100%; }
-    .tablet #preview-frame { width: 768px; height: 100%; }
-    .mobile #preview-frame { width: 375px; height: 100%; }
+    .device-label {
+      margin-top: 10px;
+      font-size: 10px;
+      color: var(--text-tertiary);
+      font-family: monospace;
+      text-align: center;
+    }
+
+    body.mode-device #preview-frame { display: none; }
   </style>
 </head>
-<body class="fit-width">
+<body class="mode-fill">
   <div class="toolbar">
-    <button class="active" onclick="setSize('fit-width', this)">Fit</button>
-    <button onclick="setSize('desktop', this)">Desktop</button>
-    <button onclick="setSize('tablet', this)">Tablet</button>
-    <button onclick="setSize('mobile', this)">Mobile</button>
+    <button class="active" data-mode="fill" onclick="switchMode('fill', this)">Fill</button>
+    <button data-mode="fit" onclick="switchMode('fit', this)">Fit</button>
+    <span class="sep"></span>
+    <button data-mode="device" data-device="desktop" onclick="switchDevice('desktop', this)">Desktop</button>
+
+    <div class="device-select" id="tablet-select" style="display:none;">
+      <select onchange="switchDevice(this.value)">
+        <option value="ipad-pro-13">iPad Pro 13"</option>
+        <option value="ipad-pro-11">iPad Pro 11"</option>
+        <option value="ipad-air">iPad Air</option>
+        <option value="ipad-mini">iPad mini</option>
+      </select>
+    </div>
+    <button data-mode="device" data-device="tablet" onclick="showTablets(this)">Tablet</button>
+
+    <div class="device-select" id="phone-select" style="display:none;">
+      <select onchange="switchDevice(this.value)">
+        <option value="iphone-16-pro-max">iPhone 16 Pro Max</option>
+        <option value="iphone-16-pro">iPhone 16 Pro</option>
+        <option value="iphone-16">iPhone 16</option>
+        <option value="iphone-se">iPhone SE</option>
+      </select>
+    </div>
+    <button data-mode="device" data-device="mobile" onclick="showPhones(this)">Mobile</button>
+
+    <span class="dim-label" id="dim-label"></span>
     <span class="spacer"></span>
     <span class="status" id="status"></span>
   </div>
+
   <div id="frame-container">
     <iframe id="preview-frame" sandbox="allow-scripts"></iframe>
+
+    <div class="device-frame" id="device-frame">
+      <div class="device-chrome" id="device-chrome">
+        <div class="notch" id="device-notch"></div>
+        <iframe id="device-iframe" sandbox="allow-scripts"></iframe>
+        <div class="home-bar" id="device-homebar"></div>
+      </div>
+      <div class="device-label" id="device-label"></div>
+    </div>
   </div>
+
   <script>
-    function setSize(cls, btn) {
-      document.body.className = cls;
+    const DEVICES = {
+      // Desktop
+      desktop: { w: 1440, h: 900, label: "Desktop", type: "desktop" },
+      // Tablets (CSS points)
+      "ipad-pro-13": { w: 1024, h: 1366, label: 'iPad Pro 13"', type: "tablet" },
+      "ipad-pro-11": { w: 834, h: 1194, label: 'iPad Pro 11"', type: "tablet" },
+      "ipad-air": { w: 820, h: 1180, label: "iPad Air", type: "tablet" },
+      "ipad-mini": { w: 744, h: 1133, label: "iPad mini", type: "tablet" },
+      // Phones (CSS points)
+      "iphone-16-pro-max": { w: 440, h: 956, label: "iPhone 16 Pro Max", type: "phone" },
+      "iphone-16-pro": { w: 402, h: 874, label: "iPhone 16 Pro", type: "phone" },
+      "iphone-16": { w: 393, h: 852, label: "iPhone 16", type: "phone" },
+      "iphone-se": { w: 375, h: 667, label: "iPhone SE", type: "phone" },
+    };
+
+    let currentSrc = "";
+    let currentMode = "fill";
+    let currentDevice = "desktop";
+
+    function clearActive() {
       document.querySelectorAll('.toolbar button').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      document.getElementById('tablet-select').style.display = 'none';
+      document.getElementById('phone-select').style.display = 'none';
     }
+
+    function updateDimLabel(w, h) {
+      document.getElementById('dim-label').textContent = `${w} × ${h}`;
+    }
+
+    function switchMode(mode, btn) {
+      clearActive();
+      if (btn) btn.classList.add('active');
+      currentMode = mode;
+      document.body.className = 'mode-' + mode;
+      document.getElementById('dim-label').textContent = '';
+
+      if (mode === 'fill') {
+        document.getElementById('preview-frame').src = currentSrc;
+      } else if (mode === 'fit') {
+        applyFit();
+      }
+    }
+
+    function applyFit() {
+      const frame = document.getElementById('preview-frame');
+      const container = document.getElementById('frame-container');
+      // Render at a large size, then scale to fit
+      const contentW = 1440;
+      const contentH = 900;
+      frame.style.width = contentW + 'px';
+      frame.style.height = contentH + 'px';
+      frame.src = currentSrc;
+
+      requestAnimationFrame(() => {
+        const cw = container.clientWidth;
+        const ch = container.clientHeight;
+        const scale = Math.min(cw / contentW, ch / contentH, 1);
+        frame.style.transform = `scale(${scale})`;
+        frame.style.width = contentW + 'px';
+        frame.style.height = contentH + 'px';
+        updateDimLabel(contentW, contentH);
+      });
+    }
+
+    function switchDevice(deviceId, btn) {
+      const dev = DEVICES[deviceId];
+      if (!dev) return;
+
+      clearActive();
+      currentMode = 'device';
+      currentDevice = deviceId;
+      document.body.className = 'mode-device';
+
+      // Highlight correct category button
+      if (dev.type === 'desktop') {
+        document.querySelector('[data-device="desktop"]').classList.add('active');
+      } else if (dev.type === 'tablet') {
+        document.querySelector('[data-device="tablet"]').classList.add('active');
+        document.getElementById('tablet-select').style.display = '';
+        document.getElementById('tablet-select').querySelector('select').value = deviceId;
+      } else if (dev.type === 'phone') {
+        document.querySelector('[data-device="mobile"]').classList.add('active');
+        document.getElementById('phone-select').style.display = '';
+        document.getElementById('phone-select').querySelector('select').value = deviceId;
+      }
+
+      // Scale device to fit container
+      const container = document.getElementById('frame-container');
+      const chrome = document.getElementById('device-chrome');
+      const iframe = document.getElementById('device-iframe');
+      const label = document.getElementById('device-label');
+      const notch = document.getElementById('device-notch');
+      const homebar = document.getElementById('device-homebar');
+
+      iframe.width = dev.w;
+      iframe.height = dev.h;
+      iframe.src = currentSrc;
+
+      chrome.className = 'device-chrome' + (dev.type === 'phone' ? ' phone' : '');
+      notch.style.display = (dev.type === 'desktop') ? 'none' : '';
+      homebar.style.display = (dev.type === 'desktop') ? 'none' : '';
+
+      label.textContent = dev.label + ' — ' + dev.w + ' × ' + dev.h;
+      updateDimLabel(dev.w, dev.h);
+
+      // Scale to fit in container
+      requestAnimationFrame(() => {
+        const frameEl = document.getElementById('device-frame');
+        const pad = 48;
+        const cw = container.clientWidth - pad;
+        const ch = container.clientHeight - pad;
+        // Chrome adds ~24px padding + notch/homebar
+        const chromeW = dev.w + 24;
+        const chromeH = dev.h + (dev.type === 'desktop' ? 24 : 50);
+        const scale = Math.min(cw / chromeW, ch / chromeH, 1);
+        frameEl.style.transform = `scale(${scale})`;
+        frameEl.style.transformOrigin = 'center center';
+      });
+    }
+
+    function showTablets(btn) {
+      clearActive();
+      btn.classList.add('active');
+      document.getElementById('tablet-select').style.display = '';
+      const sel = document.getElementById('tablet-select').querySelector('select');
+      switchDevice(sel.value);
+    }
+
+    function showPhones(btn) {
+      clearActive();
+      btn.classList.add('active');
+      document.getElementById('phone-select').style.display = '';
+      const sel = document.getElementById('phone-select').querySelector('select');
+      switchDevice(sel.value);
+    }
+
+    // Refit on resize
+    window.addEventListener('resize', () => {
+      if (currentMode === 'fit') applyFit();
+      if (currentMode === 'device') switchDevice(currentDevice);
+    });
 
     PeepSDK.on('init', ({ filePath, fileName }) => {
       const backendUrl = 'http://localhost:8000';
-      document.getElementById('preview-frame').src =
-        `${backendUrl}/api/file/raw?path=${encodeURIComponent(filePath)}`;
+      currentSrc = `${backendUrl}/api/file/raw?path=${encodeURIComponent(filePath)}`;
+      document.getElementById('preview-frame').src = currentSrc;
       document.getElementById('status').textContent = fileName;
       PeepSDK.ready();
     });
