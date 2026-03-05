@@ -1,16 +1,19 @@
 import { useEffect, useRef } from "react";
 import { api, FileData, PeepManifest } from "@/utils/api";
+import ProjectViewer from "@/components/ProjectViewer/ProjectViewer";
 
 interface PreviewPaneProps {
   file: FileData | null;
   peep: PeepManifest | null;
   onSaveStatus?: (status: string) => void;
+  statuses?: string[];
 }
 
 export default function PreviewPane({
   file,
   peep,
   onSaveStatus,
+  statuses,
 }: PreviewPaneProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const iframeReady = useRef(false);
@@ -103,7 +106,8 @@ export default function PreviewPane({
     return () => window.removeEventListener("message", handleMessage);
   }, [onSaveStatus]);
 
-  if (!file || !peep) {
+  // No file selected — show placeholder
+  if (!file) {
     return (
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center animate-fade-in">
@@ -113,6 +117,33 @@ export default function PreviewPane({
             className="w-12 h-12 mx-auto mb-3 opacity-15"
           />
           <p className="text-xs text-tertiary">Select a file to preview</p>
+        </div>
+      </div>
+    );
+  }
+
+  // project.json — use built-in ProjectViewer
+  if (file.name === "project.json") {
+    return (
+      <ProjectViewer
+        filePath={file.path}
+        onSaveStatus={onSaveStatus}
+        statuses={statuses}
+      />
+    );
+  }
+
+  // No peep matched — show placeholder
+  if (!peep) {
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center animate-fade-in">
+          <img
+            src="/peep-icon.png"
+            alt=""
+            className="w-12 h-12 mx-auto mb-3 opacity-15"
+          />
+          <p className="text-xs text-tertiary">No viewer available for this file type</p>
         </div>
       </div>
     );
