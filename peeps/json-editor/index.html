@@ -17,20 +17,26 @@
       --text-secondary: #ccc;
       --text-tertiary: #888;
       --accent: #0078d4;
+      --color-string: #6aab73;
+      --color-number: #6897bb;
+      --color-bool: #cc7832;
+      --color-null: #808080;
+      --color-key: #9876aa;
+      --color-bracket: #999;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background: var(--bg-app);
       color: var(--text-primary);
-      font: 14px/1.6 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      font: 13px/1.5 'SF Mono', 'Fira Code', 'Consolas', monospace;
       height: 100vh;
       display: flex;
       flex-direction: column;
     }
     .toolbar {
       display: flex;
-      gap: 8px;
-      padding: 8px 12px;
+      gap: 6px;
+      padding: 6px 12px;
       background: var(--bg-toolbar);
       border-bottom: 1px solid var(--border);
       align-items: center;
@@ -39,17 +45,20 @@
       background: var(--bg-elevated);
       color: var(--text-secondary);
       border: 1px solid var(--border-subtle);
-      padding: 4px 12px;
+      padding: 3px 10px;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
     }
     .toolbar button:hover { background: var(--bg-hover); }
     .toolbar button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .toolbar .sep { width: 1px; height: 16px; background: var(--border-subtle); margin: 0 2px; }
     .toolbar .spacer { flex: 1; }
-    .toolbar .status { font-size: 11px; color: var(--text-tertiary); }
+    .toolbar .status { font-size: 10px; color: var(--text-tertiary); }
     .toolbar .error { color: #f44; }
     .toolbar .valid { color: #4c4; }
+
+    /* Text editor */
     #editor {
       flex: 1;
       width: 100%;
@@ -64,12 +73,208 @@
     }
     #editor:read-only { cursor: default; }
     #editor:not(:read-only) { background: var(--bg-elevated); }
+
+    /* Tree view */
+    #tree-view {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0;
+      display: none;
+    }
+    #tree-view.active { display: block; }
+    #editor.hidden { display: none; }
+
+    .tree-error {
+      padding: 24px;
+      color: #f44;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    /* Tree node */
+    .tn {
+      font-size: 12px;
+      line-height: 1;
+    }
+    .tn-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 12px 3px 0;
+      min-height: 26px;
+      cursor: default;
+      border-radius: 3px;
+    }
+    .tn-row:hover {
+      background: var(--bg-hover);
+    }
+    .tn-row:hover .tn-actions {
+      opacity: 1;
+    }
+    .tn-chevron {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-tertiary);
+      font-size: 10px;
+      flex-shrink: 0;
+      transition: transform 0.15s;
+      user-select: none;
+    }
+    .tn-chevron.open { transform: rotate(90deg); }
+    .tn-chevron.leaf { visibility: hidden; }
+    .tn-key {
+      color: var(--color-key);
+      font-weight: 500;
+      flex-shrink: 0;
+      cursor: text;
+    }
+    .tn-key.index {
+      color: var(--text-tertiary);
+      font-size: 10px;
+      font-weight: normal;
+    }
+    .tn-colon {
+      color: var(--text-tertiary);
+      margin-right: 4px;
+      flex-shrink: 0;
+    }
+    .tn-value {
+      cursor: text;
+      border-radius: 3px;
+      padding: 1px 4px;
+      min-width: 20px;
+      transition: background 0.1s;
+    }
+    .tn-value:hover {
+      background: rgba(255,255,255,0.05);
+    }
+    .tn-value.string { color: var(--color-string); }
+    .tn-value.number { color: var(--color-number); }
+    .tn-value.boolean { color: var(--color-bool); }
+    .tn-value.null { color: var(--color-null); font-style: italic; }
+
+    .tn-bracket {
+      color: var(--color-bracket);
+      font-size: 11px;
+      margin-left: 4px;
+    }
+    .tn-count {
+      color: var(--text-tertiary);
+      font-size: 10px;
+      margin-left: 2px;
+    }
+    .tn-type {
+      font-size: 9px;
+      padding: 0px 4px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text-tertiary);
+      cursor: pointer;
+      flex-shrink: 0;
+      line-height: 16px;
+      user-select: none;
+    }
+    .tn-type:hover {
+      background: rgba(255,255,255,0.12);
+      color: var(--text-secondary);
+    }
+
+    .tn-actions {
+      display: flex;
+      gap: 2px;
+      opacity: 0;
+      transition: opacity 0.1s;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+    .tn-act {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      background: none;
+      border: none;
+      font-family: inherit;
+    }
+    .tn-act:hover {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-primary);
+    }
+    .tn-act.delete:hover {
+      color: #f44;
+      background: rgba(255,68,68,0.1);
+    }
+
+    .tn-children {
+      overflow: hidden;
+    }
+    .tn-children.collapsed {
+      display: none;
+    }
+
+    /* Inline edit input */
+    .tn-input {
+      background: var(--bg-elevated);
+      border: 1px solid var(--accent);
+      color: var(--text-primary);
+      font: inherit;
+      font-size: 12px;
+      padding: 1px 4px;
+      border-radius: 3px;
+      outline: none;
+      min-width: 60px;
+    }
+    .tn-input.key-input {
+      color: var(--color-key);
+      max-width: 200px;
+    }
+    .tn-input.value-input {
+      flex: 1;
+      max-width: 400px;
+    }
+
+    /* Add row */
+    .tn-add-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 12px 2px 0;
+      min-height: 22px;
+    }
+    .tn-add-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      background: none;
+      border: none;
+      font-family: inherit;
+    }
+    .tn-add-btn:hover {
+      background: rgba(255,255,255,0.06);
+      color: var(--accent);
+    }
   </style>
 </head>
 <body>
   <div class="toolbar">
     <button id="btn-view" class="active" onclick="setMode('view')">View</button>
     <button id="btn-edit" onclick="setMode('edit')">Edit</button>
+    <button id="btn-tree" onclick="setMode('tree')">Tree</button>
+    <span class="sep"></span>
     <button onclick="formatJSON()">Format</button>
     <button onclick="minifyJSON()">Minify</button>
     <span class="spacer"></span>
@@ -77,18 +282,49 @@
     <span class="status" id="status"></span>
   </div>
   <textarea id="editor" readonly spellcheck="false"></textarea>
+  <div id="tree-view"></div>
+
   <script>
     let currentMode = 'view';
     let originalContent = '';
     let saveTimeout = null;
+    let treeData = null; // Live in-memory JSON object for tree mode
+
+    // ── Mode switching ──
 
     function setMode(mode) {
-      currentMode = mode;
       const editor = document.getElementById('editor');
-      editor.readOnly = mode === 'view';
+      const treeView = document.getElementById('tree-view');
+
+      // Sync data between modes
+      if (currentMode === 'tree' && mode !== 'tree') {
+        // Tree → text: serialize tree data to textarea
+        if (treeData !== null) {
+          editor.value = JSON.stringify(treeData, null, 2);
+          validateJSON();
+        }
+      }
+      if (mode === 'tree' && currentMode !== 'tree') {
+        // Text → tree: parse textarea into tree
+        try {
+          treeData = JSON.parse(editor.value);
+          renderTree();
+        } catch (e) {
+          treeView.innerHTML = '<div class="tree-error">Cannot parse JSON: ' + escHtml(e.message) + '</div>';
+        }
+      }
+
+      currentMode = mode;
+      editor.readOnly = mode !== 'edit';
+      editor.classList.toggle('hidden', mode === 'tree');
+      treeView.classList.toggle('active', mode === 'tree');
+
       document.getElementById('btn-view').classList.toggle('active', mode === 'view');
       document.getElementById('btn-edit').classList.toggle('active', mode === 'edit');
+      document.getElementById('btn-tree').classList.toggle('active', mode === 'tree');
     }
+
+    // ── JSON text operations ──
 
     function validateJSON() {
       const el = document.getElementById('validation');
@@ -103,41 +339,427 @@
     }
 
     function formatJSON() {
+      if (currentMode === 'tree') return;
       const editor = document.getElementById('editor');
       try {
-        const parsed = JSON.parse(editor.value);
-        editor.value = JSON.stringify(parsed, null, 2);
+        editor.value = JSON.stringify(JSON.parse(editor.value), null, 2);
         validateJSON();
       } catch {}
     }
 
     function minifyJSON() {
+      if (currentMode === 'tree') return;
       const editor = document.getElementById('editor');
       try {
-        const parsed = JSON.parse(editor.value);
-        editor.value = JSON.stringify(parsed);
+        editor.value = JSON.stringify(JSON.parse(editor.value));
         validateJSON();
       } catch {}
     }
 
-    function autoSave() {
+    function triggerSave() {
       clearTimeout(saveTimeout);
       saveTimeout = setTimeout(() => {
-        const content = document.getElementById('editor').value;
-        if (content !== originalContent) {
-          PeepSDK.save(content);
-          document.getElementById('status').textContent = 'Saved';
-          setTimeout(() => { document.getElementById('status').textContent = ''; }, 2000);
+        let content;
+        if (currentMode === 'tree') {
+          content = JSON.stringify(treeData, null, 2);
+          // Keep textarea in sync
+          document.getElementById('editor').value = content;
+        } else {
+          content = document.getElementById('editor').value;
         }
-      }, 1000);
+        PeepSDK.save(content);
+        const el = document.getElementById('status');
+        el.textContent = 'Saved';
+        setTimeout(() => { if (el.textContent === 'Saved') el.textContent = ''; }, 2000);
+      }, 800);
     }
+
+    // ── Tree rendering ──
+
+    function escHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function typeOf(v) {
+      if (v === null) return 'null';
+      if (Array.isArray(v)) return 'array';
+      return typeof v;
+    }
+
+    function typeLabel(v) {
+      const t = typeOf(v);
+      if (t === 'string') return 'str';
+      if (t === 'number') return 'num';
+      if (t === 'boolean') return 'bool';
+      if (t === 'array') return `[ ${v.length} ]`;
+      if (t === 'object') return `{ ${Object.keys(v).length} }`;
+      return t;
+    }
+
+    function displayValue(v) {
+      const t = typeOf(v);
+      if (t === 'string') return '"' + v + '"';
+      if (t === 'null') return 'null';
+      return String(v);
+    }
+
+    // Get value at a JSON path (array of keys/indices)
+    function getAtPath(obj, path) {
+      let cur = obj;
+      for (const k of path) cur = cur[k];
+      return cur;
+    }
+
+    // Set value at a JSON path
+    function setAtPath(obj, path, val) {
+      if (path.length === 0) { treeData = val; return; }
+      let cur = obj;
+      for (let i = 0; i < path.length - 1; i++) cur = cur[path[i]];
+      cur[path[path.length - 1]] = val;
+    }
+
+    // Delete at path
+    function deleteAtPath(obj, path) {
+      if (path.length === 0) return;
+      let cur = obj;
+      for (let i = 0; i < path.length - 1; i++) cur = cur[path[i]];
+      const key = path[path.length - 1];
+      if (Array.isArray(cur)) {
+        cur.splice(key, 1);
+      } else {
+        delete cur[key];
+      }
+    }
+
+    // Rename key in an object
+    function renameKey(obj, path, oldKey, newKey) {
+      if (oldKey === newKey) return;
+      let cur = obj;
+      for (const k of path) cur = cur[k];
+      // Rebuild object to preserve key order with rename
+      const entries = Object.entries(cur);
+      const newObj = {};
+      for (const [k, v] of entries) {
+        newObj[k === oldKey ? newKey : k] = v;
+      }
+      // Replace parent reference
+      if (path.length === 0) {
+        treeData = newObj;
+      } else {
+        setAtPath(obj, path, newObj);
+      }
+    }
+
+    const collapsed = new Set();
+
+    function toggleCollapse(pathKey) {
+      if (collapsed.has(pathKey)) collapsed.delete(pathKey);
+      else collapsed.add(pathKey);
+      renderTree();
+    }
+
+    function renderTree() {
+      const container = document.getElementById('tree-view');
+      container.innerHTML = '';
+      if (treeData === null || treeData === undefined) {
+        container.innerHTML = '<div class="tree-error">No data</div>';
+        return;
+      }
+      container.appendChild(buildNode(null, treeData, [], 0));
+    }
+
+    function buildNode(key, value, path, depth) {
+      const t = typeOf(value);
+      const isContainer = t === 'object' || t === 'array';
+      const pathKey = path.join('.');
+      const isCollapsed = collapsed.has(pathKey);
+      const indent = depth * 18 + 8;
+
+      const node = document.createElement('div');
+      node.className = 'tn';
+
+      // Main row
+      const row = document.createElement('div');
+      row.className = 'tn-row';
+      row.style.paddingLeft = indent + 'px';
+
+      // Chevron
+      const chev = document.createElement('span');
+      chev.className = 'tn-chevron' + (isContainer ? (isCollapsed ? '' : ' open') : ' leaf');
+      chev.textContent = '▶';
+      if (isContainer) {
+        chev.onclick = (e) => { e.stopPropagation(); toggleCollapse(pathKey); };
+      }
+      row.appendChild(chev);
+
+      // Key
+      if (key !== null) {
+        const keyEl = document.createElement('span');
+        const parentPath = path.slice(0, -1);
+        const parentVal = path.length > 1 ? getAtPath(treeData, parentPath) : treeData;
+        const isArrayItem = Array.isArray(parentVal);
+
+        if (isArrayItem) {
+          keyEl.className = 'tn-key index';
+          keyEl.textContent = key;
+        } else {
+          keyEl.className = 'tn-key';
+          keyEl.textContent = key;
+          keyEl.ondblclick = () => startKeyEdit(keyEl, key, parentPath);
+        }
+        row.appendChild(keyEl);
+
+        const colon = document.createElement('span');
+        colon.className = 'tn-colon';
+        colon.textContent = ':';
+        row.appendChild(colon);
+      }
+
+      // Value display
+      if (isContainer) {
+        const bracket = document.createElement('span');
+        bracket.className = 'tn-bracket';
+        bracket.textContent = t === 'array' ? '[' : '{';
+        row.appendChild(bracket);
+
+        if (isCollapsed) {
+          const count = document.createElement('span');
+          count.className = 'tn-count';
+          const len = t === 'array' ? value.length : Object.keys(value).length;
+          count.textContent = len + (len === 1 ? ' item' : ' items');
+          row.appendChild(count);
+
+          const closeBracket = document.createElement('span');
+          closeBracket.className = 'tn-bracket';
+          closeBracket.textContent = t === 'array' ? ']' : '}';
+          row.appendChild(closeBracket);
+        }
+      } else {
+        const valEl = document.createElement('span');
+        valEl.className = 'tn-value ' + t;
+        valEl.textContent = displayValue(value);
+        if (t === 'boolean') {
+          valEl.style.cursor = 'pointer';
+          valEl.onclick = () => {
+            setAtPath(treeData, path, !value);
+            triggerSave();
+            renderTree();
+          };
+        } else if (t !== 'null') {
+          valEl.ondblclick = () => startValueEdit(valEl, value, path, t);
+        } else {
+          // null — click type chip to change
+        }
+        row.appendChild(valEl);
+      }
+
+      // Type chip
+      const typeChip = document.createElement('span');
+      typeChip.className = 'tn-type';
+      typeChip.textContent = typeLabel(value);
+      typeChip.title = 'Change type';
+      typeChip.onclick = (e) => {
+        e.stopPropagation();
+        cycleType(path, value);
+      };
+      row.appendChild(typeChip);
+
+      // Action buttons
+      const actions = document.createElement('span');
+      actions.className = 'tn-actions';
+
+      if (isContainer) {
+        const addBtn = document.createElement('button');
+        addBtn.className = 'tn-act';
+        addBtn.textContent = '+';
+        addBtn.title = 'Add item';
+        addBtn.onclick = (e) => {
+          e.stopPropagation();
+          addChild(path, value, t);
+        };
+        actions.appendChild(addBtn);
+      }
+
+      // Delete (only if not root)
+      if (path.length > 0) {
+        const delBtn = document.createElement('button');
+        delBtn.className = 'tn-act delete';
+        delBtn.textContent = '×';
+        delBtn.title = 'Delete';
+        delBtn.onclick = (e) => {
+          e.stopPropagation();
+          deleteAtPath(treeData, path);
+          triggerSave();
+          renderTree();
+        };
+        actions.appendChild(delBtn);
+      }
+
+      row.appendChild(actions);
+      node.appendChild(row);
+
+      // Children
+      if (isContainer && !isCollapsed) {
+        const childContainer = document.createElement('div');
+        childContainer.className = 'tn-children';
+
+        if (t === 'object') {
+          Object.entries(value).forEach(([k, v]) => {
+            childContainer.appendChild(buildNode(k, v, [...path, k], depth + 1));
+          });
+        } else {
+          value.forEach((v, i) => {
+            childContainer.appendChild(buildNode(i, v, [...path, i], depth + 1));
+          });
+        }
+
+        // Add button row
+        const addRow = document.createElement('div');
+        addRow.className = 'tn-add-row';
+        addRow.style.paddingLeft = ((depth + 1) * 18 + 8) + 'px';
+        const addBtn = document.createElement('button');
+        addBtn.className = 'tn-add-btn';
+        addBtn.innerHTML = '+ add ' + (t === 'array' ? 'item' : 'property');
+        addBtn.onclick = () => addChild(path, value, t);
+        addRow.appendChild(addBtn);
+        childContainer.appendChild(addRow);
+
+        node.appendChild(childContainer);
+
+        // Closing bracket
+        const closeRow = document.createElement('div');
+        closeRow.className = 'tn-row';
+        closeRow.style.paddingLeft = indent + 'px';
+        const closeBracket = document.createElement('span');
+        closeBracket.className = 'tn-bracket';
+        closeBracket.style.marginLeft = '20px';
+        closeBracket.textContent = t === 'array' ? ']' : '}';
+        closeRow.appendChild(closeBracket);
+        node.appendChild(closeRow);
+      }
+
+      return node;
+    }
+
+    // ── Inline editing ──
+
+    function startValueEdit(el, currentVal, path, t) {
+      const input = document.createElement('input');
+      input.className = 'tn-input value-input';
+      input.value = t === 'string' ? currentVal : String(currentVal);
+      el.replaceWith(input);
+      input.focus();
+      input.select();
+
+      function commit() {
+        let newVal;
+        const raw = input.value;
+        if (t === 'string') {
+          newVal = raw;
+        } else if (t === 'number') {
+          newVal = Number(raw);
+          if (isNaN(newVal)) newVal = 0;
+        } else {
+          newVal = raw;
+        }
+        setAtPath(treeData, path, newVal);
+        triggerSave();
+        renderTree();
+      }
+
+      input.onkeydown = (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); commit(); }
+        if (e.key === 'Escape') { e.preventDefault(); renderTree(); }
+      };
+      input.onblur = commit;
+    }
+
+    function startKeyEdit(el, currentKey, parentPath) {
+      const input = document.createElement('input');
+      input.className = 'tn-input key-input';
+      input.value = currentKey;
+      el.replaceWith(input);
+      input.focus();
+      input.select();
+
+      function commit() {
+        const newKey = input.value.trim();
+        if (newKey && newKey !== currentKey) {
+          renameKey(treeData, parentPath, currentKey, newKey);
+          triggerSave();
+        }
+        renderTree();
+      }
+
+      input.onkeydown = (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); commit(); }
+        if (e.key === 'Escape') { e.preventDefault(); renderTree(); }
+      };
+      input.onblur = commit;
+    }
+
+    // ── Add child ──
+
+    function addChild(path, container, containerType) {
+      if (containerType === 'array') {
+        container.push('');
+        triggerSave();
+        renderTree();
+      } else {
+        // Object — need to prompt for key
+        const keys = Object.keys(container);
+        let newKey = 'newKey';
+        let i = 1;
+        while (keys.includes(newKey)) { newKey = 'newKey' + (i++); }
+        container[newKey] = '';
+        triggerSave();
+        renderTree();
+        // Auto-focus the new key for editing
+        setTimeout(() => {
+          const allKeys = document.querySelectorAll('.tn-key:not(.index)');
+          const last = allKeys[allKeys.length - 1];
+          if (last && last.textContent === newKey) {
+            const parentPath = path;
+            startKeyEdit(last, newKey, parentPath);
+          }
+        }, 50);
+      }
+    }
+
+    // ── Cycle type ──
+
+    const TYPE_CYCLE = ['string', 'number', 'boolean', 'null', 'object', 'array'];
+
+    function cycleType(path, currentVal) {
+      const currentType = typeOf(currentVal);
+      const idx = TYPE_CYCLE.indexOf(currentType);
+      const nextType = TYPE_CYCLE[(idx + 1) % TYPE_CYCLE.length];
+      let newVal;
+      switch (nextType) {
+        case 'string': newVal = currentType === 'number' ? String(currentVal) : ''; break;
+        case 'number': newVal = currentType === 'string' ? (Number(currentVal) || 0) : 0; break;
+        case 'boolean': newVal = false; break;
+        case 'null': newVal = null; break;
+        case 'object': newVal = {}; break;
+        case 'array': newVal = []; break;
+      }
+      if (path.length === 0) {
+        treeData = newVal;
+      } else {
+        setAtPath(treeData, path, newVal);
+      }
+      triggerSave();
+      renderTree();
+    }
+
+    // ── PeepSDK events ──
 
     PeepSDK.on('init', ({ content, fileName }) => {
       originalContent = content || '';
       const editor = document.getElementById('editor');
-      // Auto-format on load
       try {
-        editor.value = JSON.stringify(JSON.parse(originalContent), null, 2);
+        const parsed = JSON.parse(originalContent);
+        editor.value = JSON.stringify(parsed, null, 2);
       } catch {
         editor.value = originalContent;
       }
@@ -147,10 +769,15 @@
     });
 
     PeepSDK.on('file-changed', ({ content }) => {
-      if (currentMode === 'view') {
+      if (currentMode === 'view' || currentMode === 'tree') {
         originalContent = content;
         try {
-          document.getElementById('editor').value = JSON.stringify(JSON.parse(content), null, 2);
+          const parsed = JSON.parse(content);
+          document.getElementById('editor').value = JSON.stringify(parsed, null, 2);
+          if (currentMode === 'tree') {
+            treeData = parsed;
+            renderTree();
+          }
         } catch {
           document.getElementById('editor').value = content;
         }
@@ -160,7 +787,7 @@
 
     document.getElementById('editor').addEventListener('input', () => {
       validateJSON();
-      if (currentMode === 'edit') autoSave();
+      if (currentMode === 'edit') triggerSave();
     });
   </script>
 </body>

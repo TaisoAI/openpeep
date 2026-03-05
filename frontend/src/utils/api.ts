@@ -75,7 +75,7 @@ export const api = {
   listPeeps: () => fetchJSON<{ peeps: PeepManifest[] }>("/peeps"),
 
   peepFileUrl: (peepId: string, filePath: string) =>
-    `${API_BASE}/peeps/${peepId}/${filePath}`,
+    `${API_BASE}/peeps/${peepId}/${filePath}?v=${Date.now()}`,
 
   uninstallPeep: (peepId: string) =>
     fetchJSON<{ uninstalled: boolean }>(`/peeps/${peepId}`, {

@@ -37,10 +37,8 @@
       border-bottom: 1px solid var(--border);
       align-items: center;
       flex-shrink: 0;
-      flex-wrap: nowrap;
-      overflow-x: auto;
     }
-    .tb { /* toolbar button/select base */
+    .tb {
       background: var(--bg-elevated);
       color: var(--text-secondary);
       border: 1px solid transparent;
@@ -57,15 +55,28 @@
     .sep { width: 1px; height: 16px; background: var(--border-subtle); margin: 0 4px; flex-shrink: 0; }
     .spacer { flex: 1; }
     .dim { font-size: 10px; color: var(--text-tertiary); font-family: monospace; white-space: nowrap; }
-    .device-select {
+
+    /* Device picker dropdown — only visible when its category is active */
+    .device-pick {
+      display: none;
       position: relative;
       flex-shrink: 0;
     }
-    .device-select select {
+    .device-pick.visible { display: block; }
+    .device-pick select {
       appearance: none;
-      padding-right: 20px;
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+      padding: 3px 22px 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-family: inherit;
+      outline: none;
     }
-    .device-select::after {
+    .device-pick select:hover { background: var(--bg-hover); }
+    .device-pick::after {
       content: "▾";
       position: absolute;
       right: 7px;
@@ -75,9 +86,13 @@
       font-size: 9px;
       pointer-events: none;
     }
-    .device-select.active select { background: var(--accent); color: #fff; }
-    .device-select.active::after { color: rgba(255,255,255,0.7); }
-    .rotate-btn { padding: 3px 6px; }
+
+    /* Rotate button — proper screen-rotation icon */
+    .rotate-btn {
+      display: none;
+      padding: 3px 6px;
+    }
+    .rotate-btn.visible { display: block; }
     .rotate-btn svg { width: 14px; height: 14px; display: block; }
 
     /* Container */
@@ -98,7 +113,7 @@
     /* Fit mode */
     body.mode-fit #container {
       padding: 24px;
-      background: repeating-conic-gradient(#222 0% 25%, #1a1a1a 0% 50%) 50% / 16px 16px;
+      background: repeating-conic-gradient(#2a2a2a 0% 25%, #242424 0% 50%) 50% / 16px 16px;
     }
     #fit-frame {
       display: none;
@@ -114,7 +129,7 @@
     /* Device mode */
     body.mode-device #container {
       padding: 24px;
-      background: repeating-conic-gradient(#222 0% 25%, #1a1a1a 0% 50%) 50% / 16px 16px;
+      background: repeating-conic-gradient(#2a2a2a 0% 25%, #242424 0% 50%) 50% / 16px 16px;
     }
     #device-wrapper {
       display: none;
@@ -125,14 +140,14 @@
 
     /* --- Monitor frame --- */
     .monitor-body {
-      background: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+      background: linear-gradient(180deg, #141414 0%, #080808 100%);
       border-radius: 12px;
       padding: 8px 8px 24px 8px;
       box-shadow:
         0 8px 32px rgba(0,0,0,0.6),
         0 2px 8px rgba(0,0,0,0.4),
-        inset 0 1px 0 rgba(255,255,255,0.06),
-        inset 0 0 0 1px rgba(255,255,255,0.04);
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        inset 0 0 0 1px rgba(255,255,255,0.06);
       position: relative;
     }
     .monitor-body iframe {
@@ -157,13 +172,13 @@
       height: 0;
       border-left: 40px solid transparent;
       border-right: 40px solid transparent;
-      border-top: 28px solid #111;
+      border-top: 28px solid #0a0a0a;
       margin: 0 auto;
     }
     .monitor-base {
       width: 130px;
       height: 6px;
-      background: linear-gradient(180deg, #1a1a1a 0%, #111 100%);
+      background: linear-gradient(180deg, #0e0e0e 0%, #080808 100%);
       border-radius: 0 0 6px 6px;
       margin: 0 auto;
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
@@ -171,14 +186,14 @@
 
     /* --- Tablet frame --- */
     .tablet-body {
-      background: linear-gradient(180deg, #1c1c1c 0%, #0d0d0d 100%);
+      background: linear-gradient(180deg, #141414 0%, #080808 100%);
       border-radius: 18px;
       padding: 14px;
       box-shadow:
         0 8px 32px rgba(0,0,0,0.6),
         0 2px 8px rgba(0,0,0,0.4),
-        inset 0 1px 0 rgba(255,255,255,0.06),
-        inset 0 0 0 1px rgba(255,255,255,0.04);
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        inset 0 0 0 1px rgba(255,255,255,0.06);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -206,14 +221,14 @@
 
     /* --- Phone frame --- */
     .phone-body {
-      background: linear-gradient(180deg, #1c1c1c 0%, #0d0d0d 100%);
+      background: linear-gradient(180deg, #141414 0%, #080808 100%);
       border-radius: 36px;
       padding: 14px 8px;
       box-shadow:
         0 8px 32px rgba(0,0,0,0.6),
         0 2px 8px rgba(0,0,0,0.4),
-        inset 0 1px 0 rgba(255,255,255,0.06),
-        inset 0 0 0 1px rgba(255,255,255,0.04);
+        inset 0 1px 0 rgba(255,255,255,0.08),
+        inset 0 0 0 1px rgba(255,255,255,0.06);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -280,42 +295,43 @@
     <button class="tb" id="btn-fit" onclick="setMode('fit')">Fit</button>
     <span class="sep"></span>
 
-    <div class="device-select" id="ds-desktop">
-      <select class="tb" id="sel-desktop" onchange="setDevice(this.value, 'desktop')">
-        <option value="" disabled selected>Desktop</option>
-        <option value="laptop-sm">Laptop 1280×800</option>
-        <option value="laptop">Laptop 1440×900</option>
-        <option value="fhd">FHD 1920×1080</option>
-        <option value="ultrawide">Ultrawide 2560×1080</option>
+    <!-- Category buttons — click to activate + show that category's dropdown -->
+    <button class="tb" id="btn-desktop" onclick="activateCategory('desktop')">Desktop</button>
+    <button class="tb" id="btn-tablet" onclick="activateCategory('tablet')">Tablet</button>
+    <button class="tb" id="btn-phone" onclick="activateCategory('phone')">Phone</button>
+
+    <!-- Device pickers — only one visible at a time -->
+    <div class="device-pick" id="pick-desktop">
+      <select id="sel-desktop" onchange="pickDevice(this.value)">
+        <option value="laptop-sm">1280 × 800</option>
+        <option value="laptop" selected>1440 × 900</option>
+        <option value="fhd">1920 × 1080</option>
+        <option value="ultrawide">2560 × 1080</option>
       </select>
     </div>
-
-    <div class="device-select" id="ds-tablet">
-      <select class="tb" id="sel-tablet" onchange="setDevice(this.value, 'tablet')">
-        <option value="" disabled selected>Tablet</option>
+    <div class="device-pick" id="pick-tablet">
+      <select id="sel-tablet" onchange="pickDevice(this.value)">
         <option value="ipad-pro-13">iPad Pro 13"</option>
         <option value="ipad-pro-11">iPad Pro 11"</option>
-        <option value="ipad-air">iPad Air</option>
+        <option value="ipad-air" selected>iPad Air</option>
         <option value="ipad-mini">iPad mini</option>
       </select>
     </div>
-
-    <div class="device-select" id="ds-phone">
-      <select class="tb" id="sel-phone" onchange="setDevice(this.value, 'phone')">
-        <option value="" disabled selected>Phone</option>
+    <div class="device-pick" id="pick-phone">
+      <select id="sel-phone" onchange="pickDevice(this.value)">
         <option value="iphone-16-pro-max">iPhone 16 Pro Max</option>
         <option value="iphone-16-pro">iPhone 16 Pro</option>
-        <option value="iphone-16">iPhone 16</option>
+        <option value="iphone-16" selected>iPhone 16</option>
         <option value="iphone-se">iPhone SE</option>
       </select>
     </div>
 
-    <button class="tb rotate-btn" id="btn-rotate" onclick="toggleRotation()" title="Rotate" style="display:none">
+    <!-- Rotate: screen rotation icon (rectangle with corner arrow) -->
+    <button class="tb rotate-btn" id="btn-rotate" onclick="toggleRotation()" title="Rotate orientation">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 2v6h-6"/>
-        <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
-        <path d="M3 22v-6h6"/>
-        <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+        <rect x="4" y="2" width="16" height="20" rx="2"/>
+        <path d="M15 5l2 2-2 2" opacity="0.5"/>
+        <path d="M12 7h5" opacity="0.5"/>
       </svg>
     </button>
 
@@ -332,52 +348,51 @@
 
   <script>
     const DEVICES = {
-      // Desktops (viewport sizes)
-      "laptop-sm":  { w: 1280, h: 800,  label: "Laptop",     type: "monitor" },
-      "laptop":     { w: 1440, h: 900,  label: "Laptop",     type: "monitor" },
-      "fhd":        { w: 1920, h: 1080, label: "Full HD",    type: "monitor" },
-      "ultrawide":  { w: 2560, h: 1080, label: "Ultrawide",  type: "monitor" },
-      // Tablets (CSS logical points, portrait)
-      "ipad-pro-13": { w: 1024, h: 1366, label: 'iPad Pro 13"', type: "tablet" },
-      "ipad-pro-11": { w: 834,  h: 1194, label: 'iPad Pro 11"', type: "tablet" },
-      "ipad-air":    { w: 820,  h: 1180, label: "iPad Air",     type: "tablet" },
-      "ipad-mini":   { w: 744,  h: 1133, label: "iPad mini",    type: "tablet" },
-      // Phones (CSS logical points, portrait)
-      "iphone-16-pro-max": { w: 440, h: 956, label: "iPhone 16 Pro Max", type: "phone" },
-      "iphone-16-pro":     { w: 402, h: 874, label: "iPhone 16 Pro",     type: "phone" },
-      "iphone-16":         { w: 393, h: 852, label: "iPhone 16",         type: "phone" },
-      "iphone-se":         { w: 375, h: 667, label: "iPhone SE",         type: "phone" },
+      "laptop-sm":  { w: 1280, h: 800,  label: "Laptop 1280×800",    type: "monitor", cat: "desktop" },
+      "laptop":     { w: 1440, h: 900,  label: "Laptop 1440×900",    type: "monitor", cat: "desktop" },
+      "fhd":        { w: 1920, h: 1080, label: "FHD 1920×1080",      type: "monitor", cat: "desktop" },
+      "ultrawide":  { w: 2560, h: 1080, label: "Ultrawide 2560×1080",type: "monitor", cat: "desktop" },
+
+      "ipad-pro-13": { w: 1024, h: 1366, label: 'iPad Pro 13"', type: "tablet", cat: "tablet" },
+      "ipad-pro-11": { w: 834,  h: 1194, label: 'iPad Pro 11"', type: "tablet", cat: "tablet" },
+      "ipad-air":    { w: 820,  h: 1180, label: "iPad Air",     type: "tablet", cat: "tablet" },
+      "ipad-mini":   { w: 744,  h: 1133, label: "iPad mini",    type: "tablet", cat: "tablet" },
+
+      "iphone-16-pro-max": { w: 440, h: 956, label: "iPhone 16 Pro Max", type: "phone", cat: "phone" },
+      "iphone-16-pro":     { w: 402, h: 874, label: "iPhone 16 Pro",     type: "phone", cat: "phone" },
+      "iphone-16":         { w: 393, h: 852, label: "iPhone 16",         type: "phone", cat: "phone" },
+      "iphone-se":         { w: 375, h: 667, label: "iPhone SE",         type: "phone", cat: "phone" },
     };
 
     let currentSrc = "";
     let currentMode = "fill";
-    let currentDeviceId = "";
     let currentCat = "";
+    let currentDeviceId = "";
     let isLandscape = false;
 
-    function clearDeviceHighlights() {
-      document.querySelectorAll('.device-select').forEach(el => el.classList.remove('active'));
+    /* --- Toolbar state --- */
+
+    function deactivateAll() {
+      document.getElementById('btn-fill').classList.remove('active');
+      document.getElementById('btn-fit').classList.remove('active');
+      document.getElementById('btn-desktop').classList.remove('active');
+      document.getElementById('btn-tablet').classList.remove('active');
+      document.getElementById('btn-phone').classList.remove('active');
+      document.querySelectorAll('.device-pick').forEach(el => el.classList.remove('visible'));
+      document.getElementById('btn-rotate').classList.remove('visible');
     }
 
+    /* --- Fill / Fit --- */
+
     function setMode(mode) {
+      deactivateAll();
       currentMode = mode;
-      currentDeviceId = "";
       currentCat = "";
+      currentDeviceId = "";
       isLandscape = false;
       document.body.className = 'mode-' + mode;
-
-      document.getElementById('btn-fill').classList.toggle('active', mode === 'fill');
-      document.getElementById('btn-fit').classList.toggle('active', mode === 'fit');
-      document.getElementById('btn-rotate').style.display = 'none';
+      document.getElementById('btn-' + mode).classList.add('active');
       document.getElementById('dim-label').textContent = '';
-      clearDeviceHighlights();
-
-      // Reset selects to placeholder
-      document.getElementById('sel-desktop').selectedIndex = 0;
-      document.getElementById('sel-tablet').selectedIndex = 0;
-      document.getElementById('sel-phone').selectedIndex = 0;
-
-      // Clear device
       document.getElementById('device-wrapper').innerHTML = '';
       document.getElementById('device-wrapper').style.cssText = '';
       document.getElementById('fit-frame').style.cssText = '';
@@ -410,34 +425,35 @@
       });
     }
 
-    function setDevice(deviceId, cat) {
-      if (!deviceId) return;
-      const dev = DEVICES[deviceId];
-      if (!dev) return;
+    /* --- Device categories --- */
 
-      currentDeviceId = deviceId;
-      currentCat = cat;
+    function activateCategory(cat) {
+      deactivateAll();
       currentMode = 'device';
+      currentCat = cat;
+      isLandscape = false;
       document.body.className = 'mode-device';
-
-      // Toolbar state
-      document.getElementById('btn-fill').classList.remove('active');
-      document.getElementById('btn-fit').classList.remove('active');
       document.getElementById('fill-frame').src = '';
       document.getElementById('fit-frame').style.cssText = '';
 
-      clearDeviceHighlights();
-      document.getElementById('ds-' + cat).classList.add('active');
+      // Highlight category button + show its picker
+      document.getElementById('btn-' + cat).classList.add('active');
+      document.getElementById('pick-' + cat).classList.add('visible');
 
-      // Reset other selects to placeholder
-      ['desktop', 'tablet', 'phone'].forEach(c => {
-        if (c !== cat) document.getElementById('sel-' + c).selectedIndex = 0;
-      });
+      // Show rotate for tablet/phone
+      if (cat !== 'desktop') {
+        document.getElementById('btn-rotate').classList.add('visible');
+      }
 
-      // Rotate only for tablet/phone
-      document.getElementById('btn-rotate').style.display = (cat !== 'desktop') ? '' : 'none';
-      if (cat === 'desktop') isLandscape = false;
+      // Use whatever is currently selected in that dropdown
+      const sel = document.getElementById('sel-' + cat);
+      currentDeviceId = sel.value;
+      renderDevice();
+    }
 
+    function pickDevice(deviceId) {
+      currentDeviceId = deviceId;
+      isLandscape = false;
       renderDevice();
     }
 
@@ -445,6 +461,8 @@
       isLandscape = !isLandscape;
       renderDevice();
     }
+
+    /* --- Render device frame --- */
 
     function renderDevice() {
       const dev = DEVICES[currentDeviceId];
@@ -481,17 +499,15 @@
           </div>`;
       }
 
-      const orientLabel = (dev.type !== 'monitor') ? (isLandscape ? ' Landscape' : ' Portrait') : '';
-      html += `<div class="device-info">${dev.label}${orientLabel} — ${w} × ${h}</div>`;
+      const orient = (dev.type !== 'monitor') ? (isLandscape ? ' Landscape' : ' Portrait') : '';
+      html += `<div class="device-info">${dev.label}${orient} — ${w} × ${h}</div>`;
       wrapper.innerHTML = html;
 
-      // Set iframe src after inserting into DOM
       const iframe = wrapper.querySelector('iframe');
       if (iframe && currentSrc) iframe.src = currentSrc;
-
       updateDim(w, h);
 
-      // Scale wrapper to fit container
+      // Scale to fit container
       requestAnimationFrame(() => {
         wrapper.style.transform = 'none';
         const rect = wrapper.getBoundingClientRect();
