@@ -34,10 +34,11 @@ export const api = {
     }),
 
   // Files
-  listFiles: (root: string, path = "", showHidden = false) =>
-    fetchJSON<{ entries: FileEntry[] }>(
-      `/files?root=${encodeURIComponent(root)}&path=${encodeURIComponent(path)}&showHidden=${showHidden}`
-    ),
+  listFiles: (root: string, path = "", showHidden = false, sort: FileSortField = "name", sortDir?: SortDirection) => {
+    let url = `/files?root=${encodeURIComponent(root)}&path=${encodeURIComponent(path)}&showHidden=${showHidden}&sort=${sort}`;
+    if (sortDir) url += `&sortDir=${sortDir}`;
+    return fetchJSON<{ entries: FileEntry[] }>(url);
+  },
 
   readFile: (path: string) =>
     fetchJSON<FileData>(`/file?path=${encodeURIComponent(path)}`),
@@ -113,6 +114,9 @@ export interface ThemeConfig {
   style: "macos" | "windows" | "linux";
   showLogo?: boolean;
 }
+
+export type FileSortField = "name" | "modified" | "created" | "size" | "type";
+export type SortDirection = "asc" | "desc";
 
 export interface FileEntry {
   name: string;
