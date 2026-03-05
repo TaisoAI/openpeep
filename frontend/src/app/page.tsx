@@ -42,6 +42,8 @@ export default function Home() {
   const [activePeep, setActivePeep] = useState<PeepManifest | null>(null);
   const [selectedPath, setSelectedPath] = useState("");
   const [expandedPaths, setExpandedPaths] = useState<string[]>([]);
+  const [sidebarWidth, setSidebarWidth] = useState(240);
+  const resizing = useRef(false);
 
   const loadSources = useCallback(async () => {
     const data = await api.getSources();
@@ -150,6 +152,29 @@ export default function Home() {
     },
     [peeps]
   );
+
+  const startResize = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    resizing.current = true;
+    const startX = e.clientX;
+    const startW = sidebarWidth;
+    const onMove = (ev: MouseEvent) => {
+      if (!resizing.current) return;
+      const newW = Math.min(600, Math.max(160, startW + ev.clientX - startX));
+      setSidebarWidth(newW);
+    };
+    const onUp = () => {
+      resizing.current = false;
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("mouseup", onUp);
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+    document.addEventListener("mousemove", onMove);
+    document.addEventListener("mouseup", onUp);
+  }, [sidebarWidth]);
 
   const goHome = useCallback(() => {
     setBrowseRoot("");
@@ -312,7 +337,7 @@ export default function Home() {
 
         {view === "browse" && browseRoot && (
           <>
-            <aside className="sidebar-glass w-60 border-r border-border flex flex-col min-h-0">
+            <aside className="sidebar-glass border-r border-border flex flex-col min-h-0 relative" style={{ width: sidebarWidth }}>
               <FileTree
                 root={browseRoot}
                 onFileSelect={openFile}
@@ -334,6 +359,10 @@ export default function Home() {
                     openFile(newPath);
                   }
                 }}
+              />
+              <div
+                className="absolute top-0 right-0 w-1 h-full cursor-col-resize hover:bg-accent/30 active:bg-accent/50 transition-colors z-10"
+                onMouseDown={startResize}
               />
             </aside>
 

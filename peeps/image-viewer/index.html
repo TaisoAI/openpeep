@@ -19,21 +19,28 @@
       --accent: #0078d4;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       background: var(--bg-app);
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
       height: 100vh;
       overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      image-rendering: auto;
+
+    /* Canvas — image area */
+    .canvas {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
     }
-    .checkerboard {
+
+    .canvas.checkerboard {
       background-image:
         linear-gradient(45deg, #2a2a2a 25%, transparent 25%),
         linear-gradient(-45deg, #2a2a2a 25%, transparent 25%),
@@ -42,39 +49,314 @@
       background-size: 20px 20px;
       background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
     }
-    .info {
-      position: fixed;
-      bottom: 8px;
-      right: 12px;
+
+    #preview {
+      transform-origin: center center;
+      will-change: transform;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 0 10px;
+      height: 32px;
+      background: var(--bg-toolbar);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .tb-btn {
+      background: transparent;
+      color: var(--text-secondary);
+      border: none;
+      padding: 3px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1;
+      transition: background 0.12s, color 0.12s;
+      white-space: nowrap;
+    }
+    .tb-btn:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+    .tb-btn.active {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+    .tb-btn:active {
+      opacity: 0.8;
+    }
+    .tb-btn.zoom-btn {
+      font-size: 15px;
+      padding: 2px 6px;
+      font-weight: 400;
+    }
+
+    .zoom-display {
+      font: 11px/1 monospace;
       color: var(--text-tertiary);
-      font: 12px/1 monospace;
+      min-width: 36px;
+      text-align: center;
+      cursor: default;
+    }
+
+    .tb-sep {
+      width: 1px;
+      height: 14px;
+      background: var(--border);
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+
+    .spacer { flex: 1; }
+
+    .info-text {
+      color: var(--text-tertiary);
+      font: 11px/1 monospace;
+      white-space: nowrap;
     }
   </style>
 </head>
 <body>
-  <img id="preview" />
-  <div class="info" id="info"></div>
-  <script>
-    PeepSDK.on('init', ({ filePath, ext }) => {
-      const img = document.getElementById('preview');
-      const info = document.getElementById('info');
+  <div class="toolbar">
+    <button class="tb-btn zoom-btn" id="btn-zoom-out" title="Zoom Out (Cmd+−)">−</button>
+    <div class="zoom-display" id="zoom-display">Fit</div>
+    <button class="tb-btn zoom-btn" id="btn-zoom-in" title="Zoom In (Cmd+=)">+</button>
 
-      // Load image via backend raw file endpoint
+    <div class="tb-sep"></div>
+
+    <button class="tb-btn active" id="btn-fit" data-mode="fit" title="Fit to Window (Cmd+0)">Fit</button>
+    <button class="tb-btn" id="btn-pixel" data-mode="pixel" title="Actual Pixels (Cmd+1)">1:1</button>
+    <button class="tb-btn" id="btn-fill-w" data-mode="fill-w" title="Fill Width">↔</button>
+    <button class="tb-btn" id="btn-fill-h" data-mode="fill-h" title="Fill Height">↕</button>
+
+    <div class="spacer"></div>
+    <div class="info-text" id="info"></div>
+  </div>
+
+  <div class="canvas" id="canvas">
+    <img id="preview" />
+  </div>
+
+  <script>
+    // --- State ---
+    let naturalW = 0, naturalH = 0;
+    let mode = 'fit';   // 'fit' | 'pixel' | 'fill-w' | 'fill-h' | 'custom'
+    let scale = 1.0;
+    let panX = 0, panY = 0;
+
+    const ZOOM_LEVELS = [0.1, 0.25, 0.33, 0.5, 0.67, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 5.0, 8.0];
+    const MIN_SCALE = 0.05;
+    const MAX_SCALE = 32;
+
+    const canvas = document.getElementById('canvas');
+    const img = document.getElementById('preview');
+    const info = document.getElementById('info');
+    const zoomDisplay = document.getElementById('zoom-display');
+    const modeButtons = document.querySelectorAll('[data-mode]');
+
+    // --- Rendering ---
+    function applyTransform() {
+      img.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+      updateZoomDisplay();
+      updateActiveButton();
+      updateCursor();
+      updateImageRendering();
+    }
+
+    function updateZoomDisplay() {
+      zoomDisplay.textContent = mode === 'fit' ? 'Fit' : Math.round(scale * 100) + '%';
+    }
+
+    function updateActiveButton() {
+      modeButtons.forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+    }
+
+    function updateCursor() {
+      const { w, h } = getCanvasSize();
+      const pannable = naturalW * scale > w + 1 || naturalH * scale > h + 1;
+      canvas.style.cursor = pannable ? 'grab' : 'default';
+    }
+
+    function updateImageRendering() {
+      img.style.imageRendering = (scale >= 2 && mode === 'pixel') ? 'pixelated' : 'auto';
+    }
+
+    // --- Geometry ---
+    function getCanvasSize() {
+      return { w: canvas.clientWidth, h: canvas.clientHeight };
+    }
+
+    function computeFitScale() {
+      if (!naturalW || !naturalH) return 1;
+      const { w, h } = getCanvasSize();
+      return Math.min(w / naturalW, h / naturalH, 1);
+    }
+
+    function computeFillWidthScale() {
+      if (!naturalW) return 1;
+      return getCanvasSize().w / naturalW;
+    }
+
+    function computeFillHeightScale() {
+      if (!naturalH) return 1;
+      return getCanvasSize().h / naturalH;
+    }
+
+    // --- Mode switching ---
+    function setMode(newMode) {
+      mode = newMode;
+      panX = 0;
+      panY = 0;
+      switch (newMode) {
+        case 'fit':    scale = computeFitScale(); break;
+        case 'pixel':  scale = 1.0; break;
+        case 'fill-w': scale = computeFillWidthScale(); break;
+        case 'fill-h': scale = computeFillHeightScale(); break;
+      }
+      applyTransform();
+    }
+
+    // --- Zoom ---
+    function zoomToLevel(newScale) {
+      mode = 'custom';
+      scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, newScale));
+      clampPan();
+      applyTransform();
+    }
+
+    function zoomIn() {
+      const next = ZOOM_LEVELS.find(l => l > scale + 0.01);
+      zoomToLevel(next || Math.min(scale * 1.25, MAX_SCALE));
+    }
+
+    function zoomOut() {
+      const prev = [...ZOOM_LEVELS].reverse().find(l => l < scale - 0.01);
+      zoomToLevel(prev || Math.max(scale / 1.25, MIN_SCALE));
+    }
+
+    // --- Pan ---
+    function clampPan() {
+      if (!naturalW || !naturalH) return;
+      const { w, h } = getCanvasSize();
+      const scaledW = naturalW * scale;
+      const scaledH = naturalH * scale;
+      const maxPanX = Math.max(0, (scaledW - w) / 2);
+      const maxPanY = Math.max(0, (scaledH - h) / 2);
+      panX = Math.max(-maxPanX, Math.min(maxPanX, panX));
+      panY = Math.max(-maxPanY, Math.min(maxPanY, panY));
+    }
+
+    // --- Event setup (once) ---
+    let dragging = false, startX = 0, startY = 0, startPanX = 0, startPanY = 0;
+
+    canvas.addEventListener('mousedown', e => {
+      if (e.button !== 0) return;
+      dragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      startPanX = panX;
+      startPanY = panY;
+      canvas.style.cursor = 'grabbing';
+      e.preventDefault();
+    });
+
+    window.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      panX = startPanX + (e.clientX - startX);
+      panY = startPanY + (e.clientY - startY);
+      clampPan();
+      applyTransform();
+      canvas.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (!dragging) return;
+      dragging = false;
+      updateCursor();
+    });
+
+    // Mouse wheel zoom
+    canvas.addEventListener('wheel', e => {
+      e.preventDefault();
+      if (e.deltaY < 0) zoomIn();
+      else zoomOut();
+    }, { passive: false });
+
+    // Keyboard shortcuts
+    window.addEventListener('keydown', e => {
+      const meta = e.metaKey || e.ctrlKey;
+      if (meta && e.key === '0') { e.preventDefault(); setMode('fit'); }
+      else if (meta && e.key === '1') { e.preventDefault(); setMode('pixel'); }
+      else if (meta && (e.key === '=' || e.key === '+')) { e.preventDefault(); zoomIn(); }
+      else if (meta && e.key === '-') { e.preventDefault(); zoomOut(); }
+    });
+
+    // Resize observer — recompute fit/fill modes when canvas resizes
+    new ResizeObserver(() => {
+      if (!naturalW) return;
+      if (mode === 'fit') { scale = computeFitScale(); applyTransform(); }
+      else if (mode === 'fill-w') { scale = computeFillWidthScale(); applyTransform(); }
+      else if (mode === 'fill-h') { scale = computeFillHeightScale(); applyTransform(); }
+      else { clampPan(); applyTransform(); }
+    }).observe(canvas);
+
+    // Toolbar button clicks
+    document.getElementById('btn-zoom-out').addEventListener('click', zoomOut);
+    document.getElementById('btn-zoom-in').addEventListener('click', zoomIn);
+    modeButtons.forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+
+    // Double-click to toggle fit/1:1
+    canvas.addEventListener('dblclick', () => {
+      if (mode === 'fit' || mode === 'fill-w' || mode === 'fill-h') {
+        setMode('pixel');
+      } else {
+        setMode('fit');
+      }
+    });
+
+    // --- Init handler ---
+    PeepSDK.on('init', ({ filePath, ext }) => {
       const backendUrl = 'http://localhost:8000';
+
+      // Reset state
+      mode = 'fit';
+      panX = 0;
+      panY = 0;
+      scale = 1;
+      naturalW = 0;
+      naturalH = 0;
+      img.style.transform = '';
+      img.style.maxWidth = 'none';
+      img.style.maxHeight = 'none';
+
       img.src = `${backendUrl}/api/file/raw?path=${encodeURIComponent(filePath)}`;
 
-      // Show transparency checkerboard for PNGs/SVGs
-      if (['.png', '.svg', '.webp'].includes(ext)) {
-        document.body.classList.add('checkerboard');
+      // Checkerboard for transparent formats
+      if (['.png', '.svg', '.webp', '.avif'].includes(ext)) {
+        canvas.classList.add('checkerboard');
+      } else {
+        canvas.classList.remove('checkerboard');
       }
 
       img.onload = () => {
-        info.textContent = `${img.naturalWidth} \u00d7 ${img.naturalHeight}`;
+        naturalW = img.naturalWidth;
+        naturalH = img.naturalHeight;
+        info.textContent = `${naturalW} \u00d7 ${naturalH}`;
+        setMode('fit');
         PeepSDK.ready();
       };
 
       img.onerror = () => {
-        info.textContent = 'Failed to load image';
+        info.textContent = 'Failed to load';
         PeepSDK.ready();
       };
     });

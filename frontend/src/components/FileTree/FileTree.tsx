@@ -1,7 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { api, FileEntry, PeepManifest, FileSortField, SortDirection } from "@/utils/api";
-import { ListFilter, Pencil, Copy, Trash2, ChevronDown, ChevronRight } from "lucide-react";
+import {
+  ListFilter, Pencil, Copy, Trash2, ChevronDown, ChevronRight,
+  Folder, FolderOpen, File, FileText, FileCode, FileJson,
+  Image, Film, Music, Archive, Box, Settings,
+  type LucideProps,
+} from "lucide-react";
 
 interface FileTreeProps {
   root: string;
@@ -59,6 +64,65 @@ function getFileType(name: string): string {
     ".pdf": "PDF Document", ".zip": "ZIP Archive", ".tar": "TAR Archive",
   };
   return types[ext] || (ext ? `${ext.slice(1).toUpperCase()} File` : "File");
+}
+
+// OpenPeep special files get the peep mascot icon; returns null for non-special files
+function getPeepIcon(name: string): { opacity: string } | null {
+  const lower = name.toLowerCase();
+  if (lower === "peep.json") return { opacity: "opacity-90" };
+  if (lower === "project.json") return { opacity: "opacity-50" };
+  if (lower === "openpeep.config.json") return { opacity: "opacity-50" };
+  return null;
+}
+
+type IconComponent = React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
+
+function getFileIcon(name: string, isDir: boolean, isExpanded: boolean): { icon: IconComponent; className: string } {
+  if (isDir) {
+    return isExpanded
+      ? { icon: FolderOpen, className: "text-accent/70" }
+      : { icon: Folder, className: "text-tertiary" };
+  }
+
+  const ext = name.includes(".") ? name.substring(name.lastIndexOf(".")).toLowerCase() : "";
+
+  // Code
+  if ([".js", ".ts", ".tsx", ".jsx", ".py", ".rb", ".go", ".rs", ".java", ".c", ".cpp", ".h", ".swift", ".kt", ".sh", ".bash", ".zsh", ".php", ".lua", ".r", ".scala", ".dart", ".vue", ".svelte", ".html", ".htm", ".css", ".scss", ".sass", ".less"].includes(ext))
+    return { icon: FileCode, className: "text-tertiary" };
+
+  // JSON
+  if ([".json", ".jsonc", ".json5", ".geojson"].includes(ext))
+    return { icon: FileJson, className: "text-tertiary" };
+
+  // Markdown/Text/Docs
+  if ([".md", ".markdown", ".mdx", ".txt", ".rtf", ".pdf", ".doc", ".docx"].includes(ext))
+    return { icon: FileText, className: "text-tertiary" };
+
+  // Images
+  if ([".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".heic", ".heif", ".avif", ".bmp", ".tiff", ".tif", ".ico"].includes(ext))
+    return { icon: Image, className: "text-tertiary" };
+
+  // Video
+  if ([".mp4", ".mov", ".webm", ".m4v", ".mkv", ".avi", ".ogv", ".3gp"].includes(ext))
+    return { icon: Film, className: "text-tertiary" };
+
+  // Audio
+  if ([".mp3", ".wav", ".ogg", ".m4a", ".aac", ".flac", ".wma", ".aiff", ".aif", ".opus"].includes(ext))
+    return { icon: Music, className: "text-tertiary" };
+
+  // 3D Models
+  if ([".glb", ".gltf", ".usdz", ".usd", ".usda", ".usdc", ".obj", ".fbx", ".stl", ".3ds", ".dae"].includes(ext))
+    return { icon: Box, className: "text-tertiary" };
+
+  // Config
+  if ([".yaml", ".yml", ".toml", ".ini", ".cfg", ".conf", ".env"].includes(ext))
+    return { icon: Settings, className: "text-tertiary" };
+
+  // Archives
+  if ([".zip", ".tar", ".gz", ".bz2", ".7z", ".rar", ".dmg", ".iso"].includes(ext))
+    return { icon: Archive, className: "text-tertiary" };
+
+  return { icon: File, className: "text-tertiary" };
 }
 
 function formatShortDate(iso: string | undefined): string {
@@ -453,6 +517,14 @@ function TreeNodeView({
         <span className="w-3 text-center text-[9px] text-tertiary shrink-0">
           {node.isDir ? (isExpanded ? <ChevronDown size={9} /> : <ChevronRight size={9} />) : ""}
         </span>
+        {(() => {
+          const peep = getPeepIcon(node.name);
+          if (peep) {
+            return <img src="/peep-icon.png" alt="" className={`w-3 h-3 shrink-0 ${peep.opacity}`} />;
+          }
+          const { icon: Icon, className } = getFileIcon(node.name, node.isDir, isExpanded);
+          return <Icon size={12} className={`shrink-0 ${className}`} />;
+        })()}
         {isRenaming ? (
           <input
             ref={inputRef}
