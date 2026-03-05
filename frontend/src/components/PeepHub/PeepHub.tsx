@@ -26,6 +26,10 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Install state
+  const [installingSlug, setInstallingSlug] = useState<string | null>(null);
+  const [installError, setInstallError] = useState("");
+
   // Publish modal state
   const [publishPeep, setPublishPeep] = useState<PeepManifest | null>(null);
   const [publishCategory, setPublishCategory] = useState("viewer");
@@ -226,6 +230,15 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
                 />
               </div>
 
+              {/* Install error */}
+              {installError && (
+                <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-lg p-2.5">
+                  <AlertCircle size={12} className="text-red-400 shrink-0" />
+                  <span className="text-[11px] text-red-400 flex-1">{installError}</span>
+                  <button className="text-[10px] text-red-400 hover:text-red-300" onClick={() => setInstallError("")}>dismiss</button>
+                </div>
+              )}
+
               {/* Loading */}
               {hubLoading && (
                 <div className="flex items-center justify-center py-12">
@@ -293,6 +306,7 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
                         </div>
                         {(() => {
                           const local = peeps.find((p) => p.id === entry.slug);
+                          const isInstalling = installingSlug === entry.slug;
                           if (local && local.version === entry.latestVersion) {
                             return (
                               <span className="text-[11px] text-emerald-400 font-medium px-2.5 py-1 bg-emerald-500/10 rounded-lg shrink-0 flex items-center gap-1">
@@ -303,14 +317,50 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
                           }
                           if (local) {
                             return (
-                              <button className="text-[11px] text-amber-400 hover:text-amber-300 font-medium px-2.5 py-1 bg-amber-500/10 rounded-lg transition-colors shrink-0">
-                                Update
+                              <button
+                                className="text-[11px] text-amber-400 hover:text-amber-300 font-medium px-2.5 py-1 bg-amber-500/10 rounded-lg transition-colors shrink-0 flex items-center gap-1 disabled:opacity-50"
+                                disabled={isInstalling}
+                                onClick={async (e) => {
+                                  e.stopPropagation();
+                                  setInstallingSlug(entry.slug);
+                                  setInstallError("");
+                                  try {
+                                    await api.installPeep(entry.slug);
+                                    const { peeps: updated } = await api.listPeeps();
+                                    setPeeps(updated);
+                                  } catch (err) {
+                                    setInstallError(err instanceof Error ? err.message : "Update failed");
+                                  } finally {
+                                    setInstallingSlug(null);
+                                  }
+                                }}
+                              >
+                                {isInstalling ? <Loader2 size={11} className="animate-spin" /> : null}
+                                {isInstalling ? "Updating..." : "Update"}
                               </button>
                             );
                           }
                           return (
-                            <button className="text-[11px] text-accent hover:text-accent-hover font-medium px-2.5 py-1 bg-accent/10 rounded-lg transition-colors shrink-0">
-                              Install
+                            <button
+                              className="text-[11px] text-accent hover:text-accent-hover font-medium px-2.5 py-1 bg-accent/10 rounded-lg transition-colors shrink-0 flex items-center gap-1 disabled:opacity-50"
+                              disabled={isInstalling}
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                setInstallingSlug(entry.slug);
+                                setInstallError("");
+                                try {
+                                  await api.installPeep(entry.slug);
+                                  const { peeps: updated } = await api.listPeeps();
+                                  setPeeps(updated);
+                                } catch (err) {
+                                  setInstallError(err instanceof Error ? err.message : "Install failed");
+                                } finally {
+                                  setInstallingSlug(null);
+                                }
+                              }}
+                            >
+                              {isInstalling ? <Loader2 size={11} className="animate-spin" /> : null}
+                              {isInstalling ? "Installing..." : "Install"}
                             </button>
                           );
                         })()}

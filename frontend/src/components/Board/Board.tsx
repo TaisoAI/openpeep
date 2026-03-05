@@ -232,13 +232,6 @@ export default function Board({ space, onProjectSelect, hiddenStatuses = [], onP
                         />
                       </div>
                     ))}
-                    {columnProjects.length === 0 && (
-                      <div className="flex-1 flex items-center justify-center py-6">
-                        <p className="text-[11px] text-tertiary/50 italic">
-                          Drop here
-                        </p>
-                      </div>
-                    )}
                   </div>
                 </div>
               );

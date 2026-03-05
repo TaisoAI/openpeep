@@ -98,7 +98,7 @@ def browse_peephub(
 ):
     """Proxy browse requests to the configured PeepHub server."""
     config = load_config()
-    base_url = config.get("peephub", {}).get("url", "https://api.peephub.ai")
+    base_url = config.get("peephub", {}).get("url", "https://peephub.taiso.ai")
     params = {"q": q, "category": category, "sort": sort, "page": page, "limit": limit}
     params = {k: v for k, v in params.items() if v}
     try:
@@ -152,7 +152,7 @@ def publish_peep(req: PublishRequest):
     # Read config for PeepHub URL and API key
     config = load_config()
     peephub = config.get("peephub", {})
-    base_url = peephub.get("url", "https://api.peephub.ai")
+    base_url = peephub.get("url", "https://peephub.taiso.ai")
     api_key = peephub.get("apiKey", "")
 
     if not api_key:
@@ -184,6 +184,61 @@ def publish_peep(req: PublishRequest):
         except Exception:
             pass
         raise HTTPException(status_code=e.response.status_code, detail=f"PeepHub: {detail}")
+
+
+class InstallRequest(BaseModel):
+    slug: str
+    version: str | None = None
+
+
+@router.post("/peeps/install")
+def install_peep(req: InstallRequest):
+    """Download a peep from PeepHub and install to ~/.openpeep/peeps/."""
+    config = load_config()
+    base_url = config.get("peephub", {}).get("url", "https://peephub.taiso.ai")
+
+    # Download the zip
+    try:
+        params = {}
+        if req.version:
+            params["version"] = req.version
+        resp = httpx.get(
+            f"{base_url}/api/peeps/{req.slug}/download",
+            params=params,
+            follow_redirects=True,
+            timeout=30,
+        )
+        resp.raise_for_status()
+    except httpx.ConnectError:
+        raise HTTPException(status_code=502, detail=f"Cannot connect to PeepHub at {base_url}")
+    except httpx.TimeoutException:
+        raise HTTPException(status_code=504, detail="Download timed out")
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=f"PeepHub: {e.response.text}")
+
+    zip_bytes = resp.content
+
+    # Validate zip has peep.json
+    try:
+        zf = zipfile.ZipFile(io.BytesIO(zip_bytes))
+        if "peep.json" not in zf.namelist():
+            raise HTTPException(status_code=400, detail="Downloaded zip missing peep.json")
+        manifest = json.loads(zf.read("peep.json"))
+    except zipfile.BadZipFile:
+        raise HTTPException(status_code=400, detail="Invalid zip file from PeepHub")
+
+    # Remove existing and extract
+    target_dir = INSTALLED_PEEPS_DIR / req.slug
+    if target_dir.exists():
+        shutil.rmtree(target_dir)
+    target_dir.mkdir(parents=True, exist_ok=True)
+    zf.extractall(target_dir)
+
+    return {
+        "installed": True,
+        "id": manifest.get("id", req.slug),
+        "version": manifest.get("version", "unknown"),
+    }
 
 
 @router.get("/peep-samples/{peep_id}")

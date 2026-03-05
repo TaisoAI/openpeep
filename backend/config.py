@@ -17,7 +17,7 @@ def load_config() -> dict:
                 "defaultStatuses": DEFAULT_STATUSES,
                 "fileAssociations": {"overrides": []},
                 "peepSettings": {},
-                "peephub": {"url": "https://api.peephub.ai"},
+                "peephub": {"url": "https://peephub.taiso.ai"},
             }, indent=2))
 
     return json.loads(CONFIG_PATH.read_text())

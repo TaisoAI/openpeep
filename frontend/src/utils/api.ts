@@ -107,6 +107,12 @@ export const api = {
   getPeepSamples: (peepId: string) =>
     fetchJSON<{ files: { name: string; content: string | null; binary?: boolean }[]; hasScreenshot: boolean }>(`/peep-samples/${peepId}`),
 
+  installPeep: (slug: string, version?: string) =>
+    fetchJSON<{ installed: boolean; id: string; version: string }>("/peeps/install", {
+      method: "POST",
+      body: JSON.stringify({ slug, version }),
+    }),
+
   publishPeep: (peepPath: string, category?: string, tags?: string[]) =>
     fetchJSON<{ peep: Record<string, unknown>; version: Record<string, unknown> }>("/peeps/publish", {
       method: "POST",

@@ -17,6 +17,15 @@ frontend/.next/
 # Config (user-specific)
 openpeep.config.json
 
+# Stray screenshots in repo root
+*.png
+
+# Playwright MCP logs/screenshots
+.playwright-mcp/
+
+# Local test peeps
+peeps/meeting-notes/
+
 # Brand assets with trademark issues (keep locally, don't ship)
 brand/mascot-variants/apple.png
 brand/mascot-variants/apple-park.png

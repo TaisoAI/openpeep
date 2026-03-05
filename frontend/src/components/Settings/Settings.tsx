@@ -385,7 +385,7 @@ export default function Settings({
                           (e.target as HTMLInputElement).blur();
                         }
                       }}
-                      placeholder="https://api.peephub.ai"
+                      placeholder="https://peephub.taiso.ai"
                     />
                   </div>
                   <div className="flex items-center gap-3 bg-surface border border-border-subtle rounded-xl p-3 mt-2">

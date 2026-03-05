@@ -16,7 +16,7 @@ def get_sources():
         "theme": config.get("theme", {"mode": "dark", "style": "macos"}),
         "showHiddenFiles": config.get("showHiddenFiles", False),
         "devMode": config.get("devMode", False),
-        "peephub": config.get("peephub", {"url": "https://api.peephub.ai"}),
+        "peephub": config.get("peephub", {"url": "https://peephub.taiso.ai"}),
     }
 
 

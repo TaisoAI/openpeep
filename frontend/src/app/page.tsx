@@ -53,8 +53,9 @@ export default function Home() {
   const [hiddenStatuses, setHiddenStatuses] = useState<string[]>([]);
   const [projectCounts, setProjectCounts] = useState<Record<string, number>>({});
   const [devMode, setDevMode] = useState(false);
-  const [peephubUrl, setPeephubUrl] = useState("https://api.peephub.ai");
+  const [peephubUrl, setPeephubUrl] = useState("https://peephub.taiso.ai");
   const [peephubApiKey, setPeephubApiKey] = useState("");
+  const [sourcesLoaded, setSourcesLoaded] = useState(false);
 
   // Track which view the user was on before drilling into a project
   const viewBeforeBrowse = useRef<View>("board");
@@ -77,7 +78,7 @@ export default function Home() {
     setTheme(data.theme || { mode: "dark", style: "macos" });
     setShowHiddenFiles(data.showHiddenFiles || false);
     setDevMode(data.devMode || false);
-    setPeephubUrl(data.peephub?.url || "https://api.peephub.ai");
+    setPeephubUrl(data.peephub?.url || "https://peephub.taiso.ai");
     setPeephubApiKey(data.peephub?.apiKey || "");
     return data.spaces;
   }, []);
@@ -147,6 +148,7 @@ export default function Home() {
           setActivePeep(resolvePeep(fileData, loadedPeeps));
         }).catch(() => {});
       }
+      setSourcesLoaded(true);
     });
   }, [loadSources]);
 
@@ -293,22 +295,112 @@ export default function Home() {
     }
   };
 
-  const displaySpace =
-    activeSpace ||
-    (spaces.length > 0
-      ? {
-          name: "All Spaces",
-          icon: "🌐",
-          roots: spaces.flatMap((s) => s.roots),
-          statuses: spaces[0]?.statuses || [
-            "Idea",
-            "Planning",
-            "In Progress",
-            "Analyze",
-            "Archive",
-          ],
-        }
-      : null);
+  const displaySpace = !sourcesLoaded
+    ? null
+    : activeSpace ||
+      (spaces.length > 0
+        ? {
+            name: "All Spaces",
+            icon: "🌐",
+            roots: spaces.flatMap((s) => s.roots),
+            statuses: spaces[0]?.statuses || [
+              "Idea",
+              "Planning",
+              "In Progress",
+              "Analyze",
+              "Archive",
+            ],
+          }
+        : null);
+
+  // First-run wizard: show when no spaces configured
+  const [wizardStep, setWizardStep] = useState(0);
+  const showWizard = sourcesLoaded && spaces.length === 0 && !settingsOpen;
+
+  const handleWizardPickFolder = async () => {
+    const result = await api.pickFolder();
+    if (result.path) {
+      const newSpace: Space = {
+        name: result.path.split("/").pop() || "My Projects",
+        icon: "📁",
+        roots: [result.path],
+        statuses: ["Idea", "Planning", "In Progress", "Analyze", "Archive"],
+      };
+      await api.updateSources({ spaces: [newSpace] });
+      const updated = await loadSources();
+      setActiveSpace(updated[0] || null);
+      setWizardStep(2);
+    }
+  };
+
+  const handleWizardTheme = async (mode: "dark" | "light" | "auto") => {
+    const newTheme = { ...theme, mode };
+    setTheme(newTheme);
+    await api.updateSources({ theme: newTheme });
+    setWizardStep(0); // Done - wizard hides because spaces.length > 0
+  };
+
+  if (showWizard) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-app">
+        <div className="w-[420px] text-center">
+          <img src="/peep-icon.png" alt="OpenPeep" className="w-16 h-16 mx-auto mb-6 drop-shadow-lg" />
+
+          {wizardStep === 0 && (
+            <>
+              <h1 className="text-2xl font-bold text-primary mb-2">Welcome to OpenPeep</h1>
+              <p className="text-sm text-secondary mb-8 leading-relaxed">
+                Every file type deserves its own app. Pick a folder to get started.
+              </p>
+              <button
+                className="h-10 px-6 bg-accent hover:bg-accent-hover text-black font-semibold text-sm rounded-xl transition-all"
+                onClick={() => setWizardStep(1)}
+              >
+                Get Started
+              </button>
+            </>
+          )}
+
+          {wizardStep === 1 && (
+            <>
+              <h2 className="text-xl font-bold text-primary mb-2">Choose a workspace</h2>
+              <p className="text-sm text-secondary mb-6 leading-relaxed">
+                Pick a folder with your projects. You can add more later in Settings.
+              </p>
+              <button
+                className="h-10 px-6 bg-accent hover:bg-accent-hover text-black font-semibold text-sm rounded-xl transition-all flex items-center gap-2 mx-auto"
+                onClick={handleWizardPickFolder}
+              >
+                <FolderOpen size={16} />
+                Pick a Folder
+              </button>
+            </>
+          )}
+
+          {wizardStep === 2 && (
+            <>
+              <h2 className="text-xl font-bold text-primary mb-2">Choose a theme</h2>
+              <p className="text-sm text-secondary mb-6 leading-relaxed">
+                You can change this anytime in Settings.
+              </p>
+              <div className="flex gap-3 justify-center">
+                {(["dark", "light", "auto"] as const).map((mode) => (
+                  <button
+                    key={mode}
+                    className="w-28 h-20 rounded-xl border border-border-subtle hover:border-accent transition-all flex flex-col items-center justify-center gap-2 bg-surface"
+                    onClick={() => handleWizardTheme(mode)}
+                  >
+                    <div className={`w-8 h-8 rounded-lg ${mode === "dark" ? "bg-gray-800" : mode === "light" ? "bg-gray-200" : "bg-gradient-to-r from-gray-800 to-gray-200"}`} />
+                    <span className="text-xs font-medium text-secondary capitalize">{mode}</span>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
