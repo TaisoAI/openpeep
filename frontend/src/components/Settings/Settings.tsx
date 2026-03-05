@@ -47,7 +47,7 @@ export default function Settings({
   showHiddenFiles,
   onShowHiddenFilesChanged,
 }: SettingsProps) {
-  const [tab, setTab] = useState<Tab>("spaces");
+  const [tab, setTab] = useState<Tab>("general");
   const [spaces, setSpaces] = useState<Space[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [dirty, setDirty] = useState(false);
@@ -159,11 +159,9 @@ export default function Settings({
     setDirty(true);
   }
 
-  async function toggleTheme() {
-    const newTheme: ThemeConfig = {
-      ...theme,
-      mode: theme.mode === "dark" ? "light" : "dark",
-    };
+  async function cycleThemeMode() {
+    const next = theme.mode === "dark" ? "light" : theme.mode === "light" ? "auto" : "dark";
+    const newTheme: ThemeConfig = { ...theme, mode: next };
     await api.updateSources({ theme: newTheme });
     onThemeChanged(newTheme);
   }
@@ -246,9 +244,9 @@ export default function Settings({
                   </span>
                   <button
                     className="h-7 px-3 bg-elevated hover:bg-hover border border-border-subtle rounded-lg text-[11px] font-medium text-secondary hover:text-primary transition-all"
-                    onClick={toggleTheme}
+                    onClick={cycleThemeMode}
                   >
-                    {theme.mode === "dark" ? "🌙 Dark" : "☀️ Light"}
+                    {theme.mode === "dark" ? "🌙 Dark" : theme.mode === "light" ? "☀️ Light" : "🔄 Auto"}
                   </button>
                 </div>
                 <div className="flex items-center gap-3 bg-surface border border-border-subtle rounded-xl p-3 mt-2">

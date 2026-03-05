@@ -56,7 +56,6 @@
     .spacer { flex: 1; }
     .dim { font-size: 10px; color: var(--text-tertiary); font-family: monospace; white-space: nowrap; }
 
-    /* Device picker dropdown — only visible when its category is active */
     .device-pick {
       display: none;
       position: relative;
@@ -87,7 +86,6 @@
       pointer-events: none;
     }
 
-    /* Rotate button — proper screen-rotation icon */
     .rotate-btn {
       display: none;
       padding: 3px 6px;
@@ -105,18 +103,20 @@
       position: relative;
       overflow: hidden;
     }
-
-    /* Fill mode */
-    body.mode-fill #fill-frame { display: block; width: 100%; height: 100%; border: none; }
-    body:not(.mode-fill) #fill-frame { display: none; }
-
-    /* Fit mode */
-    body.mode-fit #container {
+    #container.has-bg {
       padding: 24px;
-      background: repeating-conic-gradient(#2a2a2a 0% 25%, #242424 0% 50%) 50% / 16px 16px;
+      background: repeating-conic-gradient(#383838 0% 25%, #303030 0% 50%) 50% / 16px 16px;
+      overflow: auto;
     }
-    #fit-frame {
+
+    /* Raw iframe (fill with no device, or fit with no device) */
+    #raw-frame {
       display: none;
+      border: none;
+    }
+    #raw-frame.show { display: block; }
+    #raw-frame.fill { width: 100%; height: 100%; }
+    #raw-frame.fit {
       position: absolute;
       border: 1px solid #444;
       border-radius: 4px;
@@ -124,25 +124,20 @@
       background: #fff;
       transform-origin: 0 0;
     }
-    body.mode-fit #fit-frame { display: block; }
 
-    /* Device mode */
-    body.mode-device #container {
-      padding: 24px;
-      background: repeating-conic-gradient(#2a2a2a 0% 25%, #242424 0% 50%) 50% / 16px 16px;
-    }
+    /* Device wrapper */
     #device-wrapper {
       display: none;
       flex-direction: column;
       align-items: center;
     }
-    body.mode-device #device-wrapper { display: flex; }
+    #device-wrapper.show { display: flex; }
 
     /* --- Monitor frame --- */
     .monitor-body {
       background: linear-gradient(180deg, #141414 0%, #080808 100%);
-      border-radius: 12px;
-      padding: 8px 8px 24px 8px;
+      border-radius: 14px;
+      padding: 14px 14px 32px 14px;
       box-shadow:
         0 8px 32px rgba(0,0,0,0.6),
         0 2px 8px rgba(0,0,0,0.4),
@@ -158,7 +153,7 @@
     }
     .monitor-body .webcam {
       position: absolute;
-      bottom: 9px;
+      bottom: 12px;
       left: 50%;
       transform: translateX(-50%);
       width: 5px;
@@ -170,14 +165,14 @@
     .monitor-neck {
       width: 0;
       height: 0;
-      border-left: 40px solid transparent;
-      border-right: 40px solid transparent;
-      border-top: 28px solid #0a0a0a;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-top: 32px solid #0a0a0a;
       margin: 0 auto;
     }
     .monitor-base {
-      width: 130px;
-      height: 6px;
+      width: 150px;
+      height: 8px;
       background: linear-gradient(180deg, #0e0e0e 0%, #080808 100%);
       border-radius: 0 0 6px 6px;
       margin: 0 auto;
@@ -199,25 +194,12 @@
       align-items: center;
       gap: 6px;
     }
-    .tablet-body iframe {
-      display: block;
-      border-radius: 4px;
-      border: none;
-      background: #fff;
-    }
-    .tablet-body .camera-pill {
-      width: 8px;
-      height: 8px;
-      background: #111;
-      border-radius: 50%;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
-    }
-    .tablet-body .home-indicator {
-      width: 50px;
-      height: 4px;
-      background: #444;
-      border-radius: 2px;
-    }
+    .tablet-body iframe { display: block; border-radius: 4px; border: none; background: #fff; }
+    .tablet-body .camera-pill { width: 8px; height: 8px; background: #111; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08); }
+    .tablet-body .home-indicator { width: 50px; height: 4px; background: #444; border-radius: 2px; }
+    .tablet-body.landscape { flex-direction: row; }
+    .tablet-body.landscape .camera-pill { align-self: center; }
+    .tablet-body.landscape .home-indicator { width: 4px; height: 50px; align-self: center; }
 
     /* --- Phone frame --- */
     .phone-body {
@@ -234,52 +216,26 @@
       align-items: center;
       gap: 4px;
     }
-    .phone-body iframe {
-      display: block;
-      border-radius: 24px;
-      border: none;
-      background: #000;
-    }
+    .phone-body iframe { display: block; border-radius: 24px; border: none; background: #000; }
     .phone-body .dynamic-island {
-      width: 72px;
-      height: 20px;
-      background: #000;
-      border-radius: 12px;
-      position: relative;
-      margin-bottom: 2px;
+      width: 72px; height: 20px; background: #000; border-radius: 12px; position: relative; margin-bottom: 2px;
     }
     .phone-body .dynamic-island::before {
-      content: '';
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: #0a1628;
+      content: ''; position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      width: 4px; height: 4px; border-radius: 50%; background: #0a1628;
     }
     .phone-body .dynamic-island::after {
-      content: '';
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #0a1628;
-      border: 1px solid #111;
+      content: ''; position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      width: 5px; height: 5px; border-radius: 50%; background: #0a1628; border: 1px solid #111;
     }
-    .phone-body .home-indicator {
-      width: 36px;
-      height: 4px;
-      background: #555;
-      border-radius: 2px;
-      margin-top: 2px;
-    }
+    .phone-body .home-indicator { width: 36px; height: 4px; background: #555; border-radius: 2px; margin-top: 2px; }
+    /* Phone landscape */
+    .phone-body.landscape { flex-direction: row; padding: 8px 14px; }
+    .phone-body.landscape .dynamic-island { width: 20px; height: 72px; margin-bottom: 0; margin-right: 4px; }
+    .phone-body.landscape .dynamic-island::before { left: 50%; top: 16px; transform: translateX(-50%); }
+    .phone-body.landscape .dynamic-island::after { right: auto; left: 50%; top: auto; bottom: 14px; transform: translateX(-50%); }
+    .phone-body.landscape .home-indicator { width: 4px; height: 36px; margin-top: 0; margin-left: 4px; align-self: center; }
 
-    /* Device label */
     .device-info {
       margin-top: 12px;
       font-size: 10px;
@@ -289,18 +245,19 @@
     }
   </style>
 </head>
-<body class="mode-fill">
+<body>
   <div class="toolbar">
-    <button class="tb active" id="btn-fill" onclick="setMode('fill')">Fill</button>
-    <button class="tb" id="btn-fit" onclick="setMode('fit')">Fit</button>
+    <!-- Zoom -->
+    <button class="tb" id="btn-free" onclick="setZoom('free')">Free</button>
+    <button class="tb active" id="btn-fill" onclick="setZoom('fill')">Fill</button>
+    <button class="tb" id="btn-fit" onclick="setZoom('fit')">Fit</button>
     <span class="sep"></span>
 
-    <!-- Category buttons — click to activate + show that category's dropdown -->
-    <button class="tb" id="btn-desktop" onclick="activateCategory('desktop')">Desktop</button>
-    <button class="tb" id="btn-tablet" onclick="activateCategory('tablet')">Tablet</button>
-    <button class="tb" id="btn-phone" onclick="activateCategory('phone')">Phone</button>
+    <!-- Device: click to toggle, click again to deselect -->
+    <button class="tb" id="btn-desktop" onclick="toggleCategory('desktop')">Desktop</button>
+    <button class="tb" id="btn-tablet" onclick="toggleCategory('tablet')">Tablet</button>
+    <button class="tb" id="btn-phone" onclick="toggleCategory('phone')">Phone</button>
 
-    <!-- Device pickers — only one visible at a time -->
     <div class="device-pick" id="pick-desktop">
       <select id="sel-desktop" onchange="pickDevice(this.value)">
         <option value="laptop-sm">1280 × 800</option>
@@ -319,14 +276,18 @@
     </div>
     <div class="device-pick" id="pick-phone">
       <select id="sel-phone" onchange="pickDevice(this.value)">
+        <option value="iphone-17-pro-max">iPhone 17 Pro Max</option>
+        <option value="iphone-17-pro">iPhone 17 Pro</option>
+        <option value="iphone-17" selected>iPhone 17</option>
+        <option value="iphone-17-air">iPhone 17 Air</option>
+        <option value="iphone-16e">iPhone 16e</option>
         <option value="iphone-16-pro-max">iPhone 16 Pro Max</option>
         <option value="iphone-16-pro">iPhone 16 Pro</option>
-        <option value="iphone-16" selected>iPhone 16</option>
+        <option value="iphone-16">iPhone 16</option>
         <option value="iphone-se">iPhone SE</option>
       </select>
     </div>
 
-    <!-- Rotate: screen rotation icon (rectangle with corner arrow) -->
     <button class="tb rotate-btn" id="btn-rotate" onclick="toggleRotation()" title="Rotate orientation">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="4" y="2" width="16" height="20" rx="2"/>
@@ -341,8 +302,7 @@
   </div>
 
   <div id="container">
-    <iframe id="fill-frame" sandbox="allow-scripts"></iframe>
-    <iframe id="fit-frame" sandbox="allow-scripts"></iframe>
+    <iframe id="raw-frame" sandbox="allow-scripts"></iframe>
     <div id="device-wrapper"></div>
   </div>
 
@@ -358,6 +318,11 @@
       "ipad-air":    { w: 820,  h: 1180, label: "iPad Air",     type: "tablet", cat: "tablet" },
       "ipad-mini":   { w: 744,  h: 1133, label: "iPad mini",    type: "tablet", cat: "tablet" },
 
+      "iphone-17-pro-max": { w: 440, h: 956, label: "iPhone 17 Pro Max", type: "phone", cat: "phone" },
+      "iphone-17-pro":     { w: 402, h: 874, label: "iPhone 17 Pro",     type: "phone", cat: "phone" },
+      "iphone-17":         { w: 402, h: 874, label: "iPhone 17",         type: "phone", cat: "phone" },
+      "iphone-17-air":     { w: 420, h: 912, label: "iPhone 17 Air",     type: "phone", cat: "phone" },
+      "iphone-16e":        { w: 390, h: 844, label: "iPhone 16e",        type: "phone", cat: "phone" },
       "iphone-16-pro-max": { w: 440, h: 956, label: "iPhone 16 Pro Max", type: "phone", cat: "phone" },
       "iphone-16-pro":     { w: 402, h: 874, label: "iPhone 16 Pro",     type: "phone", cat: "phone" },
       "iphone-16":         { w: 393, h: 852, label: "iPhone 16",         type: "phone", cat: "phone" },
@@ -365,116 +330,157 @@
     };
 
     let currentSrc = "";
-    let currentMode = "fill";
-    let currentCat = "";
-    let currentDeviceId = "";
+    let zoom = "fill";       // "free", "fill", or "fit" — how to scale
+    let deviceId = "";       // "" = no device, or a DEVICES key
+    let deviceCat = "";      // "desktop", "tablet", "phone", or ""
     let isLandscape = false;
 
-    /* --- Toolbar state --- */
+    /* --- UI helpers --- */
 
-    function deactivateAll() {
-      document.getElementById('btn-fill').classList.remove('active');
-      document.getElementById('btn-fit').classList.remove('active');
-      document.getElementById('btn-desktop').classList.remove('active');
-      document.getElementById('btn-tablet').classList.remove('active');
-      document.getElementById('btn-phone').classList.remove('active');
+    function updateToolbar() {
+      document.getElementById('btn-free').classList.toggle('active', zoom === 'free');
+      document.getElementById('btn-fill').classList.toggle('active', zoom === 'fill');
+      document.getElementById('btn-fit').classList.toggle('active', zoom === 'fit');
+
+      document.getElementById('btn-desktop').classList.toggle('active', deviceCat === 'desktop');
+      document.getElementById('btn-tablet').classList.toggle('active', deviceCat === 'tablet');
+      document.getElementById('btn-phone').classList.toggle('active', deviceCat === 'phone');
+
       document.querySelectorAll('.device-pick').forEach(el => el.classList.remove('visible'));
-      document.getElementById('btn-rotate').classList.remove('visible');
+      if (deviceCat) document.getElementById('pick-' + deviceCat).classList.add('visible');
+
+      const showRotate = (deviceCat === 'tablet' || deviceCat === 'phone');
+      document.getElementById('btn-rotate').classList.toggle('visible', showRotate);
     }
 
-    /* --- Fill / Fit --- */
+    /* --- Zoom (fill/fit) --- */
 
-    function setMode(mode) {
-      deactivateAll();
-      currentMode = mode;
-      currentCat = "";
-      currentDeviceId = "";
-      isLandscape = false;
-      document.body.className = 'mode-' + mode;
-      document.getElementById('btn-' + mode).classList.add('active');
-      document.getElementById('dim-label').textContent = '';
-      document.getElementById('device-wrapper').innerHTML = '';
-      document.getElementById('device-wrapper').style.cssText = '';
-      document.getElementById('fit-frame').style.cssText = '';
+    function setZoom(z) {
+      zoom = z;
+      updateToolbar();
+      render();
+    }
 
-      if (mode === 'fill') {
-        document.getElementById('fill-frame').src = currentSrc;
-      } else if (mode === 'fit') {
-        document.getElementById('fill-frame').src = '';
-        applyFit();
+    /* --- Device selection --- */
+
+    function toggleCategory(cat) {
+      if (deviceCat === cat) {
+        // Clicking active category deselects device
+        deviceCat = "";
+        deviceId = "";
+        isLandscape = false;
+      } else {
+        deviceCat = cat;
+        isLandscape = false;
+        deviceId = document.getElementById('sel-' + cat).value;
       }
+      updateToolbar();
+      render();
     }
 
-    function applyFit() {
-      const frame = document.getElementById('fit-frame');
-      const ct = document.getElementById('container');
-      const pad = 24;
-      const W = 1440, H = 900;
-      frame.style.width = W + 'px';
-      frame.style.height = H + 'px';
-      frame.src = currentSrc;
-
-      requestAnimationFrame(() => {
-        const cw = ct.clientWidth - pad * 2;
-        const ch = ct.clientHeight - pad * 2;
-        const scale = Math.min(cw / W, ch / H, 1);
-        frame.style.transform = `scale(${scale})`;
-        frame.style.left = (pad + (cw - W * scale) / 2) + 'px';
-        frame.style.top = (pad + (ch - H * scale) / 2) + 'px';
-        updateDim(W, H);
-      });
-    }
-
-    /* --- Device categories --- */
-
-    function activateCategory(cat) {
-      deactivateAll();
-      currentMode = 'device';
-      currentCat = cat;
+    function pickDevice(id) {
+      deviceId = id;
       isLandscape = false;
-      document.body.className = 'mode-device';
-      document.getElementById('fill-frame').src = '';
-      document.getElementById('fit-frame').style.cssText = '';
-
-      // Highlight category button + show its picker
-      document.getElementById('btn-' + cat).classList.add('active');
-      document.getElementById('pick-' + cat).classList.add('visible');
-
-      // Show rotate for tablet/phone
-      if (cat !== 'desktop') {
-        document.getElementById('btn-rotate').classList.add('visible');
-      }
-
-      // Use whatever is currently selected in that dropdown
-      const sel = document.getElementById('sel-' + cat);
-      currentDeviceId = sel.value;
-      renderDevice();
-    }
-
-    function pickDevice(deviceId) {
-      currentDeviceId = deviceId;
-      isLandscape = false;
-      renderDevice();
+      render();
     }
 
     function toggleRotation() {
       isLandscape = !isLandscape;
-      renderDevice();
+      render();
     }
 
-    /* --- Render device frame --- */
+    /* --- Main render — decides what to show based on zoom + device --- */
 
-    function renderDevice() {
-      const dev = DEVICES[currentDeviceId];
-      if (!dev) return;
-
-      let w = dev.w, h = dev.h;
-      if (isLandscape) [w, h] = [h, w];
-
-      const wrapper = document.getElementById('device-wrapper');
+    function render() {
       const ct = document.getElementById('container');
-      let html = '';
+      const raw = document.getElementById('raw-frame');
+      const wrapper = document.getElementById('device-wrapper');
 
+      // Reset
+      raw.className = '';
+      raw.style.cssText = '';
+      raw.src = '';
+      wrapper.innerHTML = '';
+      wrapper.className = '';
+      wrapper.style.cssText = '';
+      ct.classList.remove('has-bg');
+      document.getElementById('dim-label').textContent = '';
+
+      // Free mode: always full viewport, ignore device
+      if (zoom === 'free') {
+        wrapper.style.display = 'none';
+        raw.className = 'show fill';
+        raw.src = currentSrc;
+        return;
+      }
+
+      if (!deviceId) {
+        // --- No device: raw iframe ---
+        wrapper.style.display = 'none';
+
+        if (zoom === 'fill') {
+          raw.className = 'show fill';
+          raw.src = currentSrc;
+        } else {
+          ct.classList.add('has-bg');
+          const W = 1440, H = 900;
+          raw.className = 'show fit';
+          raw.style.width = W + 'px';
+          raw.style.height = H + 'px';
+          raw.src = currentSrc;
+          requestAnimationFrame(() => fitElement(raw, ct, W, H, 24));
+          updateDim(W, H);
+        }
+      } else {
+        // --- Device selected: build device frame ---
+        raw.style.display = 'none';
+        ct.classList.add('has-bg');
+
+        const dev = DEVICES[deviceId];
+        if (!dev) return;
+
+        let w = dev.w, h = dev.h;
+        if (isLandscape) [w, h] = [h, w];
+
+        wrapper.className = 'show';
+        wrapper.innerHTML = buildDeviceHTML(dev, w, h);
+
+        const iframe = wrapper.querySelector('iframe');
+        if (iframe && currentSrc) iframe.src = currentSrc;
+        updateDim(w, h);
+
+        requestAnimationFrame(() => {
+          wrapper.style.transform = 'none';
+          const rect = wrapper.getBoundingClientRect();
+          const pad = 48;
+          const cw = ct.clientWidth - pad;
+          const ch = ct.clientHeight - pad;
+          let scale;
+          if (zoom === 'fill') {
+            // Fill: scale to fill container (cover — match largest dimension)
+            scale = Math.max(cw / rect.width, ch / rect.height);
+          } else {
+            // Fit: scale to fit entirely (contain — match smallest dimension)
+            scale = Math.min(cw / rect.width, ch / rect.height, 1);
+          }
+          wrapper.style.transform = `scale(${scale})`;
+          wrapper.style.transformOrigin = 'center center';
+        });
+      }
+    }
+
+    function fitElement(el, ct, W, H, pad) {
+      const cw = ct.clientWidth - pad * 2;
+      const ch = ct.clientHeight - pad * 2;
+      const scale = Math.min(cw / W, ch / H, 1);
+      el.style.transform = `scale(${scale})`;
+      el.style.left = (pad + (cw - W * scale) / 2) + 'px';
+      el.style.top = (pad + (ch - H * scale) / 2) + 'px';
+      updateDim(W, H);
+    }
+
+    function buildDeviceHTML(dev, w, h) {
+      let html = '';
       if (dev.type === 'monitor') {
         html = `
           <div class="monitor-body">
@@ -484,57 +490,38 @@
           <div class="monitor-neck"></div>
           <div class="monitor-base"></div>`;
       } else if (dev.type === 'tablet') {
+        const cls = isLandscape ? 'tablet-body landscape' : 'tablet-body';
         html = `
-          <div class="tablet-body">
+          <div class="${cls}">
             <div class="camera-pill"></div>
             <iframe sandbox="allow-scripts" width="${w}" height="${h}"></iframe>
             <div class="home-indicator"></div>
           </div>`;
       } else if (dev.type === 'phone') {
+        const cls = isLandscape ? 'phone-body landscape' : 'phone-body';
         html = `
-          <div class="phone-body">
+          <div class="${cls}">
             <div class="dynamic-island"></div>
             <iframe sandbox="allow-scripts" width="${w}" height="${h}"></iframe>
             <div class="home-indicator"></div>
           </div>`;
       }
-
       const orient = (dev.type !== 'monitor') ? (isLandscape ? ' Landscape' : ' Portrait') : '';
       html += `<div class="device-info">${dev.label}${orient} — ${w} × ${h}</div>`;
-      wrapper.innerHTML = html;
-
-      const iframe = wrapper.querySelector('iframe');
-      if (iframe && currentSrc) iframe.src = currentSrc;
-      updateDim(w, h);
-
-      // Scale to fit container
-      requestAnimationFrame(() => {
-        wrapper.style.transform = 'none';
-        const rect = wrapper.getBoundingClientRect();
-        const pad = 48;
-        const cw = ct.clientWidth - pad;
-        const ch = ct.clientHeight - pad;
-        const scale = Math.min(cw / rect.width, ch / rect.height, 1);
-        wrapper.style.transform = `scale(${scale})`;
-        wrapper.style.transformOrigin = 'center center';
-      });
+      return html;
     }
 
     function updateDim(w, h) {
       document.getElementById('dim-label').textContent = `${w} × ${h}`;
     }
 
-    window.addEventListener('resize', () => {
-      if (currentMode === 'fit') applyFit();
-      if (currentMode === 'device') renderDevice();
-    });
+    window.addEventListener('resize', () => render());
 
     PeepSDK.on('init', ({ filePath, fileName }) => {
       const backendUrl = 'http://localhost:8000';
       currentSrc = `${backendUrl}/api/file/raw?path=${encodeURIComponent(filePath)}`;
-      document.getElementById('fill-frame').src = currentSrc;
       document.getElementById('status').textContent = fileName;
-      PeepSDK.ready();
+      render();
     });
   </script>
 </body>

@@ -121,7 +121,18 @@ export default function Home() {
   // Apply theme attributes to document root so CSS selectors work
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme.style || "macos");
-    document.documentElement.setAttribute("data-mode", theme.mode || "dark");
+
+    if (theme.mode === "auto") {
+      const mq = window.matchMedia("(prefers-color-scheme: dark)");
+      const apply = () => {
+        document.documentElement.setAttribute("data-mode", mq.matches ? "dark" : "light");
+      };
+      apply();
+      mq.addEventListener("change", apply);
+      return () => mq.removeEventListener("change", apply);
+    } else {
+      document.documentElement.setAttribute("data-mode", theme.mode || "dark");
+    }
   }, [theme]);
 
   const openFile = useCallback(

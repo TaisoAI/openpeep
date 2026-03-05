@@ -172,6 +172,37 @@ code, pre, .font-mono {
   color-scheme: light;
 }
 
+[data-theme="macos"][data-mode="light"] .toolbar-glass {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="macos"][data-mode="light"] .sidebar-glass {
+  border-right-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="macos"][data-mode="light"] .modal-glass {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.15),
+    0 0 0 0.5px rgba(0, 0, 0, 0.06) inset,
+    0 1px 0 rgba(255, 255, 255, 0.5) inset;
+}
+
+[data-theme="macos"][data-mode="light"] .card-glass {
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.06),
+    0 0 0 0.5px rgba(255, 255, 255, 0.5) inset;
+}
+
+[data-theme="macos"][data-mode="light"] .card-glass:hover {
+  border-color: rgba(0, 0, 0, 0.14);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 0 0 0.5px rgba(255, 255, 255, 0.5) inset;
+}
+
 [data-theme="macos"][data-mode="light"] .pill-glass {
   background: rgba(255, 255, 255, 0.55);
   border-color: rgba(0, 0, 0, 0.08);
@@ -187,6 +218,7 @@ code, pre, .font-mono {
 [data-theme="macos"][data-mode="light"] .column-glass {
   background: rgba(255, 255, 255, 0.35);
   border-color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
 /* ============================================

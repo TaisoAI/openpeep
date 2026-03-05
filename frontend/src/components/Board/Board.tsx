@@ -200,19 +200,6 @@ export default function Board({ space, onProjectSelect, hiddenStatuses = [], onP
                 >
                   {/* Column header */}
                   <div className="flex items-center gap-2 px-3 py-2.5 border-b border-border-subtle">
-                    <div
-                      className="w-2 h-2 rounded-full"
-                      style={{
-                        backgroundColor:
-                          i === 0
-                            ? "var(--text-tertiary)"
-                            : i === visibleColumns.length - 1
-                            ? "var(--text-tertiary)"
-                            : "var(--accent)",
-                        opacity:
-                          i === 0 || i === visibleColumns.length - 1 ? 0.5 : 1,
-                      }}
-                    />
                     <h2 className="text-[11px] font-semibold text-secondary uppercase tracking-wider">
                       {status}
                     </h2>

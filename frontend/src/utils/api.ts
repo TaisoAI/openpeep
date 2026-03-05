@@ -111,7 +111,7 @@ export interface SessionState {
 }
 
 export interface ThemeConfig {
-  mode: "light" | "dark";
+  mode: "light" | "dark" | "auto";
   style: "macos" | "windows" | "linux";
   showLogo?: boolean;
 }
