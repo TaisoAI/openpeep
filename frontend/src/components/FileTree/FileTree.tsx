@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { api, FileEntry, PeepManifest, FileSortField, SortDirection } from "@/utils/api";
+import { ListFilter, Pencil, Copy, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 
 interface FileTreeProps {
   root: string;
@@ -324,9 +325,7 @@ export default function FileTree({
             onClick={() => setShowSortMenu(!showSortMenu)}
             title="Sort files"
           >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 6h18M6 12h12M9 18h6" />
-            </svg>
+            <ListFilter size={12} />
           </button>
           {showSortMenu && (
             <div ref={sortMenuRef} className="absolute right-0 top-7 w-40 modal-glass z-50 p-1 animate-scale-in">
@@ -452,7 +451,7 @@ function TreeNodeView({
         onContextMenu={(e) => onContextMenu(e, node)}
       >
         <span className="w-3 text-center text-[9px] text-tertiary shrink-0">
-          {node.isDir ? (isExpanded ? "▾" : "▸") : ""}
+          {node.isDir ? (isExpanded ? <ChevronDown size={9} /> : <ChevronRight size={9} />) : ""}
         </span>
         {isRenaming ? (
           <input
@@ -596,18 +595,7 @@ function ContextMenu({
         className={`${menuItem} text-secondary hover:bg-hover hover:text-primary`}
         onClick={() => onRename(node)}
       >
-        <svg
-          width="12"
-          height="12"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-        </svg>
+        <Pencil size={12} />
         Rename
       </button>
 
@@ -615,19 +603,7 @@ function ContextMenu({
         className={`${menuItem} text-secondary hover:bg-hover hover:text-primary`}
         onClick={() => onCopyPath(node)}
       >
-        <svg
-          width="12"
-          height="12"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <rect width="14" height="14" x="8" y="8" rx="2" />
-          <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-        </svg>
+        <Copy size={12} />
         Copy Path
       </button>
 
@@ -662,20 +638,7 @@ function ContextMenu({
           className={`${menuItem} text-red-400/70 hover:bg-red-500/10 hover:text-red-400`}
           onClick={() => setConfirming(true)}
         >
-          <svg
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M3 6h18" />
-            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-          </svg>
+          <Trash2 size={12} />
           Delete
         </button>
       )}

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Space } from "@/utils/api";
+import { ChevronDown, Globe } from "lucide-react";
 
 interface SpaceSwitcherProps {
   spaces: Space[];
@@ -30,23 +31,9 @@ export default function SpaceSwitcher({
         onClick={() => setOpen(!open)}
         className="flex items-center gap-2 px-3 h-8 pill-glass text-sm text-primary"
       >
-        <span className="text-base leading-none">{activeSpace?.icon || "🌐"}</span>
+        <span className="text-base leading-none">{activeSpace?.icon || <Globe size={16} />}</span>
         <span className="font-medium text-xs">{activeSpace?.name || "All Spaces"}</span>
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 10 10"
-          className={`text-tertiary transition-transform ${open ? "rotate-180" : ""}`}
-        >
-          <path
-            d="M2 3.5L5 6.5L8 3.5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <ChevronDown size={10} className={`text-tertiary transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
 
       {open && (
@@ -83,7 +70,7 @@ export default function SpaceSwitcher({
                 setOpen(false);
               }}
             >
-              <span className="text-base leading-none">🌐</span>
+              <Globe size={16} />
               <span className="font-medium">All Spaces</span>
             </button>
           </div>

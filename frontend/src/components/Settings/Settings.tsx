@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { api, Space, ThemeConfig } from "@/utils/api";
+import { X, GripVertical, Moon, Sun, SunMoon } from "lucide-react";
 
 interface SettingsProps {
   open: boolean;
@@ -217,16 +218,7 @@ export default function Settings({
             className="w-6 h-6 flex items-center justify-center text-tertiary hover:text-primary rounded-md hover:bg-hover transition-all"
             onClick={onClose}
           >
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 12 12"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            >
-              <path d="M2 2l8 8M10 2l-8 8" />
-            </svg>
+            <X size={12} />
           </button>
         </div>
 
@@ -246,7 +238,7 @@ export default function Settings({
                     className="h-7 px-3 bg-elevated hover:bg-hover border border-border-subtle rounded-lg text-[11px] font-medium text-secondary hover:text-primary transition-all"
                     onClick={cycleThemeMode}
                   >
-                    {theme.mode === "dark" ? "🌙 Dark" : theme.mode === "light" ? "☀️ Light" : "🔄 Auto"}
+                    {theme.mode === "dark" ? <><Moon size={12} className="inline -mt-px mr-1" /> Dark</> : theme.mode === "light" ? <><Sun size={12} className="inline -mt-px mr-1" /> Light</> : <><SunMoon size={12} className="inline -mt-px mr-1" /> Auto</>}
                   </button>
                 </div>
                 <div className="flex items-center gap-3 bg-surface border border-border-subtle rounded-xl p-3 mt-2">
@@ -443,16 +435,7 @@ export default function Settings({
                                 className="text-tertiary hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"
                                 onClick={() => removeRoot(i, ri)}
                               >
-                                <svg
-                                  width="10"
-                                  height="10"
-                                  viewBox="0 0 12 12"
-                                  stroke="currentColor"
-                                  strokeWidth="1.5"
-                                  strokeLinecap="round"
-                                >
-                                  <path d="M2 2l8 8M10 2l-8 8" />
-                                </svg>
+                                <X size={10} />
                               </button>
                             </div>
                           ))}
@@ -517,35 +500,13 @@ export default function Settings({
                               }`}
                             >
                               {/* Drag handle */}
-                              <svg
-                                width="8"
-                                height="10"
-                                viewBox="0 0 8 10"
-                                fill="currentColor"
-                                className="text-tertiary shrink-0"
-                              >
-                                <circle cx="2" cy="2" r="1" />
-                                <circle cx="6" cy="2" r="1" />
-                                <circle cx="2" cy="5" r="1" />
-                                <circle cx="6" cy="5" r="1" />
-                                <circle cx="2" cy="8" r="1" />
-                                <circle cx="6" cy="8" r="1" />
-                              </svg>
+                              <GripVertical size={10} className="text-tertiary shrink-0" />
                               <span className="flex-1">{status}</span>
                               <button
                                 className="text-tertiary hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all"
                                 onClick={() => removeStatus(i, si)}
                               >
-                                <svg
-                                  width="8"
-                                  height="8"
-                                  viewBox="0 0 12 12"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                >
-                                  <path d="M2 2l8 8M10 2l-8 8" />
-                                </svg>
+                                <X size={8} />
                               </button>
                             </div>
                           ))}

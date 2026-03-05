@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { api, PeepManifest } from "@/utils/api";
+import { X, Package } from "lucide-react";
 
 interface PeepHubProps {
   open: boolean;
@@ -55,9 +56,7 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
             className="w-6 h-6 flex items-center justify-center text-tertiary hover:text-primary rounded-md hover:bg-hover transition-all"
             onClick={onClose}
           >
-            <svg width="12" height="12" viewBox="0 0 12 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-              <path d="M2 2l8 8M10 2l-8 8" />
-            </svg>
+            <X size={12} />
           </button>
         </div>
 
@@ -70,8 +69,8 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
                   key={peep.id}
                   className="flex items-center gap-3 rounded-xl p-3 hover:bg-hover transition-colors"
                 >
-                  <div className="w-9 h-9 bg-surface rounded-lg flex items-center justify-center text-lg border border-border-subtle">
-                    🐥
+                  <div className="w-9 h-9 bg-surface rounded-lg flex items-center justify-center border border-border-subtle text-secondary">
+                    <Package size={18} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="text-[13px] font-medium text-primary">
