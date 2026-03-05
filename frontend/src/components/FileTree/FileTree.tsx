@@ -58,6 +58,35 @@ function getFileType(name: string): string {
   return types[ext] || (ext ? `${ext.slice(1).toUpperCase()} File` : "File");
 }
 
+function formatShortDate(iso: string | undefined): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  const now = new Date();
+  const sameYear = d.getFullYear() === now.getFullYear();
+  if (sameYear) {
+    return d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  }
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "2-digit" });
+}
+
+function getSortAnnotation(node: TreeNode, sortField: FileSortField): string {
+  switch (sortField) {
+    case "modified":
+      return formatShortDate(node.lastModified);
+    case "created":
+      return formatShortDate(node.createdAt);
+    case "size":
+      return node.isDir ? "" : formatSize(node.size);
+    case "type": {
+      if (node.isDir) return "Folder";
+      const ext = node.name.includes(".") ? node.name.substring(node.name.lastIndexOf(".")).toLowerCase() : "";
+      return ext || "File";
+    }
+    default:
+      return "";
+  }
+}
+
 function findPeepForFile(name: string, peeps: PeepManifest[]): PeepManifest | null {
   const ext = name.includes(".") ? name.substring(name.lastIndexOf(".")).toLowerCase() : "";
   // Check filename patterns first
@@ -93,11 +122,16 @@ export default function FileTree({
   const [sortDir, setSortDir] = useState<SortDirection | undefined>(undefined);
   const [showSortMenu, setShowSortMenu] = useState(false);
   const sortButtonRef = useRef<HTMLButtonElement>(null);
+  const sortMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!showSortMenu) return;
     const handleClick = (e: MouseEvent) => {
-      if (sortButtonRef.current && !sortButtonRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (
+        sortButtonRef.current && !sortButtonRef.current.contains(target) &&
+        sortMenuRef.current && !sortMenuRef.current.contains(target)
+      ) {
         setShowSortMenu(false);
       }
     };
@@ -263,7 +297,7 @@ export default function FileTree({
             </svg>
           </button>
           {showSortMenu && (
-            <div className="absolute right-0 top-7 w-40 modal-glass z-50 p-1 animate-scale-in">
+            <div ref={sortMenuRef} className="absolute right-0 top-7 w-40 modal-glass z-50 p-1 animate-scale-in">
               {SORT_OPTIONS.map((opt) => (
                 <button
                   key={opt.field}
@@ -296,6 +330,7 @@ export default function FileTree({
             depth={0}
             expanded={expandedPaths}
             selectedPath={selectedPath}
+            sortField={sortField}
             onClick={handleClick}
             onContextMenu={handleContextMenu}
             renamingPath={renamingPath}
@@ -330,6 +365,7 @@ function TreeNodeView({
   depth,
   expanded,
   selectedPath,
+  sortField,
   onClick,
   onContextMenu,
   renamingPath,
@@ -342,6 +378,7 @@ function TreeNodeView({
   depth: number;
   expanded: Set<string>;
   selectedPath?: string;
+  sortField: FileSortField;
   onClick: (node: TreeNode) => void;
   onContextMenu: (e: React.MouseEvent, node: TreeNode) => void;
   renamingPath: string | null;
@@ -399,7 +436,15 @@ function TreeNodeView({
             onClick={(e) => e.stopPropagation()}
           />
         ) : (
-          <span className="truncate font-medium">{node.name}</span>
+          <>
+            <span className="truncate font-medium flex-1">{node.name}</span>
+            {sortField !== "name" && (() => {
+              const annotation = getSortAnnotation(node, sortField);
+              return annotation ? (
+                <span className="text-[9px] text-tertiary shrink-0 ml-1 font-normal tabular-nums">{annotation}</span>
+              ) : null;
+            })()}
+          </>
         )}
       </div>
       {node.isDir && isExpanded && node.children && (
@@ -411,6 +456,7 @@ function TreeNodeView({
               depth={depth + 1}
               expanded={expanded}
               selectedPath={selectedPath}
+              sortField={sortField}
               onClick={onClick}
               onContextMenu={onContextMenu}
               renamingPath={renamingPath}

@@ -112,9 +112,10 @@
 
     /* Fit mode — scale page to fit visible area */
     body.mode-fit #frame-container {
-      padding: 0; overflow: hidden;
+      padding: 0; overflow: hidden; position: relative;
     }
     body.mode-fit #preview-frame {
+      position: absolute; top: 0; left: 0;
       border: none; border-radius: 0;
       transform-origin: 0 0;
       /* width/height/transform set by JS */
