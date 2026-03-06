@@ -49,8 +49,12 @@
       return this._initData;
     },
 
-    /** Construct a URL to load a raw file via the backend */
+    /** Construct a URL to load a raw file via the backend.
+     *  If filePath is already an absolute URL or starts with /api/, return it as-is. */
     rawFileUrl(filePath) {
+      if (filePath && (filePath.startsWith("http") || filePath.startsWith("/api/"))) {
+        return filePath;
+      }
       const base =
         (this._initData && this._initData.apiBase) ||
         "http://localhost:8000/api";

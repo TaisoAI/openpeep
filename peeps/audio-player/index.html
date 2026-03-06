@@ -67,10 +67,8 @@
     PeepSDK.on('init', ({ filePath, fileName }) => {
       const player = document.getElementById('player');
       const info = document.getElementById('info');
-      const backendUrl = 'http://localhost:8000';
-
       document.getElementById('title').textContent = fileName.replace(/\.[^.]+$/, '');
-      player.src = `${backendUrl}/api/file/raw?path=${encodeURIComponent(filePath)}`;
+      player.src = PeepSDK.rawFileUrl(filePath);
 
       player.onloadedmetadata = () => {
         info.textContent = formatDuration(player.duration);

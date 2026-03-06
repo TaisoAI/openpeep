@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG Viewer</title>
+  <script src="../_sdk/peep-sdk.js"></script>
+  <style>
+    :root {
+      --bg-app: #1e1e1e;
+      --bg-toolbar: #252526;
+      --bg-elevated: #333;
+      --bg-hover: #444;
+      --border: #333;
+      --border-subtle: #555;
+      --text-primary: #d4d4d4;
+      --text-secondary: #ccc;
+      --text-tertiary: #888;
+      --accent: #0078d4;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg-app);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 0 10px;
+      height: 32px;
+      background: var(--bg-toolbar);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .tb-btn {
+      background: transparent;
+      color: var(--text-secondary);
+      border: none;
+      padding: 3px 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: background 0.12s, color 0.12s;
+      white-space: nowrap;
+    }
+    .tb-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+    .tb-btn.active { background: var(--bg-elevated); color: var(--text-primary); }
+
+    .tb-sep { width: 1px; height: 14px; background: var(--border); margin: 0 4px; flex-shrink: 0; }
+    .spacer { flex: 1; }
+    .info-text { color: var(--text-tertiary); font: 11px/1 monospace; white-space: nowrap; }
+
+    .main {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Preview pane */
+    .preview-pane {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+      position: relative;
+    }
+
+    .preview-pane.checkerboard {
+      background-image:
+        linear-gradient(45deg, #2a2a2a 25%, transparent 25%),
+        linear-gradient(-45deg, #2a2a2a 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #2a2a2a 75%),
+        linear-gradient(-45deg, transparent 75%, #2a2a2a 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    }
+
+    .preview-pane.white-bg { background: #fff; }
+    .preview-pane.dark-bg { background: var(--bg-app); }
+
+    #svg-container {
+      max-width: 95%;
+      max-height: 95%;
+    }
+
+    #svg-container svg {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+    }
+
+    /* Source pane */
+    .source-pane {
+      width: 0;
+      overflow: hidden;
+      border-left: 1px solid var(--border);
+      transition: width 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .source-pane.open {
+      width: 50%;
+    }
+
+    .source-header {
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: var(--bg-toolbar);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    #source-code {
+      flex: 1;
+      overflow: auto;
+      padding: 10px;
+      font: 12px/1.5 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      color: var(--text-primary);
+      white-space: pre;
+      tab-size: 2;
+    }
+
+    /* Syntax highlighting */
+    .tag { color: #569cd6; }
+    .attr { color: #9cdcfe; }
+    .str { color: #ce9178; }
+    .comment { color: #6a9955; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button class="tb-btn active" id="btn-checker" data-bg="checker" title="Checkerboard">⊞</button>
+    <button class="tb-btn" id="btn-white" data-bg="white" title="White">◻</button>
+    <button class="tb-btn" id="btn-dark" data-bg="dark" title="Dark">◼</button>
+    <div class="tb-sep"></div>
+    <button class="tb-btn" id="btn-source" title="Toggle Source">Source</button>
+    <div class="spacer"></div>
+    <div class="info-text" id="info"></div>
+  </div>
+
+  <div class="main">
+    <div class="preview-pane checkerboard" id="preview">
+      <div id="svg-container"></div>
+    </div>
+    <div class="source-pane" id="source-pane">
+      <div class="source-header">SVG Source</div>
+      <div id="source-code"></div>
+    </div>
+  </div>
+
+  <script>
+    const preview = document.getElementById('preview');
+    const container = document.getElementById('svg-container');
+    const sourcePane = document.getElementById('source-pane');
+    const sourceCode = document.getElementById('source-code');
+    const info = document.getElementById('info');
+
+    // Background toggles
+    document.querySelectorAll('[data-bg]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-bg]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        preview.className = 'preview-pane';
+        const bg = btn.dataset.bg;
+        if (bg === 'checker') preview.classList.add('checkerboard');
+        else if (bg === 'white') preview.classList.add('white-bg');
+        else preview.classList.add('dark-bg');
+      });
+    });
+
+    // Source toggle
+    let sourceOpen = false;
+    document.getElementById('btn-source').addEventListener('click', () => {
+      sourceOpen = !sourceOpen;
+      sourcePane.classList.toggle('open', sourceOpen);
+      document.getElementById('btn-source').classList.toggle('active', sourceOpen);
+    });
+
+    // Syntax highlight SVG source
+    function highlightSVG(src) {
+      return src
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/(<!--[\s\S]*?-->)/g, '<span class="comment">$1</span>')
+        .replace(/(&lt;\/?)([\w:-]+)/g, '$1<span class="tag">$2</span>')
+        .replace(/([\w:-]+)(=)(&quot;|")/g, '<span class="attr">$1</span>$2$3')
+        .replace(/("([^"]*)")/g, '<span class="str">$1</span>');
+    }
+
+    PeepSDK.on('init', ({ filePath, content, fileName }) => {
+      if (content) {
+        render(content, fileName);
+      } else {
+        fetch(PeepSDK.rawFileUrl(filePath))
+          .then(r => r.text())
+          .then(text => render(text, fileName))
+          .catch(() => {
+            container.textContent = 'Failed to load SVG';
+            PeepSDK.ready();
+          });
+      }
+    });
+
+    function render(svgText, fileName) {
+      // Render the SVG
+      container.innerHTML = svgText;
+      const svg = container.querySelector('svg');
+
+      // Show info
+      if (svg) {
+        const w = svg.getAttribute('width') || svg.viewBox?.baseVal?.width || '?';
+        const h = svg.getAttribute('height') || svg.viewBox?.baseVal?.height || '?';
+        const vb = svg.getAttribute('viewBox');
+        info.textContent = vb ? `viewBox: ${vb}` : `${w} × ${h}`;
+      }
+
+      // Show source
+      sourceCode.innerHTML = highlightSVG(svgText);
+
+      PeepSDK.ready();
+    }
+  </script>
+</body>
+</html>

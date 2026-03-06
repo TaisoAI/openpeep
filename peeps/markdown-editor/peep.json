@@ -1,14 +1,22 @@
 {
   "id": "markdown-editor",
   "name": "Markdown Editor",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "View and edit Markdown with live preview",
   "author": "OpenPeep",
   "entry": "index.html",
   "builtin": true,
   "priority": 0,
-  "capabilities": ["view", "edit", "save"],
+  "capabilities": [
+    "view",
+    "edit",
+    "save"
+  ],
   "matches": {
-    "extensions": [".md", ".markdown", ".mdx"]
+    "extensions": [
+      ".md",
+      ".markdown",
+      ".mdx"
+    ]
   }
 }

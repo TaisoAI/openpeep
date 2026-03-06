@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mermaid Viewer</title>
+  <script src="../_sdk/peep-sdk.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --bg-app: #1e1e1e;
+      --bg-toolbar: #252526;
+      --bg-elevated: #333;
+      --bg-hover: #444;
+      --border: #333;
+      --border-subtle: #555;
+      --text-primary: #d4d4d4;
+      --text-secondary: #ccc;
+      --text-tertiary: #888;
+      --accent: #0078d4;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      background: var(--bg-app);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--bg-toolbar);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .toolbar .title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-right: auto;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .toolbar button {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .toolbar button:hover { background: var(--bg-hover); color: var(--text-primary); }
+    .toolbar button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .content {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    #diagram-container {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    #diagram-container svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    #source-panel {
+      width: 0;
+      overflow: hidden;
+      transition: width 0.2s ease;
+      border-left: 1px solid var(--border);
+      background: var(--bg-toolbar);
+    }
+    #source-panel.open {
+      width: 40%;
+      min-width: 280px;
+    }
+    #source-panel pre {
+      margin: 0;
+      padding: 12px;
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow: auto;
+      height: 100%;
+    }
+
+    .error-msg {
+      color: #f87171;
+      font-size: 13px;
+      padding: 24px;
+      text-align: center;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+
+    .zoom-controls {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .zoom-controls button {
+      width: 28px;
+      padding: 4px;
+      text-align: center;
+    }
+    .zoom-controls span {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      min-width: 36px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <span class="title" id="title">Mermaid Viewer</span>
+    <div class="zoom-controls">
+      <button id="zoom-out" title="Zoom out">−</button>
+      <span id="zoom-level">100%</span>
+      <button id="zoom-in" title="Zoom in">+</button>
+      <button id="zoom-fit" title="Fit to view">Fit</button>
+    </div>
+    <button id="btn-source">Source</button>
+  </div>
+  <div class="content">
+    <div id="diagram-container"></div>
+    <div id="source-panel"><pre id="source-code"></pre></div>
+  </div>
+
+  <script>
+    let currentSource = '';
+    let zoomLevel = 1;
+
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#1e1e1e',
+        primaryColor: '#7c3aed',
+        primaryTextColor: '#e0e0e0',
+        primaryBorderColor: '#6d28d9',
+        lineColor: '#888',
+        secondaryColor: '#2563eb',
+        tertiaryColor: '#059669',
+      },
+      flowchart: { curve: 'basis', padding: 20 },
+      sequence: { mirrorActors: false },
+    });
+
+    async function renderDiagram(source) {
+      const container = document.getElementById('diagram-container');
+      try {
+        const { svg } = await mermaid.render('mermaid-diagram', source);
+        container.innerHTML = svg;
+        applyZoom();
+      } catch (err) {
+        container.innerHTML = '<div class="error-msg">Failed to render diagram:\n' +
+          err.message.replace(/</g, '&lt;') + '</div>';
+      }
+    }
+
+    function applyZoom() {
+      const svg = document.querySelector('#diagram-container svg');
+      if (svg) {
+        svg.style.transform = `scale(${zoomLevel})`;
+        svg.style.transformOrigin = 'center center';
+      }
+      document.getElementById('zoom-level').textContent = Math.round(zoomLevel * 100) + '%';
+    }
+
+    document.getElementById('zoom-in').onclick = () => { zoomLevel = Math.min(3, zoomLevel + 0.25); applyZoom(); };
+    document.getElementById('zoom-out').onclick = () => { zoomLevel = Math.max(0.25, zoomLevel - 0.25); applyZoom(); };
+    document.getElementById('zoom-fit').onclick = () => { zoomLevel = 1; applyZoom(); };
+
+    document.getElementById('btn-source').onclick = function() {
+      const panel = document.getElementById('source-panel');
+      panel.classList.toggle('open');
+      this.classList.toggle('active');
+    };
+
+    PeepSDK.on('init', async ({ filePath, content, fileName }) => {
+      document.getElementById('title').textContent = fileName || 'Mermaid Viewer';
+
+      if (content) {
+        currentSource = content;
+      } else if (filePath) {
+        try {
+          const url = PeepSDK.rawFileUrl(filePath);
+          const res = await fetch(url);
+          currentSource = await res.text();
+        } catch (e) {
+          currentSource = '';
+        }
+      }
+
+      document.getElementById('source-code').textContent = currentSource;
+      await renderDiagram(currentSource);
+      PeepSDK.ready();
+    });
+
+    PeepSDK.on('file-changed', async ({ content, filePath }) => {
+      if (content) {
+        currentSource = content;
+      } else if (filePath) {
+        try {
+          const url = PeepSDK.rawFileUrl(filePath);
+          const res = await fetch(url);
+          currentSource = await res.text();
+        } catch (e) { return; }
+      }
+      document.getElementById('source-code').textContent = currentSource;
+      await renderDiagram(currentSource);
+    });
+  </script>
+</body>
+</html>

@@ -1,8 +1,8 @@
 {
-  "id": "html-preview",
-  "name": "HTML Preview",
+  "id": "svg-viewer",
+  "name": "SVG Viewer",
   "version": "1.0.5",
-  "description": "Preview HTML files in a sandboxed frame",
+  "description": "Preview SVG files with source code and live rendering",
   "author": "OpenPeep",
   "entry": "index.html",
   "builtin": true,
@@ -12,8 +12,7 @@
   ],
   "matches": {
     "extensions": [
-      ".html",
-      ".htm"
+      ".svg"
     ]
   }
 }

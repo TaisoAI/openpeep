@@ -1,14 +1,23 @@
 {
   "id": "json-editor",
   "name": "JSON Editor",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "View and edit JSON with formatting and validation",
   "author": "OpenPeep",
   "entry": "index.html",
   "builtin": true,
   "priority": 0,
-  "capabilities": ["view", "edit", "save"],
+  "capabilities": [
+    "view",
+    "edit",
+    "save"
+  ],
   "matches": {
-    "extensions": [".json", ".jsonc", ".json5", ".geojson"]
+    "extensions": [
+      ".json",
+      ".jsonc",
+      ".json5",
+      ".geojson"
+    ]
   }
 }

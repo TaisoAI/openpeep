@@ -48,9 +48,7 @@
     PeepSDK.on('init', ({ filePath, fileName }) => {
       const player = document.getElementById('player');
       const info = document.getElementById('info');
-      const backendUrl = 'http://localhost:8000';
-
-      player.src = `${backendUrl}/api/file/raw?path=${encodeURIComponent(filePath)}`;
+      player.src = PeepSDK.rawFileUrl(filePath);
 
       player.onloadedmetadata = () => {
         const w = player.videoWidth;

@@ -325,8 +325,6 @@
 
     // --- Init handler ---
     PeepSDK.on('init', ({ filePath, ext }) => {
-      const backendUrl = 'http://localhost:8000';
-
       // Reset state
       mode = 'fit';
       panX = 0;
@@ -338,7 +336,7 @@
       img.style.maxWidth = 'none';
       img.style.maxHeight = 'none';
 
-      img.src = `${backendUrl}/api/file/raw?path=${encodeURIComponent(filePath)}`;
+      img.src = PeepSDK.rawFileUrl(filePath);
 
       // Checkerboard for transparent formats
       if (['.png', '.svg', '.webp', '.avif'].includes(ext)) {

@@ -1,0 +1,24 @@
+The quick brown fox jumps over the lazy dog.
+
+OpenPeep Text Editor
+====================
+
+This is a plain text file being displayed in the Text Editor peep.
+It supports basic text editing with syntax-free content.
+
+Features:
+  - Line numbers
+  - Word wrap
+  - Find and replace
+  - Auto-save
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+aliquip ex ea commodo consequat.
+
+    Indented block of text
+    to show whitespace handling
+    in the editor.
+
+End of sample file.

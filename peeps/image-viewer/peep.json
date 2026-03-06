@@ -1,14 +1,29 @@
 {
   "id": "image-viewer",
   "name": "Image Viewer",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "Preview images with zoom and fit controls",
   "author": "OpenPeep",
   "entry": "index.html",
   "builtin": true,
   "priority": 0,
-  "capabilities": ["view"],
+  "capabilities": [
+    "view"
+  ],
   "matches": {
-    "extensions": [".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg", ".ico", ".heic", ".heif", ".avif", ".bmp", ".tiff", ".tif"]
+    "extensions": [
+      ".png",
+      ".jpg",
+      ".jpeg",
+      ".gif",
+      ".webp",
+      ".ico",
+      ".heic",
+      ".heif",
+      ".avif",
+      ".bmp",
+      ".tiff",
+      ".tif"
+    ]
   }
 }

@@ -97,8 +97,7 @@
     }
 
     PeepSDK.on('init', ({ filePath, fileName, ext }) => {
-      const backendUrl = 'http://localhost:8000';
-      const fileUrl = `${backendUrl}/api/file/raw?path=${encodeURIComponent(filePath)}`;
+      const fileUrl = PeepSDK.rawFileUrl(filePath);
       document.getElementById('filename').textContent = fileName;
 
       if (SUPPORTED_NATIVE.includes(ext)) {

@@ -113,6 +113,23 @@ def browse_peephub(
         raise HTTPException(status_code=e.response.status_code, detail=f"PeepHub error: {e.response.text}")
 
 
+@router.get("/peephub/peeps/{slug}")
+def peephub_detail(slug: str):
+    """Proxy detail request for a single peep from PeepHub."""
+    config = load_config()
+    base_url = config.get("peephub", {}).get("url", "https://peephub.taiso.ai")
+    try:
+        resp = httpx.get(f"{base_url}/api/peeps/{slug}", timeout=10)
+        resp.raise_for_status()
+        return resp.json()
+    except httpx.ConnectError:
+        raise HTTPException(status_code=502, detail=f"Cannot connect to PeepHub at {base_url}")
+    except httpx.TimeoutException:
+        raise HTTPException(status_code=504, detail="PeepHub request timed out")
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=f"PeepHub error: {e.response.text}")
+
+
 class PublishRequest(BaseModel):
     peepPath: str
     category: str = "viewer"
@@ -262,9 +279,9 @@ def get_peep_samples(peep_id: str):
                 continue
             try:
                 content = f.read_text()
-                files.append({"name": f.name, "content": content})
+                files.append({"name": f.name, "content": content, "path": str(f)})
             except UnicodeDecodeError:
-                files.append({"name": f.name, "content": None, "binary": True})
+                files.append({"name": f.name, "content": None, "binary": True, "path": str(f)})
 
     return {"files": files, "hasScreenshot": has_screenshot}
 
@@ -318,5 +335,35 @@ def uninstall_peep(peep_id: str, root: str = Query("")):
                 raise HTTPException(status_code=403, detail="Cannot uninstall built-in peeps")
             shutil.rmtree(candidate)
             return {"uninstalled": True, "id": peep_id, "tier": tier}
+
+    raise HTTPException(status_code=404, detail=f"Peep '{peep_id}' not found")
+
+
+class PriorityRequest(BaseModel):
+    priority: int
+
+
+@router.patch("/peeps/{peep_id}/priority")
+def update_peep_priority(peep_id: str, req: PriorityRequest, root: str = Query("")):
+    """Update a peep's priority in its peep.json. Not allowed for built-ins."""
+    tiers = []
+    if root:
+        tiers.append((Path(root) / "peeps", TIER_PROJECT))
+    tiers.append((INSTALLED_PEEPS_DIR, TIER_INSTALLED))
+    tiers.append((BUILTIN_PEEPS_DIR, TIER_BUILTIN))
+
+    for base, tier in tiers:
+        candidate = base / peep_id
+        manifest_path = candidate / "peep.json"
+        if candidate.is_dir() and manifest_path.exists():
+            if tier == TIER_BUILTIN:
+                raise HTTPException(status_code=403, detail="Cannot change priority of built-in peeps")
+            try:
+                manifest = json.loads(manifest_path.read_text())
+                manifest["priority"] = req.priority
+                manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
+                return {"updated": True, "id": peep_id, "priority": req.priority}
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Failed to update priority: {e}")
 
     raise HTTPException(status_code=404, detail=f"Peep '{peep_id}' not found")

@@ -1,0 +1,33 @@
+{
+  "name": "OpenPeep",
+  "version": "1.0.0",
+  "description": "A modular file viewer and editor",
+  "settings": {
+    "theme": "dark",
+    "fontSize": 14,
+    "autoSave": true,
+    "tabSize": 2
+  },
+  "features": [
+    {
+      "name": "Peeps",
+      "description": "Plugin-based file viewers and editors",
+      "enabled": true
+    },
+    {
+      "name": "Workspaces",
+      "description": "Organize files into named spaces",
+      "enabled": true
+    },
+    {
+      "name": "PeepHub",
+      "description": "Discover and install community peeps",
+      "enabled": false
+    }
+  ],
+  "metadata": {
+    "createdAt": "2026-01-15T10:00:00Z",
+    "updatedAt": "2026-03-06T14:30:00Z",
+    "license": "MIT"
+  }
+}

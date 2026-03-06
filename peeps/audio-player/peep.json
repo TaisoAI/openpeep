@@ -1,14 +1,28 @@
 {
   "id": "audio-player",
   "name": "Audio Player",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "Play audio files with waveform visualization",
   "author": "OpenPeep",
   "entry": "index.html",
   "builtin": true,
   "priority": 0,
-  "capabilities": ["view"],
+  "capabilities": [
+    "view"
+  ],
   "matches": {
-    "extensions": [".mp3", ".wav", ".ogg", ".m4a", ".aac", ".flac", ".wma", ".aiff", ".aif", ".opus", ".webm"]
+    "extensions": [
+      ".mp3",
+      ".wav",
+      ".ogg",
+      ".m4a",
+      ".aac",
+      ".flac",
+      ".wma",
+      ".aiff",
+      ".aif",
+      ".opus",
+      ".webm"
+    ]
   }
 }

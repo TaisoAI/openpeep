@@ -104,6 +104,9 @@ export const api = {
     return fetchJSON<PeepHubBrowseResponse>(`/peephub/browse${qs ? `?${qs}` : ""}`);
   },
 
+  getPeepHubDetail: (slug: string) =>
+    fetchJSON<PeepHubDetailResponse>(`/peephub/peeps/${encodeURIComponent(slug)}`),
+
   getPeepSamples: (peepId: string) =>
     fetchJSON<{ files: { name: string; content: string | null; binary?: boolean }[]; hasScreenshot: boolean }>(`/peep-samples/${peepId}`),
 
@@ -117,6 +120,12 @@ export const api = {
     fetchJSON<{ peep: Record<string, unknown>; version: Record<string, unknown> }>("/peeps/publish", {
       method: "POST",
       body: JSON.stringify({ peepPath, category: category || "viewer", tags: tags || [] }),
+    }),
+
+  updatePeepPriority: (peepId: string, priority: number) =>
+    fetchJSON<{ updated: boolean; id: string; priority: number }>(`/peeps/${peepId}/priority`, {
+      method: "PATCH",
+      body: JSON.stringify({ priority }),
     }),
 
   // Session
@@ -224,4 +233,25 @@ export interface PeepHubBrowseResponse {
   total: number;
   page: number;
   pages: number;
+}
+
+export interface PeepHubVersion {
+  id: string;
+  version: string;
+  changelog: string;
+  sizeBytes: number;
+  createdAt: string;
+}
+
+export interface PeepHubDetailResponse {
+  peep: PeepHubEntry & {
+    longDescription?: string;
+    screenshots?: string[];
+    homepageUrl?: string;
+    repositoryUrl?: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  versions: PeepHubVersion[];
+  author: { id: string; name: string; avatarUrl?: string };
 }

@@ -1,0 +1,14 @@
+{
+  "id": "mermaid-viewer",
+  "name": "Mermaid Viewer",
+  "version": "1.0.1",
+  "description": "Render Mermaid diagrams with live preview and source view",
+  "author": "OpenPeep",
+  "entry": "index.html",
+  "builtin": true,
+  "priority": 0,
+  "capabilities": ["view"],
+  "matches": {
+    "extensions": [".mmd", ".mermaid"]
+  }
+}

@@ -1,0 +1,15 @@
+graph TD
+    A[User Opens File] -->|Extension Match| B{Peep Resolver}
+    B -->|Single Match| C[Load Peep]
+    B -->|Multiple Matches| D[Pick Best by Priority]
+    D --> C
+    C --> E[Initialize SDK]
+    E --> F[Send File Content]
+    F --> G[Peep Renders]
+    G --> H[peep:ready]
+
+    style A fill:#7c3aed,stroke:#6d28d9,color:#fff
+    style B fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style C fill:#059669,stroke:#047857,color:#fff
+    style D fill:#d97706,stroke:#b45309,color:#fff
+    style H fill:#059669,stroke:#047857,color:#fff

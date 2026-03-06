@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { api, Space, ThemeConfig } from "@/utils/api";
-import { X, GripVertical, Moon, Sun, SunMoon } from "lucide-react";
+import { X, GripVertical, Moon, Sun, SunMoon, Eye, EyeOff } from "lucide-react";
 
 interface SettingsProps {
   open: boolean;
@@ -75,6 +75,7 @@ export default function Settings({
   const [addingStatusFor, setAddingStatusFor] = useState<number | null>(null);
   const [newStatusName, setNewStatusName] = useState("");
   const newStatusRef = useRef<HTMLInputElement>(null);
+  const [showApiKey, setShowApiKey] = useState(false);
   const [dragStatus, setDragStatus] = useState<{ spaceIndex: number; statusIndex: number } | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
@@ -342,6 +343,47 @@ export default function Settings({
 
               <div>
                 <h3 className="text-[11px] font-semibold text-tertiary uppercase tracking-wider mb-2">
+                  PeepHub
+                </h3>
+                <div className="flex items-center gap-3 bg-surface border border-border-subtle rounded-xl p-3">
+                  <div className="flex-1">
+                    <span className="text-[13px] text-primary font-medium">
+                      API Key
+                    </span>
+                    <p className="text-[10px] text-tertiary mt-0.5">
+                      Get yours at peephub.taiso.ai/dashboard
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <input
+                      type={showApiKey ? "text" : "password"}
+                      className="w-52 bg-elevated border border-border-subtle rounded-lg px-2.5 py-1.5 text-[12px] text-primary font-mono outline-none focus:border-accent/50 transition-colors"
+                      value={peephubApiKey}
+                      onChange={(e) => onPeephubApiKeyChanged(e.target.value)}
+                      onBlur={async () => {
+                        await api.updateSources({ peephub: { url: peephubUrl, apiKey: peephubApiKey } });
+                      }}
+                      onKeyDown={async (e) => {
+                        if (e.key === "Enter") {
+                          await api.updateSources({ peephub: { url: peephubUrl, apiKey: peephubApiKey } });
+                          (e.target as HTMLInputElement).blur();
+                        }
+                      }}
+                      placeholder="Paste API key"
+                    />
+                    <button
+                      className="w-7 h-7 flex items-center justify-center text-tertiary hover:text-primary rounded-lg hover:bg-hover transition-all"
+                      onClick={() => setShowApiKey(!showApiKey)}
+                      title={showApiKey ? "Hide" : "Show"}
+                    >
+                      {showApiKey ? <EyeOff size={13} /> : <Eye size={13} />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-[11px] font-semibold text-tertiary uppercase tracking-wider mb-2">
                   Developer
                 </h3>
                 <div className="flex items-center gap-3 bg-surface border border-border-subtle rounded-xl p-3">
@@ -367,7 +409,7 @@ export default function Settings({
                     />
                   </button>
                 </div>
-                {devMode && (<>
+                {devMode && (
                   <div className="flex items-center gap-3 bg-surface border border-border-subtle rounded-xl p-3 mt-2">
                     <span className="text-[13px] text-primary flex-1 font-medium">
                       PeepHub URL
@@ -388,28 +430,7 @@ export default function Settings({
                       placeholder="https://peephub.taiso.ai"
                     />
                   </div>
-                  <div className="flex items-center gap-3 bg-surface border border-border-subtle rounded-xl p-3 mt-2">
-                    <span className="text-[13px] text-primary flex-1 font-medium">
-                      API Key
-                    </span>
-                    <input
-                      type="password"
-                      className="w-64 bg-elevated border border-border-subtle rounded-lg px-2.5 py-1.5 text-[12px] text-primary font-mono outline-none focus:border-accent/50 transition-colors"
-                      value={peephubApiKey}
-                      onChange={(e) => onPeephubApiKeyChanged(e.target.value)}
-                      onBlur={async () => {
-                        await api.updateSources({ peephub: { url: peephubUrl, apiKey: peephubApiKey } });
-                      }}
-                      onKeyDown={async (e) => {
-                        if (e.key === "Enter") {
-                          await api.updateSources({ peephub: { url: peephubUrl, apiKey: peephubApiKey } });
-                          (e.target as HTMLInputElement).blur();
-                        }
-                      }}
-                      placeholder="Enter API key"
-                    />
-                  </div>
-                </>)}
+                )}
               </div>
             </div>
           )}

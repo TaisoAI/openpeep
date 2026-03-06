@@ -518,8 +518,7 @@
     window.addEventListener('resize', () => render());
 
     PeepSDK.on('init', ({ filePath, fileName }) => {
-      const backendUrl = 'http://localhost:8000';
-      currentSrc = `${backendUrl}/api/file/raw?path=${encodeURIComponent(filePath)}`;
+      currentSrc = PeepSDK.rawFileUrl(filePath);
       document.getElementById('status').textContent = fileName;
       render();
     });

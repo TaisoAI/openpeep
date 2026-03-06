@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { api, Space, FileData, PeepManifest, ThemeConfig, SessionState } from "@/utils/api";
 import { resolvePeep } from "@/utils/peep-resolver";
@@ -295,23 +295,25 @@ export default function Home() {
     }
   };
 
-  const displaySpace = !sourcesLoaded
-    ? null
-    : activeSpace ||
-      (spaces.length > 0
-        ? {
-            name: "All Spaces",
-            icon: "🌐",
-            roots: spaces.flatMap((s) => s.roots),
-            statuses: spaces[0]?.statuses || [
-              "Idea",
-              "Planning",
-              "In Progress",
-              "Analyze",
-              "Archive",
-            ],
-          }
-        : null);
+  const displaySpace = useMemo(() => {
+    if (!sourcesLoaded) return null;
+    if (activeSpace) return activeSpace;
+    if (spaces.length > 0) {
+      return {
+        name: "All Spaces",
+        icon: "🌐",
+        roots: spaces.flatMap((s) => s.roots),
+        statuses: spaces[0]?.statuses || [
+          "Idea",
+          "Planning",
+          "In Progress",
+          "Analyze",
+          "Archive",
+        ],
+      };
+    }
+    return null;
+  }, [sourcesLoaded, activeSpace, spaces]);
 
   // First-run wizard: show when no spaces configured
   const [wizardStep, setWizardStep] = useState(0);
