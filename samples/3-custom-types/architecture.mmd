@@ -1,0 +1,8 @@
+graph TD
+    A[User] --> B[OpenPeep Frontend]
+    B --> C[FastAPI Backend]
+    C --> D[File System]
+    C --> E[PeepHub API]
+    B --> F[Peep iframe]
+    F --> G[PeepSDK]
+    G --> C

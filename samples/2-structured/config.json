@@ -1,0 +1,15 @@
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "description": "A sample JSON file — OpenPeep renders it with syntax highlighting and validation",
+  "settings": {
+    "theme": "dark",
+    "language": "en",
+    "notifications": true
+  },
+  "features": [
+    { "name": "Dashboard", "enabled": true },
+    { "name": "Analytics", "enabled": false },
+    { "name": "Export", "enabled": true }
+  ]
+}

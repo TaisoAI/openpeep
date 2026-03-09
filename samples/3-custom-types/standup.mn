@@ -1,0 +1,30 @@
+{
+  "type": "meeting-notes",
+  "title": "Monday Standup",
+  "date": "2026-03-10",
+  "attendees": ["Alice", "Bob", "Carol"],
+  "agenda": [
+    "Sprint progress review",
+    "Blockers discussion",
+    "This week's priorities"
+  ],
+  "notes": [
+    {
+      "speaker": "Alice",
+      "text": "Finished the authentication module. PR is up for review."
+    },
+    {
+      "speaker": "Bob",
+      "text": "Working on the API integration. Blocked on the staging environment — need DevOps help."
+    },
+    {
+      "speaker": "Carol",
+      "text": "Design specs for the dashboard are ready. Will share Figma link after the meeting."
+    }
+  ],
+  "actionItems": [
+    { "owner": "Bob", "task": "Follow up with DevOps on staging env", "due": "2026-03-11" },
+    { "owner": "Carol", "task": "Share Figma link in Slack", "due": "2026-03-10" },
+    { "owner": "Alice", "task": "Address PR review comments", "due": "2026-03-12" }
+  ]
+}

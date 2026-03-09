@@ -1,0 +1,6 @@
+Welcome to OpenPeep!
+
+This is a plain text file. OpenPeep renders it with the Text Editor peep —
+with syntax highlighting, line numbers, and editing support.
+
+Try opening the other files in this folder to see different viewers in action.
