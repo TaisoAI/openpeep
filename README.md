@@ -6,49 +6,38 @@ OpenPeep is a desktop application for viewing and editing any file using custom 
 
 ## Quick Start
 
-### Prerequisites
+```bash
+npx openpeep
+```
 
-- Python 3.11+
-- Node.js 20+
+That's it. The wizard will:
+1. Check Python 3.11+ and Node.js 20+ are installed
+2. Create a Python environment
+3. Ask where you keep your projects
+4. Set up a demo workspace with sample files
+5. Offer to install the Claude Code plugin
+6. Start OpenPeep
 
-### Setup
+### Commands
 
 ```bash
-git clone https://github.com/taiso-llc/openpeep.git
+npx openpeep              # Start (wizard on first run)
+npx openpeep stop          # Stop the server
+npx openpeep restart       # Restart
+npx openpeep status        # Check if running
+npx openpeep doctor        # Diagnose issues
+npx openpeep doctor --fix  # Auto-repair issues
+```
+
+### For Contributors
+
+Clone and run in dev mode:
+
+```bash
+git clone https://github.com/TaisoAI/openpeep.git
 cd openpeep
-```
-
-**Backend:**
-
-```bash
-cd backend
-pip install -r requirements.txt
-uvicorn backend.main:app --reload --port 8000
-```
-
-Run uvicorn from the project root so module imports resolve correctly:
-
-```bash
-# From the project root:
-uvicorn backend.main:app --reload --port 8000
-```
-
-**Frontend:**
-
-```bash
-cd frontend
-npm install
+npm run setup
 npm run dev
-```
-
-The frontend runs on `http://localhost:5173` and the backend API on `http://localhost:8000`.
-
-### Configuration
-
-Copy the example config and edit it to add your workspace directories:
-
-```bash
-cp openpeep.config.example.json openpeep.config.json
 ```
 
 ## Architecture
