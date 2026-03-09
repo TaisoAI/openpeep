@@ -11,6 +11,9 @@
     "setup:backend": "python3 -m venv venv && ./venv/bin/pip install -r backend/requirements.txt",
     "setup:frontend": "cd frontend && npm install",
     "build": "cd frontend && npm run build",
+    "build:frontend": "cd frontend && npm run build && mkdir -p cli/frontend-dist && cp -r frontend/dist/* cli/frontend-dist/",
+    "build:mcp": "cd mcp && npm install && npm run build",
+    "build:all": "npm run build:frontend && npm run build:mcp",
     "lint": "cd frontend && npm run lint"
   },
   "devDependencies": {
