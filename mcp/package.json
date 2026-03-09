@@ -1,0 +1,20 @@
+{
+  "name": "@openpeep/claude-code",
+  "version": "0.1.0",
+  "description": "Claude Code plugin for OpenPeep — create files, preview peeps, build custom viewers",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": { "openpeep-mcp": "dist/index.js" },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  }
+}
