@@ -5,7 +5,7 @@ const {
   OPENPEEP_HOME, CONFIG_PATH, VENV_PATH, PID_PATH,
   PKG_PEEPS, PKG_REQUIREMENTS,
 } = require("./paths");
-const { checkPython, createVenv, installDeps } = require("./setup-python");
+const { checkPython, checkInternet, createVenv, installDeps } = require("./setup-python");
 const { isPluginInstalled, installClaudePlugin } = require("./claude-plugin");
 
 const FIX = process.argv.includes("--fix");
@@ -13,6 +13,10 @@ const FIX = process.argv.includes("--fix");
 let issues = 0;
 
 function pass(msg) { console.log(`  ✓ ${msg}`); }
+function info(msg, hint) {
+  console.log(`  ○ ${msg}`);
+  if (hint) console.log(`    → ${hint}`);
+}
 function fail(msg, fix) {
   issues++;
   console.log(`  ✗ ${msg}`);
@@ -48,13 +52,21 @@ async function run() {
     } catch {
       fail("Venv exists but Python binary broken", FIX ? "Recreating..." : "Run: openpeep doctor --fix");
       if (FIX) {
-        fs.rmSync(VENV_PATH, { recursive: true, force: true });
-        if (python) { createVenv(python.command); installDeps(); pass("Venv recreated"); }
+        const online = await checkInternet();
+        if (!online) { fail("No internet — can't download Python packages"); }
+        else {
+          fs.rmSync(VENV_PATH, { recursive: true, force: true });
+          if (python) { createVenv(python.command); installDeps(); pass("Venv recreated"); }
+        }
       }
     }
   } else {
     fail("No Python venv found", FIX ? "Creating..." : "Run: openpeep doctor --fix");
-    if (FIX && python) { createVenv(python.command); installDeps(); pass("Venv created"); }
+    if (FIX && python) {
+      const online = await checkInternet();
+      if (!online) { fail("No internet — can't download Python packages"); }
+      else { createVenv(python.command); installDeps(); pass("Venv created"); }
+    }
   }
 
   if (fs.existsSync(CONFIG_PATH)) pass(`Config: ${CONFIG_PATH}`);
@@ -141,9 +153,21 @@ async function run() {
       fail("OpenPeep MCP server not registered", FIX ? "Installing..." : "Run: openpeep doctor --fix");
       if (FIX) {
         const result = installClaudePlugin();
-        if (result.success) pass("Plugin installed");
+        if (result.success) pass("MCP server registered");
         else fail(result.message);
       }
+    }
+    // Check for plugin (skills/agents) — installed via marketplace
+    const pluginCache = path.join(os.homedir(), ".claude", "plugins", "installed_plugins.json");
+    let hasPlugin = false;
+    try {
+      const installed = JSON.parse(fs.readFileSync(pluginCache, "utf8"));
+      hasPlugin = Object.keys(installed.plugins || {}).some((k) => k.startsWith("openpeep@"));
+    } catch {}
+    if (hasPlugin) {
+      pass("OpenPeep plugin installed (skills + agents)");
+    } else {
+      info("OpenPeep plugin not installed (optional — adds skills + agents)", "In Claude Code: /plugin install openpeep");
     }
   } else {
     fail("Claude Code not detected", "Install from https://claude.ai/code");
@@ -155,19 +179,21 @@ async function run() {
   console.log("  PeepHub");
   await new Promise((resolve) => {
     const https = require("https");
-    const req = https.get("https://peephub.taiso.ai/api/health", { timeout: 5000 }, (res) => {
-      pass("peephub.taiso.ai reachable");
+    const req = https.get("https://peephub.taiso.ai/", { timeout: 10000 }, (res) => {
+      if (res.statusCode >= 200 && res.statusCode < 400) pass("peephub.taiso.ai reachable");
+      else info("peephub.taiso.ai returned status " + res.statusCode);
+      res.resume();
       resolve();
     });
-    req.on("error", () => { fail("peephub.taiso.ai unreachable"); resolve(); });
-    req.on("timeout", () => { req.destroy(); fail("peephub.taiso.ai timed out"); resolve(); });
+    req.on("error", () => { info("peephub.taiso.ai unreachable (optional)"); resolve(); });
+    req.on("timeout", () => { req.destroy(); info("peephub.taiso.ai timed out (optional)"); resolve(); });
   });
 
   if (fs.existsSync(CONFIG_PATH)) {
     try {
       const config = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf8"));
       if (config.peephub && config.peephub.apiKey) pass("API key configured");
-      else fail("API key not set (publish won't work)", "Set in OpenPeep Settings or config.json");
+      else info("API key not set (only needed for publishing peeps)", "Set in OpenPeep Settings or config.json");
     } catch {}
   }
 

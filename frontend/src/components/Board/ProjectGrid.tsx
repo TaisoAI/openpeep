@@ -5,15 +5,19 @@ import ProjectCard from "./ProjectCard";
 interface ProjectGridProps {
   space: Space;
   onProjectSelect: (root: string, path: string) => void;
+  refreshKey?: number;
 }
 
 interface ProjectEntry extends FileEntry {
   root: string;
 }
 
-export default function ProjectGrid({ space, onProjectSelect }: ProjectGridProps) {
+export default function ProjectGrid({ space, onProjectSelect, refreshKey }: ProjectGridProps) {
   const [projects, setProjects] = useState<ProjectEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [localRefresh, setLocalRefresh] = useState(0);
+
+  function reload() { setLocalRefresh((n) => n + 1); }
 
   useEffect(() => {
     let cancelled = false;
@@ -47,7 +51,7 @@ export default function ProjectGrid({ space, onProjectSelect }: ProjectGridProps
 
     load();
     return () => { cancelled = true; };
-  }, [space]);
+  }, [space, refreshKey, localRefresh]);
 
   if (loading) {
     return (
@@ -79,10 +83,12 @@ export default function ProjectGrid({ space, onProjectSelect }: ProjectGridProps
             key={`${project.root}/${project.path}`}
             name={project.name}
             path={project.path}
+            root={project.root}
             project={project.project}
             createdAt={project.createdAt}
             lastModified={project.lastModified}
             onClick={() => onProjectSelect(project.root, project.path)}
+            onDeleted={reload}
           />
         ))}
       </div>

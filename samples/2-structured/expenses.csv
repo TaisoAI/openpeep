@@ -1,8 +1,24 @@
-Date,Category,Description,Amount
-2026-01-15,Food,Lunch at cafe,12.50
-2026-01-16,Transport,Uber to office,8.75
-2026-01-17,Software,Claude Pro subscription,20.00
-2026-01-18,Food,Grocery run,45.30
-2026-01-19,Entertainment,Movie tickets,24.00
-2026-01-20,Transport,Bus pass monthly,55.00
-2026-01-21,Food,Coffee and pastry,7.25
+Date,Category,Description,Amount,Payment,Status
+2026-01-05,Software,GitHub Teams (annual),432.00,Corporate Card,Paid
+2026-01-08,Cloud,AWS January invoice,1247.83,ACH Transfer,Paid
+2026-01-10,Software,Figma Professional,15.00,Corporate Card,Paid
+2026-01-12,Office,Ergonomic keyboard,189.99,Expense Report,Reimbursed
+2026-01-15,Cloud,Vercel Pro plan,20.00,Corporate Card,Paid
+2026-01-18,Travel,Flight SFO→SEA (conference),342.50,Corporate Card,Paid
+2026-01-18,Travel,Hotel 2 nights,478.00,Corporate Card,Paid
+2026-01-19,Meals,Team dinner (8 people),384.20,Corporate Card,Paid
+2026-01-22,Software,Linear subscription,8.00,Corporate Card,Paid
+2026-01-25,Cloud,Cloudflare Workers,5.00,Corporate Card,Paid
+2026-01-28,Software,Notion team plan,10.00,Corporate Card,Paid
+2026-02-01,Cloud,AWS February invoice,1189.42,ACH Transfer,Paid
+2026-02-05,Software,Claude Pro,20.00,Personal Card,Pending
+2026-02-08,Office,Standing desk mat,79.99,Expense Report,Pending
+2026-02-10,Cloud,Supabase Pro,25.00,Corporate Card,Paid
+2026-02-14,Meals,Client lunch meeting,127.50,Corporate Card,Paid
+2026-02-18,Software,Loom Business,15.00,Corporate Card,Paid
+2026-02-20,Travel,Uber to airport,48.75,Expense Report,Pending
+2026-02-22,Cloud,Railway deployment,12.30,Corporate Card,Paid
+2026-02-28,Software,1Password Teams,7.99,Corporate Card,Paid
+2026-03-01,Cloud,AWS March invoice,1356.91,ACH Transfer,Pending
+2026-03-05,Office,Monitor arm mount,149.00,Expense Report,Pending
+2026-03-08,Software,Tailwind UI license,299.00,Corporate Card,Paid

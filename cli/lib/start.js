@@ -18,6 +18,13 @@ async function run() {
   const portIdx = process.argv.indexOf("--port");
   const port = portIdx !== -1 ? parseInt(process.argv[portIdx + 1]) : 3000;
 
+  // Show version + build
+  const pkg = require("../../package.json");
+  let build;
+  try { build = require("../build-info.json"); } catch {}
+  const ver = build ? `${pkg.version} (${build.build})` : pkg.version;
+  console.log(`  OpenPeep v${ver}`);
+
   // Check if already running
   if (isRunning()) {
     const pid = fs.readFileSync(PID_PATH, "utf8").trim();
@@ -29,7 +36,7 @@ async function run() {
   if (isFirstRun()) {
     console.log("");
     console.log("  Checking requirements...");
-    setupPython(console.log);
+    await setupPython(console.log);
     console.log("");
     await runWizard();
     console.log("");
@@ -68,23 +75,42 @@ async function run() {
   child.unref();
   fs.writeFileSync(PID_PATH, String(child.pid));
 
-  console.log(`  ✓ OpenPeep running → http://localhost:${port} (pid ${child.pid})`);
-  printClaudePrompts();
+  // Wait for server to actually start (up to 10 seconds)
+  const http = require("http");
+  let started = false;
+  for (let i = 0; i < 20; i++) {
+    await new Promise((r) => setTimeout(r, 500));
+    // Check if process is still alive
+    try { process.kill(child.pid, 0); } catch {
+      console.error("  ✗ Server failed to start. Check logs:");
+      console.error(`    ${logFile}`);
+      try { fs.unlinkSync(PID_PATH); } catch {}
+      return;
+    }
+    // Try health check
+    started = await new Promise((resolve) => {
+      const req = http.get(`http://localhost:${port}/api/health`, (res) => {
+        resolve(res.statusCode === 200);
+      });
+      req.on("error", () => resolve(false));
+      req.setTimeout(500, () => { req.destroy(); resolve(false); });
+    });
+    if (started) break;
+  }
+
+  if (started) {
+    const url = `http://localhost:${port}`;
+    console.log(`  ✓ OpenPeep running → ${url} (pid ${child.pid})`);
+    console.log("");
+    // Open browser
+    const { exec } = require("child_process");
+    const openCmd = process.platform === "darwin" ? "open" : process.platform === "win32" ? "start" : "xdg-open";
+    exec(`${openCmd} ${url}`);
+  } else {
+    console.error("  ✗ Server started but not responding. Check logs:");
+    console.error(`    ${logFile}`);
+  }
 }
 
-function printClaudePrompts() {
-  console.log("");
-  console.log("  ──────────────────────────────────────");
-  console.log("  Try these in Claude Code:");
-  console.log("");
-  console.log('  1. "create a meeting notes file for tomorrow\'s standup"');
-  console.log('  2. "make a slide deck about our Q1 results"');
-  console.log('  3. "create a CSV tracking my monthly expenses"');
-  console.log('  4. "create a json config for a new project"');
-  console.log("");
-  console.log("  OpenPeep will preview them live!");
-  console.log("  ──────────────────────────────────────");
-  console.log("");
-}
 
 module.exports = { run, isRunning };

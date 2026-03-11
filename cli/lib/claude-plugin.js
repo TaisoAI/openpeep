@@ -16,16 +16,15 @@ function installClaudePlugin() {
     return { success: false, message: "Could not parse ~/.claude.json" };
   }
 
+  // Register MCP server in ~/.claude.json
   if (!config.mcpServers) config.mcpServers = {};
-
   const mcpBin = path.resolve(__dirname, "../../mcp/dist/index.js");
-
   config.mcpServers.openpeep = {
     command: "node",
     args: [mcpBin],
   };
-
   fs.writeFileSync(CLAUDE_CONFIG_PATH, JSON.stringify(config, null, 2));
+
   return { success: true };
 }
 
@@ -40,12 +39,13 @@ function isPluginInstalled() {
 }
 
 function removePlugin() {
-  if (!fs.existsSync(CLAUDE_CONFIG_PATH)) return;
-  try {
-    const config = JSON.parse(fs.readFileSync(CLAUDE_CONFIG_PATH, "utf8"));
-    if (config.mcpServers) delete config.mcpServers.openpeep;
-    fs.writeFileSync(CLAUDE_CONFIG_PATH, JSON.stringify(config, null, 2));
-  } catch {}
+  if (fs.existsSync(CLAUDE_CONFIG_PATH)) {
+    try {
+      const config = JSON.parse(fs.readFileSync(CLAUDE_CONFIG_PATH, "utf8"));
+      if (config.mcpServers) delete config.mcpServers.openpeep;
+      fs.writeFileSync(CLAUDE_CONFIG_PATH, JSON.stringify(config, null, 2));
+    } catch {}
+  }
 }
 
 module.exports = { installClaudePlugin, isPluginInstalled, removePlugin };

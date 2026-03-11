@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Your Own Peep</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #08080c; --bg-card: #111118;
+      --border: #1e1e2a; --border-glow: #2a2a3a;
+      --text: #e8e8ef; --text-dim: #888899; --text-muted: #555566;
+      --accent: #CCFF00; --purple: #8b5cf6; --amber: #f59e0b;
+    }
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.65; -webkit-font-smoothing: antialiased;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 60px 32px;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999;
+    }
+    .container { max-width: 580px; }
+    h2 { font-family: 'Syne', sans-serif; font-weight: 700; letter-spacing: -0.03em; font-size: clamp(26px, 4vw, 36px); line-height: 1.15; margin-bottom: 12px; }
+    p { color: var(--text-dim); font-size: 15px; }
+    .label {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent);
+      margin-bottom: 12px; display: block;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2);
+      border-radius: 100px; padding: 6px 16px;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      color: var(--amber); margin-bottom: 24px;
+    }
+    .topics { margin-top: 32px; display: flex; flex-direction: column; gap: 14px; }
+    .topic {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 22px 24px;
+      position: relative; overflow: hidden;
+    }
+    .topic::after {
+      content: 'COMING SOON';
+      position: absolute; top: 14px; right: 16px;
+      font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 600;
+      letter-spacing: 0.1em; color: var(--amber); opacity: 0.6;
+    }
+    .topic h3 { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .topic p { font-size: 13px; line-height: 1.5; }
+    code {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      background: rgba(204,255,0,0.08); color: var(--accent);
+      padding: 2px 8px; border-radius: 4px;
+    }
+    .hint {
+      margin-top: 32px; padding: 18px 22px;
+      background: rgba(139,92,246,0.06); border: 1px solid rgba(139,92,246,0.15);
+      border-radius: 12px;
+    }
+    .hint h3 { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .hint p { font-size: 13px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="label">Build Your Own</span>
+    <div class="badge">Coming Soon</div>
+    <h2>Create and publish your own peeps</h2>
+    <p>A peep is just a folder with an <code>index.html</code> and a <code>peep.json</code> manifest. If you can build a web page, you can build a peep. Full guides are on the way.</p>
+
+    <div class="topics">
+      <div class="topic">
+        <h3>Peep anatomy</h3>
+        <p>How a peep is structured: the manifest (<code>peep.json</code>), the entry point (<code>index.html</code>), file matching rules, and the PeepSDK.</p>
+      </div>
+      <div class="topic">
+        <h3>Building your first peep</h3>
+        <p>Step-by-step guide to creating a custom viewer for your own file type. Start from scratch or let Claude Code scaffold it for you.</p>
+      </div>
+      <div class="topic">
+        <h3>The PeepSDK</h3>
+        <p>How your peep communicates with OpenPeep: loading file data, saving edits, reading theme tokens, and responding to file changes.</p>
+      </div>
+      <div class="topic">
+        <h3>Testing &amp; debugging</h3>
+        <p>How to test your peep locally, use dev mode for live reload, and debug using browser dev tools inside the peep iframe.</p>
+      </div>
+      <div class="topic">
+        <h3>Publishing to PeepHub</h3>
+        <p>How to package your peep, add screenshots and sample files, and publish it to PeepHub so others can install it with one click.</p>
+      </div>
+    </div>
+
+    <div class="hint">
+      <h3>In the meantime</h3>
+      <p>You can already create peeps by hand or ask Claude Code to scaffold one for you. Look at any built-in peep in the <code>peeps/</code> folder to see the structure. The best way to learn is to copy one and modify it.</p>
+    </div>
+  </div>
+</body>
+</html>

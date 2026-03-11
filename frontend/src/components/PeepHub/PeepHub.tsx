@@ -19,7 +19,7 @@ interface PeepHubProps {
 
 export default function PeepHub({ open, onClose }: PeepHubProps) {
   const [peeps, setPeeps] = useState<PeepManifest[]>([]);
-  const [tab, setTab] = useState<"installed" | "browse">("installed");
+  const [tab, setTab] = useState<"installed" | "browse" | "priority">("installed");
 
   // Browse state
   const [hubPeeps, setHubPeeps] = useState<PeepHubEntry[]>([]);
@@ -72,28 +72,42 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
   // Installed search
   const [installedSearch, setInstalledSearch] = useState("");
 
+  // Priority tab state
+  const [extensionFilter, setExtensionFilter] = useState<string | null>(null);
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
+  const [dragOverIdx, setDragOverIdx] = useState<number | null>(null);
+
+  // Browse pagination
+  const [hubPage, setHubPage] = useState(1);
+  const [hubLoadingMore, setHubLoadingMore] = useState(false);
+
   useEffect(() => {
     if (open) {
       api.listPeeps().then(({ peeps }) => setPeeps(peeps));
     }
   }, [open]);
 
-  const fetchHub = useCallback(async (q = "") => {
-    setHubLoading(true);
+  const fetchHub = useCallback(async (q = "", page = 1, append = false) => {
+    if (!append) { setHubLoading(true); setHubPage(1); }
+    else setHubLoadingMore(true);
     setHubError("");
     try {
       const data = await api.browsePeepHub({
         q: q || undefined,
         category: categoryFilter || undefined,
         sort: browseSort,
+        page,
+        limit: 50,
       });
-      setHubPeeps(data.peeps);
+      setHubPeeps((prev) => append ? [...prev, ...data.peeps] : data.peeps);
       setHubTotal(data.total);
+      setHubPage(page);
     } catch (err) {
       setHubError(err instanceof Error ? err.message : "Failed to connect to PeepHub");
-      setHubPeeps([]);
+      if (!append) setHubPeeps([]);
     } finally {
       setHubLoading(false);
+      setHubLoadingMore(false);
     }
   }, [categoryFilter, browseSort]);
 
@@ -277,6 +291,16 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
             >
               Browse
             </button>
+            <button
+              className={`px-3 text-[11px] font-medium transition-all ${
+                tab === "priority"
+                  ? "bg-accent/15 text-accent"
+                  : "text-secondary hover:text-primary"
+              }`}
+              onClick={() => setTab("priority")}
+            >
+              Priority
+            </button>
           </div>
           <span className="flex-1" />
           <button
@@ -333,6 +357,22 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
                   />
                 </div>
               </>
+            ) : tab === "priority" ? (
+              <>
+                <div>
+                  <h3 className="text-[11px] font-semibold text-tertiary uppercase tracking-wider mb-2">
+                    Extension
+                  </h3>
+                  <SidebarRadio
+                    value={extensionFilter}
+                    onChange={setExtensionFilter}
+                    options={[
+                      { value: null, label: "All" },
+                      ...Array.from(new Set(peeps.flatMap((p) => p.matches?.extensions || []))).sort().map((ext) => ({ value: ext, label: ext })),
+                    ]}
+                  />
+                </div>
+              </>
             ) : (
               <>
                 <div className="mb-5">
@@ -368,8 +408,8 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
 
           {/* Main content */}
           <div className="flex-1 flex flex-col min-h-0">
-            {/* Search bar — hidden on detail views */}
-            {!installedDetailId && !detailSlug && (
+            {/* Search bar — hidden on detail views and priority tab */}
+            {!installedDetailId && !detailSlug && tab !== "priority" && (
             <div className="px-4 pt-4 pb-2">
               <div className="relative">
                 <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-tertiary" />
@@ -553,6 +593,7 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
                   detailError={detailError}
                   peeps={peeps}
                   installingSlug={installingSlug}
+                  browseThumbnail={hubPeeps.find((e) => e.slug === detailSlug)?.screenshotUrl || hubPeeps.find((e) => e.slug === detailSlug)?.thumbnailUrl}
                   onBack={closeDetail}
                   onInstall={async (slug) => {
                     setInstallingSlug(slug);
@@ -677,9 +718,13 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
                       </div>
                       {hubTotal > hubPeeps.length && (
                         <div className="text-center py-3 mt-2">
-                          <span className="text-[11px] text-tertiary">
-                            Showing {hubPeeps.length} of {hubTotal} peeps
-                          </span>
+                          <button
+                            className="text-[12px] text-accent hover:text-accent-hover font-medium px-4 py-1.5 radius-sm border border-accent/20 hover:border-accent/40 transition-all"
+                            disabled={hubLoadingMore}
+                            onClick={() => fetchHub(searchQuery, hubPage + 1, true)}
+                          >
+                            {hubLoadingMore ? "Loading..." : `Load more (${hubPeeps.length} of ${hubTotal})`}
+                          </button>
                         </div>
                       )}
                     </>
@@ -705,6 +750,110 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
                   )}
                 </>
               )}
+
+              {/* Priority tab */}
+              {tab === "priority" && (() => {
+                const priorityPeeps = [...peeps]
+                  .filter((p) => !extensionFilter || (p.matches?.extensions || []).includes(extensionFilter))
+                  .sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
+
+                return (
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 mb-3 px-1">
+                      <span className="text-[11px] text-tertiary">
+                        {extensionFilter ? `Peeps matching ${extensionFilter}` : "All peeps"} — drag to reorder
+                      </span>
+                    </div>
+                    {priorityPeeps.map((peep, idx) => {
+                      const isDragging = dragIdx === idx;
+                      const isOver = dragOverIdx === idx;
+                      const isBuiltin = peep.builtin;
+
+                      return (
+                        <div
+                          key={peep.id}
+                          draggable={!isBuiltin}
+                          onDragStart={() => { if (!isBuiltin) setDragIdx(idx); }}
+                          onDragEnd={() => { setDragIdx(null); setDragOverIdx(null); }}
+                          onDragOver={(e) => { e.preventDefault(); setDragOverIdx(idx); }}
+                          onDrop={async (e) => {
+                            e.preventDefault();
+                            if (dragIdx === null || dragIdx === idx) return;
+                            const reordered = [...priorityPeeps];
+                            const [moved] = reordered.splice(dragIdx, 1);
+                            reordered.splice(idx, 0, moved);
+                            // Assign priorities: top = highest
+                            const updates: { id: string; priority: number }[] = [];
+                            reordered.forEach((p, i) => {
+                              const newPriority = reordered.length - i;
+                              if (!p.builtin && (p.priority ?? 0) !== newPriority) {
+                                updates.push({ id: p.id, priority: newPriority });
+                              }
+                            });
+                            // Optimistic update
+                            setPeeps((prev) => {
+                              const map = new Map(updates.map((u) => [u.id, u.priority]));
+                              return prev.map((p) => map.has(p.id) ? { ...p, priority: map.get(p.id)! } : p);
+                            });
+                            setDragIdx(null);
+                            setDragOverIdx(null);
+                            // Persist
+                            for (const u of updates) {
+                              await api.updatePeepPriority(u.id, u.priority);
+                            }
+                          }}
+                          className={`flex items-center gap-3 px-3 py-2.5 radius-sm transition-all ${
+                            isDragging ? "opacity-40" : ""
+                          } ${isOver ? "bg-accent/10 border-accent/30" : "hover:bg-hover"} ${
+                            isBuiltin ? "opacity-60" : "cursor-grab active:cursor-grabbing"
+                          }`}
+                          style={{
+                            border: isOver ? "1px solid var(--accent, #7c3aed)" : "1px solid transparent",
+                          }}
+                        >
+                          {/* Drag handle */}
+                          <span className={`text-[14px] select-none ${isBuiltin ? "text-border" : "text-tertiary"}`} style={{ fontFamily: "monospace" }}>
+                            ⠿
+                          </span>
+                          {/* Info */}
+                          <div className="flex-1 min-w-0">
+                            <div className="text-[13px] font-medium text-primary truncate">{peep.name}</div>
+                            <div className="text-[11px] text-tertiary truncate">{peep.description}</div>
+                          </div>
+                          {/* Extensions */}
+                          <div className="flex items-center gap-1 flex-shrink-0 flex-wrap justify-end max-w-[180px]">
+                            {(peep.matches?.extensions || []).slice(0, 4).map((ext) => (
+                              <span key={ext} className="text-[10px] text-tertiary bg-surface border border-border-subtle px-1.5 py-0.5 radius-xs font-mono">
+                                {ext}
+                              </span>
+                            ))}
+                            {(peep.matches?.extensions || []).length > 4 && (
+                              <span className="text-[10px] text-tertiary">+{(peep.matches?.extensions || []).length - 4}</span>
+                            )}
+                          </div>
+                          {/* Tier */}
+                          <span className={`text-[10px] px-2 py-0.5 radius-xs font-medium flex-shrink-0 ${
+                            isBuiltin ? "text-tertiary bg-surface border border-border-subtle"
+                              : peep._tier === "project" ? "text-amber-400 bg-amber-500/10 border border-amber-500/20"
+                              : "text-accent bg-accent/10 border border-accent/20"
+                          }`}>
+                            {isBuiltin ? "Built-in" : peep._tier === "project" ? "Project" : "Installed"}
+                          </span>
+                          {/* Priority */}
+                          <span className="text-[12px] font-mono text-secondary w-6 text-right flex-shrink-0">
+                            {peep.priority ?? 0}
+                          </span>
+                        </div>
+                      );
+                    })}
+                    {priorityPeeps.length === 0 && (
+                      <div className="text-center py-12 text-[13px] text-tertiary">
+                        No peeps match this extension
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
@@ -777,7 +926,7 @@ export default function PeepHub({ open, onClose }: PeepHubProps) {
                     {publishPeep && (
                       <div className="relative w-full overflow-hidden bg-surface radius-sm border border-border-subtle" style={{ paddingBottom: "56.25%" }}>
                         <iframe
-                          src={`${import.meta.env.VITE_API_URL || "http://localhost:8000/api"}/peeps/${publishPeep.id}/index.html`}
+                          src={`${import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:8000/api" : "/api")}/peeps/${publishPeep.id}/index.html`}
                           sandbox="allow-scripts allow-same-origin"
                           className="absolute top-0 left-0 border-0 pointer-events-none"
                           style={{
@@ -976,6 +1125,7 @@ function InstalledDetailView({
   onBack,
   onPublish,
   onRemove,
+  onPriorityChange,
 }: {
   peep: PeepManifest | null;
   hubData: PeepHubDetailResponse | null;
@@ -1083,7 +1233,7 @@ function InstalledDetailView({
               style={{ aspectRatio: "16/9" }}
             >
               <iframe
-                src={`${import.meta.env.VITE_API_URL || "http://localhost:8000/api"}/peeps/${peep.id}/index.html`}
+                src={`${import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:8000/api" : "/api")}/peeps/${peep.id}/index.html`}
                 sandbox="allow-scripts allow-same-origin"
                 className="absolute top-0 left-0 border-0 opacity-0 transition-opacity duration-200"
                 style={{ width: "1280px", height: "720px", transformOrigin: "top left" }}
@@ -1114,7 +1264,7 @@ function InstalledDetailView({
                         fileName: firstSample.name,
                         ext: "." + (firstSample.name.split(".").pop() || ""),
                         binary: isBinary,
-                        apiBase: "http://localhost:8000",
+                        apiBase: (import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:8000/api" : "/api")).replace(/\/api$/, ""),
                       }, "*");
                     }
                   };
@@ -1280,6 +1430,7 @@ function DetailView({
   detailError,
   peeps,
   installingSlug,
+  browseThumbnail,
   onBack,
   onInstall,
 }: {
@@ -1288,6 +1439,7 @@ function DetailView({
   detailError: string;
   peeps: PeepManifest[];
   installingSlug: string | null;
+  browseThumbnail?: string;
   onBack: () => void;
   onInstall: (slug: string) => void;
 }) {
@@ -1320,7 +1472,11 @@ function DetailView({
   if (!detailData) return null;
 
   const { peep, versions, author } = detailData;
-  const screenshotSrc = peep.screenshots?.[0] || peep.screenshotUrl || peep.thumbnailUrl;
+  const rawScreenshot = peep.screenshots?.[0] || peep.screenshotUrl || peep.thumbnailUrl || browseThumbnail;
+  // Detail API returns relative paths like "/api/storage/..." — resolve against PeepHub
+  const screenshotSrc = rawScreenshot && rawScreenshot.startsWith("/")
+    ? `https://peephub.taiso.ai${rawScreenshot}`
+    : rawScreenshot;
   const local = peeps.find((p) => p.id === peep.slug);
 
   return (
@@ -1380,15 +1536,36 @@ function DetailView({
         </div>
       </div>
 
-      {/* Screenshot */}
-      {screenshotSrc && (
-        <div className="w-full radius-sm overflow-hidden border border-border-subtle mb-5" style={{ aspectRatio: "16/9" }}>
-          <img
-            src={screenshotSrc}
-            alt={`${peep.name} screenshot`}
-            className="w-full h-full object-cover bg-surface"
-          />
+      {/* Screenshot + PeepHub link */}
+      {screenshotSrc ? (
+        <div className="mb-5">
+          <div className="w-full radius-sm overflow-hidden border border-border-subtle" style={{ aspectRatio: "16/9" }}>
+            <img
+              src={screenshotSrc}
+              alt={`${peep.name} screenshot`}
+              className="w-full h-full object-cover bg-surface"
+            />
+          </div>
+          <a
+            href={`https://peephub.taiso.ai/peeps/${peep.slug}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-1.5 mt-2.5 py-2 text-[11px] text-accent hover:text-accent-hover font-medium bg-accent/5 hover:bg-accent/10 border border-accent/15 radius-sm transition-all"
+          >
+            <ExternalLink size={11} />
+            Live preview on PeepHub
+          </a>
         </div>
+      ) : (
+        <a
+          href={`https://peephub.taiso.ai/peeps/${peep.slug}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-1.5 mb-5 py-2.5 text-[11px] text-accent hover:text-accent-hover font-medium bg-accent/5 hover:bg-accent/10 border border-accent/15 radius-sm transition-all"
+        >
+          <ExternalLink size={11} />
+          View live preview on PeepHub
+        </a>
       )}
 
       {/* About */}

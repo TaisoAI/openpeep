@@ -1,0 +1,24 @@
+{
+  "type": "meeting-notes",
+  "title": "Product Launch Sync",
+  "meetingType": "planning",
+  "date": "2026-03-10",
+  "attendees": ["Alice Chen (PM)", "Bob Smith (Eng Lead)", "Carol Wu (Design)", "Dave Park (Marketing)", "Eve Johnson (DevOps)"],
+  "agenda": [
+    { "text": "Launch timeline review — are we still on track for March 20?", "done": true },
+    { "text": "Open bugs — 3 P1s remaining", "done": false },
+    { "text": "Marketing assets — blog post, social, Product Hunt", "done": true },
+    { "text": "Infrastructure readiness — load testing results", "done": true },
+    { "text": "Post-launch monitoring plan", "done": false }
+  ],
+  "notes": "Alice: We're 10 days from launch. Feature freeze was yesterday. QA has 3 P1 bugs to close.\n\nBob: Two P1s are mine — WebSocket reconnection (PR in review) and file upload timeout (targeting Wednesday).\n\nCarol: All marketing assets done — landing page, social cards, email templates. Need to update hero screenshot with dark mode.\n\nEve: Load testing passed — 10K concurrent users, p99 < 200ms. Auto-scaling works. PagerDuty alerts set up.\n\nDave: Blog post drafted, 12,847 waitlist subscribers ready. Product Hunt scheduled for March 20 at 12:01 AM PST. 3 journalists lined up.\n\nAlice: Dress rehearsal on March 18 — full deploy to staging. Meeting adjourned.",
+  "actionItems": [
+    { "text": "Fix WebSocket reconnection P1 — merge PR", "assignee": "Bob", "due": "2026-03-10", "done": true },
+    { "text": "Investigate and fix file upload timeout P1", "assignee": "Bob", "due": "2026-03-12", "done": false },
+    { "text": "Update hero screenshot with dark mode", "assignee": "Carol", "due": "2026-03-11", "done": false },
+    { "text": "Send blog post draft to Alice for review", "assignee": "Dave", "due": "2026-03-11", "done": false },
+    { "text": "Document launch-day monitoring runbook", "assignee": "Eve", "due": "2026-03-14", "done": false },
+    { "text": "Schedule dress rehearsal for March 18", "assignee": "Alice", "due": "2026-03-12", "done": false },
+    { "text": "Review and approve blog post", "assignee": "Alice", "due": "2026-03-13", "done": false }
+  ]
+}

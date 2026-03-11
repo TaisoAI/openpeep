@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { api } from "@/utils/api";
 
 interface ProjectViewerProps {
@@ -170,7 +170,7 @@ export default function ProjectViewer({ filePath, onSaveStatus, statuses = [] }:
   );
 }
 
-function renderValue(value: unknown): JSX.Element {
+function renderValue(value: unknown): React.ReactElement {
   // Array of objects → table
   if (Array.isArray(value) && value.length > 0 && typeof value[0] === "object" && value[0] !== null) {
     const keys = Object.keys(value[0] as Record<string, unknown>);

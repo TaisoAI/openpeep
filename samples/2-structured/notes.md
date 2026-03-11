@@ -1,21 +1,50 @@
-# Project Notes
+# Product Launch Checklist
 
-## Overview
-This is a sample Markdown file. OpenPeep renders it with a **live preview editor** — you can edit on the left and see the rendered output on the right.
+> Switch to **Split** mode in the toolbar above to edit and preview side by side.
 
-## Features
-- **Bold**, *italic*, and `code` formatting
-- Lists (like this one)
-- Code blocks with syntax highlighting
+## Pre-Launch
 
-## Code Example
-```javascript
-function greet(name) {
-  return `Hello, ${name}! Welcome to OpenPeep.`;
-}
+- [x] Landing page copy finalized
+- [x] Pricing tiers confirmed ($19 / $49 / $99)
+- [x] Social media assets created
+- [ ] Press kit assembled
+- [ ] Beta testers feedback incorporated
+
+## Technical
+
+| Component | Status | Owner |
+|-----------|--------|-------|
+| API | Ready | Backend team |
+| Web app | In QA | Frontend team |
+| Mobile | Beta | Mobile team |
+| Docs | Draft | Technical writer |
+| CI/CD | Green | DevOps |
+
+## Launch Day Timeline
+
+1. **6:00 AM** — Deploy to production
+2. **7:00 AM** — Enable feature flags
+3. **8:00 AM** — Send email to waitlist (12,847 subscribers)
+4. **9:00 AM** — Publish blog post
+5. **10:00 AM** — Social media campaign goes live
+6. **12:00 PM** — Product Hunt launch
+7. **3:00 PM** — Check-in meeting with full team
+
+## Key Metrics to Track
+
+```
+DAU target:     1,000 by end of week 1
+Conversion:     3% free → paid
+Churn:          < 5% monthly
+NPS:            > 50
 ```
 
-## Next Steps
-1. Try editing this file
-2. Open the JSON and CSV files in this folder
-3. Check out the custom types in folder 3
+## Notes
+
+The **Markdown Editor** peep supports full GitHub-flavored markdown:
+- Tables, task lists, blockquotes
+- Code blocks with syntax highlighting
+- Links and images
+- Headings, bold, italic, strikethrough
+
+Try editing this file — your changes save automatically.

@@ -214,7 +214,7 @@ def install_peep(req: InstallRequest):
     config = load_config()
     base_url = config.get("peephub", {}).get("url", "https://peephub.taiso.ai")
 
-    # Download the zip
+    # Download the zip (handle redirect separately to fix localhost URLs)
     try:
         params = {}
         if req.version:
@@ -222,9 +222,17 @@ def install_peep(req: InstallRequest):
         resp = httpx.get(
             f"{base_url}/api/peeps/{req.slug}/download",
             params=params,
-            follow_redirects=True,
+            follow_redirects=False,
             timeout=30,
         )
+        if resp.status_code in (301, 302, 307, 308):
+            redirect_url = resp.headers.get("location", "")
+            # PeepHub may return localhost redirect URLs — rewrite to use the public base_url
+            if "localhost" in redirect_url or "127.0.0.1" in redirect_url:
+                from urllib.parse import urlparse
+                parsed = urlparse(redirect_url)
+                redirect_url = f"{base_url}{parsed.path}"
+            resp = httpx.get(redirect_url, follow_redirects=True, timeout=30)
         resp.raise_for_status()
     except httpx.ConnectError:
         raise HTTPException(status_code=502, detail=f"Cannot connect to PeepHub at {base_url}")

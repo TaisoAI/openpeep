@@ -197,7 +197,7 @@ export default function FileTree({
   const [sortField, setSortField] = useState<FileSortField>("name");
   const [sortDir, setSortDir] = useState<SortDirection | undefined>(undefined);
   const [showSortMenu, setShowSortMenu] = useState(false);
-  const sortButtonRef = useRef<HTMLButtonElement>(null);
+  const sortButtonRef = useRef<HTMLDivElement>(null);
   const sortMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

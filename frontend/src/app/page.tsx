@@ -10,7 +10,7 @@ import PreviewPane from "@/components/PreviewPane/PreviewPane";
 import PeepHub from "@/components/PeepHub/PeepHub";
 import Settings from "@/components/Settings/Settings";
 import SettingsButton from "@/components/SettingsButton/SettingsButton";
-import { Home as HomeIcon, Copy, FolderOpen } from "lucide-react";
+import { Home as HomeIcon, Copy, FolderOpen, RefreshCw } from "lucide-react";
 
 type View = "board" | "browse";
 
@@ -56,6 +56,7 @@ export default function Home() {
   const [peephubUrl, setPeephubUrl] = useState("https://peephub.taiso.ai");
   const [peephubApiKey, setPeephubApiKey] = useState("");
   const [sourcesLoaded, setSourcesLoaded] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   // Track which view the user was on before drilling into a project
   const viewBeforeBrowse = useRef<View>("board");
@@ -441,6 +442,15 @@ export default function Home() {
           }}
         />
 
+        {/* Refresh */}
+        <button
+          onClick={() => setRefreshKey((k) => k + 1)}
+          className="p-1.5 rounded-md text-tertiary hover:text-primary hover:bg-hover transition-colors"
+          title="Refresh projects"
+        >
+          <RefreshCw size={13} />
+        </button>
+
         {/* Breadcrumb */}
         {browseRoot && view === "browse" && (
           <div className="flex items-center gap-1.5 text-xs text-tertiary ml-1">
@@ -519,6 +529,7 @@ export default function Home() {
             onProjectSelect={handleProjectSelect}
             hiddenStatuses={hiddenStatuses}
             onProjectCountsChange={setProjectCounts}
+            refreshKey={refreshKey}
           />
         )}
 
@@ -526,6 +537,7 @@ export default function Home() {
           <ProjectGrid
             space={displaySpace}
             onProjectSelect={handleProjectSelect}
+            refreshKey={refreshKey}
           />
         )}
 

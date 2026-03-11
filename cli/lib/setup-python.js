@@ -1,7 +1,14 @@
 const { execFileSync } = require("child_process");
+const dns = require("dns");
 const fs = require("fs");
 const path = require("path");
 const { VENV_PATH, PKG_REQUIREMENTS } = require("./paths");
+
+function checkInternet() {
+  return new Promise((resolve) => {
+    dns.lookup("pypi.org", (err) => resolve(!err));
+  });
+}
 
 function checkPython() {
   for (const cmd of ["python3", "python"]) {
@@ -23,10 +30,19 @@ function createVenv(pythonCmd) {
 
 function installDeps() {
   const pip = path.join(VENV_PATH, "bin", "pip");
-  execFileSync(pip, ["install", "-r", PKG_REQUIREMENTS, "--quiet"], { stdio: "pipe" });
+  // Show pip output so it doesn't look frozen
+  execFileSync(pip, ["install", "-r", PKG_REQUIREMENTS, "--progress-bar", "on"], { stdio: ["ignore", "inherit", "inherit"] });
 }
 
-function setupPython(log) {
+function depsInstalled() {
+  const pythonBin = path.join(VENV_PATH, "bin", "python");
+  try {
+    execFileSync(pythonBin, ["-c", "import uvicorn, fastapi, httpx"], { stdio: "pipe" });
+    return true;
+  } catch { return false; }
+}
+
+async function setupPython(log) {
   const python = checkPython();
   if (!python) {
     console.error("  ✗ Python 3.11+ not found. Install it from https://python.org");
@@ -35,13 +51,26 @@ function setupPython(log) {
   log(`  ✓ ${python.version}`);
 
   if (!fs.existsSync(VENV_PATH)) {
+    const online = await checkInternet();
+    if (!online) {
+      console.error("  ✗ No internet connection. OpenPeep needs to download Python packages on first run.");
+      console.error("    Connect to the internet and try again.");
+      process.exit(1);
+    }
     log("  ⠋ Creating Python environment...");
     createVenv(python.command);
     installDeps();
     log("  ✓ Backend ready");
   } else {
-    log("  ✓ Python environment exists");
+    // Venv exists — verify deps are installed
+    if (!depsInstalled()) {
+      log("  ⠋ Installing missing Python packages...");
+      installDeps();
+      log("  ✓ Backend ready");
+    } else {
+      log("  ✓ Python environment ready");
+    }
   }
 }
 
-module.exports = { checkPython, createVenv, installDeps, setupPython };
+module.exports = { checkPython, checkInternet, createVenv, installDeps, depsInstalled, setupPython };

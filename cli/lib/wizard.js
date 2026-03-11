@@ -33,26 +33,16 @@ async function runWizard() {
   console.log("  └─────────────────────────────────────┘");
   console.log("");
 
-  // 1. Ask for project directory
-  const projectDir = await ask(rl, "Where do you keep your projects?", "~/Projects");
-  const expandedDir = projectDir.replace(/^~/, os.homedir());
-
-  // 2. Create config
+  // 1. Create config with just the demo workspace
   fs.mkdirSync(OPENPEEP_HOME, { recursive: true });
 
   const config = {
     spaces: [
       {
-        name: "My Projects",
-        icon: "📁",
-        roots: [expandedDir],
-        statuses: ["Idea", "Planning", "In Progress", "Analyze", "Archive"],
-      },
-      {
         name: "OpenPeep Demo",
         icon: "🎯",
         roots: [DEMO_DIR],
-        statuses: ["1-Basics", "2-Structured", "3-Custom Types", "4-Bundles"],
+        statuses: ["0-Welcome", "1-Basics", "2-Structured", "3-Custom Types"],
       },
     ],
     defaultStatuses: ["Idea", "Planning", "In Progress", "Analyze", "Archive"],
@@ -73,18 +63,20 @@ async function runWizard() {
   console.log("  ✓ ~/.openpeep/demo/ created");
   console.log("    ├── 1-basics/        (txt, images, svg)");
   console.log("    ├── 2-structured/    (md, json, csv)");
-  console.log("    ├── 3-custom-types/  (meeting notes, slides, diagrams)");
-  console.log("    ├── 4-bundles/       (folder-level peeps)");
-  console.log("    └── START-HERE.md");
+  console.log("    ├── 3-custom-types/  (meeting notes, diagrams)");
+  console.log("    └── 0-welcome/       ← start here!");
   console.log("");
 
   // 4. Claude Code plugin
-  const installPlugin = await askYN(rl, "Install Claude Code plugin?");
+  const installPlugin = await askYN(rl, "Install Claude Code MCP server?");
   if (installPlugin) {
     const { installClaudePlugin } = require("./claude-plugin");
     const result = installClaudePlugin();
     if (result.success) {
       console.log("  ✓ Added OpenPeep MCP server to Claude Code");
+      console.log("");
+      console.log("  For full plugin support (skills + agents), run in Claude Code:");
+      console.log("    /plugin install openpeep");
     } else {
       console.log(`  ⚠ ${result.message}`);
     }

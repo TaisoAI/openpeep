@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sample Dashboard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; background: #0f0f13; color: #e4e4e9; min-height: 100vh; padding: 32px; }
+    .header { margin-bottom: 32px; }
+    .header h1 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+    .header p { color: #888; font-size: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat {
+      background: #18181f;
+      border: 1px solid #252530;
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .stat .label { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .stat .value { font-size: 28px; font-weight: 700; }
+    .stat .change { font-size: 12px; margin-top: 4px; }
+    .stat .change.up { color: #4ade80; }
+    .stat .change.down { color: #f87171; }
+    .chart-card {
+      background: #18181f;
+      border: 1px solid #252530;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .chart-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 16px; }
+    .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 120px; }
+    .bar-col { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 6px; }
+    .bar {
+      width: 100%;
+      border-radius: 6px 6px 2px 2px;
+      min-height: 4px;
+      transition: height 1s ease;
+      animation: grow 1s ease forwards;
+    }
+    @keyframes grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+    .bar { transform-origin: bottom; }
+    .bar.blue { background: linear-gradient(180deg, #3b82f6, #2563eb); }
+    .bar.green { background: linear-gradient(180deg, #4ade80, #22c55e); }
+    .bar.purple { background: linear-gradient(180deg, #a78bfa, #7c3aed); }
+    .bar-label { font-size: 10px; color: #555; }
+    .table-card { background: #18181f; border: 1px solid #252530; border-radius: 14px; overflow: hidden; }
+    .table-card h3 { font-size: 14px; font-weight: 600; padding: 20px 20px 12px; }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; padding: 8px 20px; font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #252530; }
+    td { padding: 12px 20px; font-size: 13px; border-bottom: 1px solid #1a1a22; }
+    .badge { padding: 2px 10px; border-radius: 100px; font-size: 11px; font-weight: 500; }
+    .badge.active { background: rgba(74,222,128,0.12); color: #4ade80; }
+    .badge.pending { background: rgba(250,204,21,0.12); color: #facc15; }
+    .badge.done { background: rgba(59,130,246,0.12); color: #3b82f6; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Project Dashboard</h1>
+    <p>This is a sample HTML file rendered by the HTML Preview peep. Try the device frames in the toolbar!</p>
+  </div>
+
+  <div class="grid">
+    <div class="stat">
+      <div class="label">Total Users</div>
+      <div class="value">12,847</div>
+      <div class="change up">+14.2% this month</div>
+    </div>
+    <div class="stat">
+      <div class="label">Revenue</div>
+      <div class="value">$48.2K</div>
+      <div class="change up">+8.7% this month</div>
+    </div>
+    <div class="stat">
+      <div class="label">Active Projects</div>
+      <div class="value">23</div>
+      <div class="change down">-2 from last week</div>
+    </div>
+    <div class="stat">
+      <div class="label">Uptime</div>
+      <div class="value">99.9%</div>
+      <div class="change up">No incidents</div>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <h3>Weekly Activity</h3>
+    <div class="bar-chart">
+      <div class="bar-col"><div class="bar blue" style="height:60%"></div><span class="bar-label">Mon</span></div>
+      <div class="bar-col"><div class="bar green" style="height:85%"></div><span class="bar-label">Tue</span></div>
+      <div class="bar-col"><div class="bar purple" style="height:45%"></div><span class="bar-label">Wed</span></div>
+      <div class="bar-col"><div class="bar blue" style="height:90%"></div><span class="bar-label">Thu</span></div>
+      <div class="bar-col"><div class="bar green" style="height:70%"></div><span class="bar-label">Fri</span></div>
+      <div class="bar-col"><div class="bar purple" style="height:30%"></div><span class="bar-label">Sat</span></div>
+      <div class="bar-col"><div class="bar blue" style="height:20%"></div><span class="bar-label">Sun</span></div>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <h3>Recent Tasks</h3>
+    <table>
+      <thead><tr><th>Task</th><th>Assignee</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Redesign landing page</td><td>Alice Chen</td><td><span class="badge active">Active</span></td></tr>
+        <tr><td>API rate limiting</td><td>Bob Smith</td><td><span class="badge pending">Pending</span></td></tr>
+        <tr><td>Database migration</td><td>Carol Wu</td><td><span class="badge done">Done</span></td></tr>
+        <tr><td>Mobile responsive fix</td><td>Dave Park</td><td><span class="badge active">Active</span></td></tr>
+        <tr><td>User onboarding flow</td><td>Eve Johnson</td><td><span class="badge pending">Pending</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

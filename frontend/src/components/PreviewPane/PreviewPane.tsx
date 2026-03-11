@@ -52,7 +52,7 @@ export default function PreviewPane({
         fileName: f.name,
         ext: f.ext,
         binary: f.binary,
-        apiBase: import.meta.env.VITE_API_URL || "http://localhost:8000/api",
+        apiBase: import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:8000/api" : "/api"),
       },
       "*"
     );

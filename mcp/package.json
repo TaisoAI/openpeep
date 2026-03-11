@@ -4,9 +4,11 @@
   "description": "Claude Code plugin for OpenPeep — create files, preview peeps, build custom viewers",
   "type": "module",
   "main": "dist/index.js",
-  "bin": { "openpeep-mcp": "dist/index.js" },
+  "bin": {
+    "openpeep-mcp": "dist/index.js"
+  },
   "scripts": {
-    "build": "tsc",
+    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --target=node20 --outfile=dist/index.js --banner:js='#!/usr/bin/env node'",
     "dev": "tsc --watch"
   },
   "dependencies": {
@@ -14,7 +16,8 @@
     "zod": "^3.22.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "@types/node": "^20.0.0"
+    "@types/node": "^20.0.0",
+    "esbuild": "^0.27.3",
+    "typescript": "^5.0.0"
   }
 }

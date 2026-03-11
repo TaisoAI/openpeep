@@ -8,10 +8,12 @@
   "files": [
     "cli/",
     "backend/",
+    "!backend/**/__pycache__/",
     "peeps/",
     "samples/",
     "mcp/dist/",
-    "mcp/package.json"
+    "mcp/package.json",
+    "claude-plugin/"
   ],
   "engines": {
     "node": ">=20.0.0"
@@ -33,6 +35,7 @@
     "build:frontend": "cd frontend && npm run build && mkdir -p ../cli/frontend-dist && cp -r dist/* ../cli/frontend-dist/",
     "build:mcp": "cd mcp && npm install && npm run build",
     "build:all": "npm run build:frontend && npm run build:mcp",
+    "prepack": "node -e \"const fs=require('fs'); const {execSync}=require('child_process'); const hash=execSync('git rev-parse --short HEAD',{encoding:'utf8'}).trim(); const ts=new Date().toISOString().replace(/[:-]/g,'').slice(0,15); fs.writeFileSync('cli/build-info.json', JSON.stringify({build:ts+'-'+hash, builtAt:new Date().toISOString()})+'\\n');\"",
     "lint": "cd frontend && npm run lint"
   },
   "devDependencies": {

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Built-in Peeps</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #08080c; --bg-card: #111118; --bg-hover: #16161f;
+      --border: #1e1e2a; --border-glow: #2a2a3a;
+      --text: #e8e8ef; --text-dim: #888899; --text-muted: #555566;
+      --accent: #CCFF00; --purple: #8b5cf6; --blue: #3b82f6;
+      --pink: #ec4899; --amber: #f59e0b; --teal: #14b8a6;
+    }
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.65; -webkit-font-smoothing: antialiased;
+      padding: 60px 32px;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    h1, h2 { font-family: 'Syne', sans-serif; font-weight: 700; letter-spacing: -0.03em; }
+    h2 { font-size: clamp(26px, 4vw, 36px); line-height: 1.15; margin-bottom: 12px; }
+    p { color: var(--text-dim); font-size: 15px; }
+    .label {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent);
+      margin-bottom: 12px; display: block;
+    }
+    .grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 14px; margin-top: 28px;
+    }
+    @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px;
+      transition: all 0.25s ease;
+    }
+    .card:hover { background: var(--bg-hover); border-color: var(--border-glow); transform: translateY(-1px); }
+    .card-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; margin-bottom: 12px;
+    }
+    .card h3 { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .card p { font-size: 12px; line-height: 1.5; }
+    .ext {
+      font-family: 'JetBrains Mono', monospace; font-size: 10px;
+      color: var(--text-muted); margin-top: 8px;
+    }
+    .i-txt { background: rgba(59,130,246,0.12); color: var(--blue); }
+    .i-md { background: rgba(139,92,246,0.12); color: var(--purple); }
+    .i-json { background: rgba(245,158,11,0.12); color: var(--amber); }
+    .i-img { background: rgba(236,72,153,0.12); color: var(--pink); }
+    .i-svg { background: rgba(20,184,166,0.12); color: var(--teal); }
+    .i-audio { background: rgba(236,72,153,0.12); color: var(--pink); }
+    .i-video { background: rgba(236,72,153,0.12); color: var(--pink); }
+    .i-html { background: rgba(245,158,11,0.12); color: var(--amber); }
+    .i-mmd { background: rgba(59,130,246,0.12); color: var(--blue); }
+    .i-mn { background: rgba(204,255,0,0.12); color: var(--accent); }
+    .i-3d { background: rgba(139,92,246,0.12); color: var(--purple); }
+    .i-csv { background: rgba(20,184,166,0.12); color: var(--teal); }
+    .hint {
+      margin-top: 28px; padding: 16px 20px;
+      background: rgba(204,255,0,0.04); border: 1px solid rgba(204,255,0,0.1);
+      border-radius: 10px; font-size: 13px; color: var(--text-dim);
+    }
+    .hint strong { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="label">Built-in Viewers</span>
+    <h2>What OpenPeep can do out of the box</h2>
+    <p>Click the sample files in the other folders to try each one.</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon i-txt">📝</div>
+        <h3>Text &amp; Code</h3>
+        <p>Syntax-aware viewer with editing support for source code and configs.</p>
+        <div class="ext">.txt .js .py .ts .css .yaml .toml</div>
+      </div>
+      <div class="card">
+        <div class="card-icon i-md">✍️</div>
+        <h3>Markdown</h3>
+        <p>Live preview with split editing. View, edit, or side-by-side.</p>
+        <div class="ext">.md .markdown .mdx</div>
+      </div>
+      <div class="card">
+        <div class="card-icon i-json">{ }</div>
+        <h3>JSON Editor</h3>
+        <p>Formatted view with validation and syntax highlighting.</p>
+        <div class="ext">.json .jsonc .geojson</div>
+      </div>
+      <div class="card">
+        <div class="card-icon i-img">🖼️</div>
+        <h3>Image Viewer</h3>
+        <p>Pan, zoom, and fit controls at any scale.</p>
+        <div class="ext">.png .jpg .webp .gif .heic .avif</div>
+      </div>
+      <div class="card">
+        <div class="card-icon i-svg">◇</div>
+        <h3>SVG Viewer</h3>
+        <p>Live rendering with source code view.</p>
+        <div class="ext">.svg</div>
+      </div>
+      <div class="card">
+        <div class="card-icon i-audio">♫</div>
+        <h3>Audio Player</h3>
+        <p>Waveform visualization with playback controls.</p>
+        <div class="ext">.mp3 .wav .ogg .m4a .flac</div>
+      </div>
+      <div class="card">
+        <div class="card-icon i-video">▶</div>
+        <h3>Video Player</h3>
+        <p>Native playback for all common formats.</p>
+        <div class="ext">.mp4 .mov .webm .mkv</div>
+      </div>
+      <div class="card">
+        <div class="card-icon i-html">⟨/⟩</div>
+        <h3>HTML Preview</h3>
+        <p>Sandboxed preview with desktop, tablet, and phone views.</p>
+        <div class="ext">.html .htm</div>
+      </div>
+      <div class="card">
+        <div class="card-icon i-mmd">◈</div>
+        <h3>Mermaid Diagrams</h3>
+        <p>Flowcharts, sequence diagrams, and more.</p>
+        <div class="ext">.mmd .mermaid</div>
+      </div>
+      <div class="card">
+        <div class="card-icon i-mn">📋</div>
+        <h3>Meeting Notes</h3>
+        <p>Attendees, agenda, notes, and action items.</p>
+        <div class="ext">.mn .meeting.json</div>
+      </div>
+      <div class="card">
+        <div class="card-icon i-3d">🧊</div>
+        <h3>3D Model Viewer</h3>
+        <p>Orbit, zoom, and inspect with lighting controls.</p>
+        <div class="ext">.glb .gltf .usdz .obj .stl</div>
+      </div>
+      <div class="card">
+        <div class="card-icon i-csv">📊</div>
+        <h3>CSV &amp; Data</h3>
+        <p>Tabular data viewer. Spreadsheet peep on PeepHub.</p>
+        <div class="ext">.csv .tsv</div>
+      </div>
+    </div>
+
+    <div class="hint">
+      <strong>Tip:</strong> Want more viewers? Open <strong>PeepHub</strong> (🧩 in the sidebar) to install community peeps.
+    </div>
+  </div>
+</body>
+</html>

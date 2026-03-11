@@ -1,15 +1,52 @@
 {
-  "name": "my-project",
-  "version": "1.0.0",
-  "description": "A sample JSON file — OpenPeep renders it with syntax highlighting and validation",
-  "settings": {
-    "theme": "dark",
-    "language": "en",
-    "notifications": true
+  "app": {
+    "name": "Acme Platform",
+    "version": "2.4.0",
+    "environment": "production",
+    "debug": false
   },
-  "features": [
-    { "name": "Dashboard", "enabled": true },
-    { "name": "Analytics", "enabled": false },
-    { "name": "Export", "enabled": true }
-  ]
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8080,
+    "workers": 4,
+    "cors": {
+      "origins": ["https://app.acme.io", "https://admin.acme.io"],
+      "methods": ["GET", "POST", "PUT", "DELETE"],
+      "credentials": true
+    },
+    "rateLimit": {
+      "windowMs": 60000,
+      "maxRequests": 100
+    }
+  },
+  "database": {
+    "primary": {
+      "host": "db-primary.internal",
+      "port": 5432,
+      "name": "acme_prod",
+      "pool": { "min": 5, "max": 20 }
+    },
+    "redis": {
+      "host": "cache.internal",
+      "port": 6379,
+      "ttl": 3600
+    }
+  },
+  "auth": {
+    "provider": "cognito",
+    "region": "us-west-2",
+    "sessionTimeout": 86400,
+    "mfa": { "enabled": true, "methods": ["totp", "sms"] }
+  },
+  "features": {
+    "darkMode": { "enabled": true, "default": true },
+    "analytics": { "enabled": true, "provider": "posthog" },
+    "exports": { "enabled": true, "formats": ["csv", "json", "pdf"] },
+    "aiAssistant": { "enabled": false, "model": "claude-sonnet-4-5-20250514", "note": "Coming in v2.5" }
+  },
+  "notifications": {
+    "email": { "from": "noreply@acme.io", "provider": "ses" },
+    "slack": { "webhook": "https://hooks.slack.com/services/..." },
+    "events": ["user.signup", "payment.failed", "deploy.complete"]
+  }
 }

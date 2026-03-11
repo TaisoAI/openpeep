@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Your Projects</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #08080c; --bg-card: #111118; --border: #1e1e2a; --border-glow: #2a2a3a;
+      --text: #e8e8ef; --text-dim: #888899; --text-muted: #555566;
+      --accent: #CCFF00; --purple: #8b5cf6; --blue: #3b82f6;
+    }
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.65; -webkit-font-smoothing: antialiased;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 60px 32px;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999;
+    }
+    .container { max-width: 580px; }
+    h2 { font-family: 'Syne', sans-serif; font-weight: 700; letter-spacing: -0.03em; font-size: clamp(26px, 4vw, 36px); line-height: 1.15; margin-bottom: 12px; }
+    p { color: var(--text-dim); font-size: 15px; }
+    .label {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent);
+      margin-bottom: 12px; display: block;
+    }
+    .steps { margin-top: 32px; }
+    .step {
+      display: flex; gap: 20px; padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 36px;
+      color: var(--accent); opacity: 0.35; line-height: 1; min-width: 44px;
+    }
+    .step h3 { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .step p { font-size: 14px; line-height: 1.6; }
+    .step strong { color: var(--text); }
+    .visual {
+      margin-top: 40px; background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 24px 28px; overflow: hidden;
+    }
+    .visual-title {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+    .tree { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 2; }
+    .tree .folder { color: var(--accent); }
+    .tree .file { color: var(--text-dim); }
+    .tree .dim { color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="label">Getting Started</span>
+    <h2>Add your own projects</h2>
+    <p>OpenPeep started you with a demo workspace. Here's how to add your real project folders.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Open Settings</h3>
+          <p>Click the <strong>gear icon</strong> (⚙️) in the bottom-left of the sidebar.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h3>Add a Space</h3>
+          <p>Under <strong>Spaces</strong>, click <strong>Add Space</strong>. Give it a name and add one or more root folders &mdash; these are the directories OpenPeep will browse.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h3>Browse your files</h3>
+          <p>Your files appear in the sidebar. Click any file and OpenPeep picks the best peep to render it. Images get a viewer, JSON gets an editor, HTML gets a preview &mdash; every file type gets its own app.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="visual">
+      <div class="visual-title">Example: adding a project</div>
+      <div class="tree">
+        <span class="folder">📁 My App</span> <span class="dim">&larr; add this as a root folder</span><br>
+        <span class="dim">&ensp;├──</span> <span class="file">README.md</span> <span class="dim">&rarr; Markdown editor</span><br>
+        <span class="dim">&ensp;├──</span> <span class="file">package.json</span> <span class="dim">&rarr; JSON editor</span><br>
+        <span class="dim">&ensp;├──</span> <span class="file">architecture.mmd</span> <span class="dim">&rarr; Mermaid diagram</span><br>
+        <span class="dim">&ensp;├──</span> <span class="file">logo.svg</span> <span class="dim">&rarr; SVG viewer</span><br>
+        <span class="dim">&ensp;└──</span> <span class="file">standup.mn</span> <span class="dim">&rarr; Meeting notes</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

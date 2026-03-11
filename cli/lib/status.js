@@ -1,7 +1,19 @@
 const fs = require("fs");
 const http = require("http");
-const { PID_PATH } = require("./paths");
+const { PID_PATH, CONFIG_PATH } = require("./paths");
 const { isPluginInstalled } = require("./claude-plugin");
+
+function getPort() {
+  // Check CLI args first
+  const portIdx = process.argv.indexOf("--port");
+  if (portIdx !== -1 && process.argv[portIdx + 1]) return parseInt(process.argv[portIdx + 1]);
+  // Check config
+  try {
+    const config = JSON.parse(fs.readFileSync(CONFIG_PATH, "utf8"));
+    if (config.port) return config.port;
+  } catch {}
+  return 3000;
+}
 
 function run() {
   if (!fs.existsSync(PID_PATH)) {
@@ -20,22 +32,26 @@ function run() {
     return;
   }
 
-  const req = http.get("http://localhost:3000/api/health", (res) => {
+  const port = getPort();
+  const req = http.get(`http://localhost:${port}/api/health`, (res) => {
     let data = "";
     res.on("data", (chunk) => data += chunk);
     res.on("end", () => {
       try {
         const health = JSON.parse(data);
-        console.log(`  ✓ Running on http://localhost:3000 (pid ${pid})`);
-        console.log(`  ✓ Version: ${health.version}`);
-        console.log(`  ✓ Claude Code plugin: ${isPluginInstalled() ? "installed" : "not installed"}`);
+        let build;
+        try { build = require("../build-info.json"); } catch {}
+        const ver = build ? `${health.version} (${build.build})` : health.version;
+        console.log(`  ✓ Running on http://localhost:${port} (pid ${pid})`);
+        console.log(`  ✓ Version: ${ver}`);
+        console.log(`  ✓ Claude Code MCP: ${isPluginInstalled() ? "installed" : "not installed"}`);
       } catch {
         console.log(`  ⚠ Running (pid ${pid}) but health check returned unexpected response`);
       }
     });
   });
   req.on("error", () => {
-    console.log(`  ⚠ Process running (pid ${pid}) but not responding on port 3000`);
+    console.log(`  ⚠ Process running (pid ${pid}) but not responding on port ${port}`);
   });
   req.end();
 }

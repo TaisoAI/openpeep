@@ -1,4 +1,33 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
-  <circle cx="100" cy="100" r="90" fill="#6366f1" />
-  <text x="100" y="115" text-anchor="middle" font-family="system-ui" font-size="60" font-weight="bold" fill="white">OP</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f0f13"/>
+      <stop offset="100%" stop-color="#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#CCFF00"/>
+      <stop offset="100%" stop-color="#99cc00"/>
+    </linearGradient>
+    <linearGradient id="purple" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6d28d9"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="400" height="300" rx="20" fill="url(#bg)"/>
+  <!-- Decorative circles -->
+  <circle cx="320" cy="60" r="40" fill="#CCFF00" opacity="0.06"/>
+  <circle cx="80" cy="240" r="60" fill="#8b5cf6" opacity="0.06"/>
+  <!-- Logo mark -->
+  <g transform="translate(200,130)">
+    <circle r="50" fill="url(#purple)" filter="url(#glow)"/>
+    <circle r="50" fill="none" stroke="#CCFF00" stroke-width="2" opacity="0.3"/>
+    <text y="8" text-anchor="middle" font-family="system-ui" font-size="42" font-weight="800" fill="white" letter-spacing="-2">OP</text>
+  </g>
+  <!-- Text -->
+  <text x="200" y="210" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="700" fill="white" letter-spacing="4">OPENPEEP</text>
+  <text x="200" y="232" text-anchor="middle" font-family="system-ui" font-size="11" fill="#666" letter-spacing="1">EVERY FILE DESERVES ITS OWN APP</text>
 </svg>

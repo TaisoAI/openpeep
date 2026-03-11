@@ -1,0 +1,23 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "taiso-openpeep",
+  "version": "1.0.0",
+  "description": "OpenPeep — every file type deserves its own app. A next-generation file viewer where AI creates rich, interactive content.",
+  "owner": {
+    "name": "Taiso Labs",
+    "email": "hanley@taiso.ai"
+  },
+  "plugins": [
+    {
+      "name": "openpeep",
+      "description": "Turn Claude into a content creator — meeting notes, diagrams, documents, and custom viewers rendered in OpenPeep's specialized apps",
+      "version": "0.1.0",
+      "author": {
+        "name": "Taiso Labs",
+        "email": "hanley@taiso.ai"
+      },
+      "source": "./claude-plugin",
+      "category": "productivity"
+    }
+  ]
+}

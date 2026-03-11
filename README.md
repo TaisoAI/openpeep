@@ -4,6 +4,17 @@
 
 OpenPeep is a desktop application for viewing and editing any file using custom web apps called **Peeps**. Open a CSV and get a real spreadsheet. Open a project folder and get a kanban board. Each Peep is a full web app (HTML/CSS/JS, any framework) that activates when you open a matching file or folder.
 
+## Prerequisites
+
+```bash
+node --version   # Need v20+
+python3 --version  # Need 3.11+
+```
+
+**Don't have them?**
+- **Node.js**: https://nodejs.org (grab the LTS)
+- **Python**: https://python.org/downloads or `brew install python3` on macOS
+
 ## Quick Start
 
 ```bash
@@ -72,9 +83,29 @@ A peep is a folder containing at minimum an `index.html` and a `peep.json` manif
 
 See the built-in peeps in `peeps/` for working examples, and the SDK source at `peeps/_sdk/peep-sdk.js` for the full API.
 
-## Claude Code Plugin
+## Claude Code Integration
 
-The `@openpeep/claude-code` MCP server enables Claude Code to create, preview, and publish peeps through a conversational workflow. Ask Claude to "build me a recipe viewer" and it will scaffold the peep, let you preview it live in OpenPeep, and iterate on it until it is ready to publish.
+OpenPeep works with Claude Code through an MCP server and a plugin with skills.
+
+### Quick Setup
+
+The first-run wizard offers to register the MCP server automatically. You can also run:
+
+```bash
+npx openpeep doctor --fix
+```
+
+For full plugin support (skills that teach Claude how to create files in the right format and folder structure), install the plugin inside Claude Code:
+
+```
+/plugin install openpeep
+```
+
+### What it provides
+
+- **MCP tools**: `list_peeps`, `get_file_template`, `preview_url`, `create_peep`, `publish_peep`
+- **Skills**: `create-content` (creates properly structured project folders), `peep-workflow` (reference guide)
+- **Agent**: `openpeep-creator` (delegates content creation tasks)
 
 ## License
 

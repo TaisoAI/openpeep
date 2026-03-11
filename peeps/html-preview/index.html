@@ -517,11 +517,71 @@
 
     window.addEventListener('resize', () => render());
 
-    PeepSDK.on('init', ({ filePath, fileName }) => {
-      currentSrc = PeepSDK.rawFileUrl(filePath);
+    PeepSDK.on('init', async ({ filePath, fileName }) => {
       document.getElementById('status').textContent = fileName;
+
+      // For HTML files, fetch content and inject a <base> tag so relative
+      // paths (images, CSS, JS) resolve via the raw file endpoint
+      const rawUrl = PeepSDK.rawFileUrl(filePath);
+      try {
+        const resp = await fetch(rawUrl);
+        const html = await resp.text();
+
+        // Build a base URL that resolves sibling files through the API
+        const parentDir = filePath.replace(/[^\/\\]+$/, '');
+        const apiBase = (PeepSDK._initData && PeepSDK._initData.apiBase) || 'http://localhost:8000/api';
+        // Use a redirect endpoint pattern: /api/file/raw?path=<dir>/
+        // Instead, rewrite relative URLs to absolute raw file URLs
+        const baseTag = `<base href="${apiBase}/file/raw?path=${encodeURIComponent(parentDir)}">`;
+
+        // Inject <base> right after <head> (or at the start if no <head>)
+        let modifiedHtml;
+        if (/<head[^>]*>/i.test(html)) {
+          modifiedHtml = html.replace(/(<head[^>]*>)/i, '$1' + baseTag);
+        } else {
+          modifiedHtml = baseTag + html;
+        }
+
+        // Use blob URL so the iframe has a proper origin for relative URLs
+        // But base tag won't work with blob — instead, rewrite relative src/href
+        // Actually, <base href> with an API URL won't work because relative paths
+        // would append to the query string. We need to rewrite URLs directly.
+
+        // Rewrite relative src= and href= attributes to use the raw file endpoint
+        modifiedHtml = rewriteRelativeUrls(html, parentDir, apiBase);
+
+        const blob = new Blob([modifiedHtml], { type: 'text/html' });
+        currentSrc = URL.createObjectURL(blob);
+      } catch (e) {
+        // Fallback to raw URL if fetch fails
+        currentSrc = rawUrl;
+      }
       render();
     });
+
+    function rewriteRelativeUrls(html, parentDir, apiBase) {
+      // Match src="...", href="...", url('...'), url("...") that are relative
+      return html.replace(
+        /((?:src|href|poster)\s*=\s*["'])([^"']+)(["'])/gi,
+        (match, prefix, url, suffix) => {
+          // Skip absolute URLs, data URIs, anchors, protocol-relative
+          if (/^(https?:\/\/|data:|#|\/\/|javascript:)/i.test(url)) return match;
+          // Skip absolute paths
+          if (url.startsWith('/')) return match;
+          // Rewrite to raw file endpoint
+          const fullPath = parentDir + url;
+          return prefix + apiBase + '/file/raw?path=' + encodeURIComponent(fullPath) + suffix;
+        }
+      ).replace(
+        /url\(\s*(['"]?)([^)'"]+)\1\s*\)/gi,
+        (match, quote, url) => {
+          if (/^(https?:\/\/|data:|#|\/\/)/i.test(url)) return match;
+          if (url.startsWith('/')) return match;
+          const fullPath = parentDir + url;
+          return 'url(' + quote + apiBase + '/file/raw?path=' + encodeURIComponent(fullPath) + quote + ')';
+        }
+      );
+    }
   </script>
 </body>
 </html>

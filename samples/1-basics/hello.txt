@@ -1,6 +1,21 @@
 Welcome to OpenPeep!
+=====================
 
-This is a plain text file. OpenPeep renders it with the Text Editor peep —
-with syntax highlighting, line numbers, and editing support.
+You're viewing this file with the Text Editor peep.
+It handles 50+ file extensions: .txt, .js, .py, .yaml, and more.
 
-Try opening the other files in this folder to see different viewers in action.
+Try the other files in this folder:
+
+  dashboard.html  --> HTML Preview with device frames (desktop, tablet, phone)
+  logo.svg        --> SVG Viewer with source code toggle
+  photo.png       --> Image Viewer with zoom and pan
+  audio-clip.wav  --> Audio Player with waveform visualization
+  video-clip.webm --> Video Player with native controls
+  model.glb       --> 3D Model Viewer with orbit controls
+
+Then explore the other folders:
+
+  2-structured/     --> Markdown editor, JSON editor, CSV viewer
+  3-custom-types/   --> Meeting notes app, Mermaid diagram renderer
+
+Every file type gets its own app. That's the idea.

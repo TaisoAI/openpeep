@@ -7,6 +7,7 @@ interface BoardProps {
   onProjectSelect: (root: string, path: string) => void;
   hiddenStatuses?: string[];
   onProjectCountsChange?: (counts: Record<string, number>) => void;
+  refreshKey?: number;
 }
 
 interface ProjectEntry extends FileEntry {
@@ -14,7 +15,7 @@ interface ProjectEntry extends FileEntry {
   root: string;
 }
 
-export default function Board({ space, onProjectSelect, hiddenStatuses = [], onProjectCountsChange }: BoardProps) {
+export default function Board({ space, onProjectSelect, hiddenStatuses = [], onProjectCountsChange, refreshKey }: BoardProps) {
   const [projects, setProjects] = useState<ProjectEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [dragItem, setDragItem] = useState<ProjectEntry | null>(null);
@@ -22,7 +23,7 @@ export default function Board({ space, onProjectSelect, hiddenStatuses = [], onP
 
   useEffect(() => {
     loadProjects();
-  }, [space]);
+  }, [space, refreshKey]);
 
   async function loadProjects() {
     setLoading(true);
@@ -223,12 +224,14 @@ export default function Board({ space, onProjectSelect, hiddenStatuses = [], onP
                         <ProjectCard
                           name={project.name}
                           path={project.path}
+                          root={project.root}
                           project={project.project}
                           createdAt={project.createdAt}
                           lastModified={project.lastModified}
                           onClick={() =>
                             onProjectSelect(project.root, project.path)
                           }
+                          onDeleted={loadProjects}
                         />
                       </div>
                     ))}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PeepHub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #08080c; --bg-card: #111118; --bg-hover: #16161f;
+      --border: #1e1e2a; --border-glow: #2a2a3a;
+      --text: #e8e8ef; --text-dim: #888899; --text-muted: #555566;
+      --accent: #CCFF00; --purple: #8b5cf6;
+    }
+    body {
+      font-family: 'DM Sans', -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.65; -webkit-font-smoothing: antialiased;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 60px 32px;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999;
+    }
+    .container { max-width: 580px; }
+    h2 { font-family: 'Syne', sans-serif; font-weight: 700; letter-spacing: -0.03em; font-size: clamp(26px, 4vw, 36px); line-height: 1.15; margin-bottom: 12px; }
+    p { color: var(--text-dim); font-size: 15px; }
+    .label {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent);
+      margin-bottom: 12px; display: block;
+    }
+    .grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-top: 28px;
+    }
+    @media (max-width: 500px) { .grid { grid-template-columns: 1fr 1fr; } }
+    .item {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px; text-align: center;
+      transition: all 0.25s ease;
+    }
+    .item:hover { border-color: var(--border-glow); transform: translateY(-2px); }
+    .item .icon { font-size: 26px; margin-bottom: 8px; }
+    .item h4 { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+    .item p { font-size: 11px; color: var(--text-muted); }
+    .steps { margin-top: 36px; }
+    .step {
+      display: flex; gap: 20px; padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-num {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 36px;
+      color: var(--accent); opacity: 0.35; line-height: 1; min-width: 44px;
+    }
+    .step h3 { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .step p { font-size: 14px; line-height: 1.6; }
+    .step strong { color: var(--text); }
+    code {
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      background: rgba(204,255,0,0.08); color: var(--accent);
+      padding: 2px 8px; border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="label">PeepHub</span>
+    <h2>Discover and install new peeps</h2>
+    <p>PeepHub is the app store for peeps. Community-created viewers and editors, one click to install.</p>
+
+    <div class="grid">
+      <div class="item"><div class="icon">📊</div><h4>Spreadsheet</h4><p>Full spreadsheet for CSV</p></div>
+      <div class="item"><div class="icon">📄</div><h4>PDF Viewer</h4><p>Read and annotate PDFs</p></div>
+      <div class="item"><div class="icon">🗺️</div><h4>GeoJSON Map</h4><p>Interactive map viewer</p></div>
+      <div class="item"><div class="icon">📐</div><h4>Excalidraw</h4><p>Whiteboard drawings</p></div>
+      <div class="item"><div class="icon">🎨</div><h4>Color Palette</h4><p>Design color schemes</p></div>
+      <div class="item"><div class="icon">📈</div><h4>Chart Builder</h4><p>Visualize data as charts</p></div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <h3>Open PeepHub</h3>
+          <p>Click the <strong>puzzle piece icon</strong> (🧩) in the bottom-left of the sidebar.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <h3>Browse &amp; Install</h3>
+          <p>Find a peep you want, click <strong>Install</strong>. It downloads to <code>~/.openpeep/peeps/</code> and is ready immediately. No restart needed.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <h3>Open a matching file</h3>
+          <p>Click any file that matches the new peep's type. OpenPeep automatically picks the best viewer. Install the Spreadsheet peep, then click a <code>.csv</code> &mdash; it opens as a full spreadsheet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

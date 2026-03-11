@@ -1,7 +1,8 @@
 from pathlib import Path
 import json
+import os
 
-CONFIG_PATH = Path(__file__).parent.parent / "openpeep.config.json"
+CONFIG_PATH = Path(os.environ.get("OPENPEEP_CONFIG", Path(__file__).parent.parent / "openpeep.config.json"))
 DEFAULT_STATUSES = ["Idea", "Planning", "In Progress", "Analyze", "Archive"]
 
 
