@@ -1,6 +1,6 @@
 {
   "name": "openpeep",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Every file type deserves its own app",
   "bin": {
     "openpeep": "cli/index.js"
