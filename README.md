@@ -89,18 +89,14 @@ OpenPeep works with Claude Code through an MCP server and a plugin with skills.
 
 ### Quick Setup
 
-The first-run wizard offers to register the MCP server automatically. You can also run:
-
-```bash
-npx openpeep doctor --fix
-```
-
-For full plugin support (skills that teach Claude how to create files in the right format and folder structure), install the plugin inside Claude Code:
+Inside Claude Code, run:
 
 ```
 /plugin marketplace add TaisoAI/openpeep
 /plugin install openpeep@taiso-openpeep
 ```
+
+This installs the MCP server, skills, and agents automatically. You only need to do this once.
 
 ### What it provides
 

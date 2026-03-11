@@ -29,7 +29,8 @@ async function runWizard() {
 
   console.log("");
   console.log("  ┌─────────────────────────────────────┐");
-  console.log("  │  Welcome to OpenPeep v0.1.0         │");
+  const pkg = require("../../package.json");
+  console.log(`  │  Welcome to OpenPeep v${pkg.version.padEnd(14)}│`);
   console.log("  └─────────────────────────────────────┘");
   console.log("");
 
@@ -67,20 +68,15 @@ async function runWizard() {
   console.log("    └── 0-welcome/       ← start here!");
   console.log("");
 
-  // 4. Claude Code plugin
-  const installPlugin = await askYN(rl, "Install Claude Code MCP server?");
-  if (installPlugin) {
-    const { installClaudePlugin } = require("./claude-plugin");
-    const result = installClaudePlugin();
-    if (result.success) {
-      console.log("  ✓ Added OpenPeep MCP server to Claude Code");
-      console.log("");
-      console.log("  For full plugin support (skills + agents), run in Claude Code:");
-      console.log("    /plugin install openpeep");
-    } else {
-      console.log(`  ⚠ ${result.message}`);
-    }
-  }
+  // 4. Claude Code integration
+  console.log("  ┌─ Claude Code Integration ────────────┐");
+  console.log("  │ Run these two commands inside Claude  │");
+  console.log("  │ Code to enable AI content creation:   │");
+  console.log("  │                                       │");
+  console.log("  │ /plugin marketplace add TaisoAI/openpeep");
+  console.log("  │ /plugin install openpeep@taiso-openpeep");
+  console.log("  └───────────────────────────────────────┘");
+  console.log("");
 
   rl.close();
   return config;

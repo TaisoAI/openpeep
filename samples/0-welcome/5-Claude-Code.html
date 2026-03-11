@@ -106,19 +106,18 @@
     <p>OpenPeep includes an MCP server that connects to Claude Code. Claude can see your files, know what peeps are available, and create content that renders beautifully.</p>
 
     <div class="callout green">
-      <h3>Already have Claude Code?</h3>
-      <p>If Claude Code was installed when you ran <code>npx openpeep</code> for the first time, the MCP server was already set up automatically. Install the plugin for full support:</p>
+      <h3>Two commands, that's it</h3>
+      <p>Run these inside Claude Code to install the OpenPeep plugin. It sets up the MCP server, skills, and agents automatically:</p>
     </div>
 
     <div class="terminal" style="margin-top: 16px;">
       <div class="terminal-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
       <div class="terminal-code">
-        <span class="comment"># Step 1: Register the MCP server (if not already done)</span><br>
-        <span class="prompt">$</span> <span class="cmd">npx openpeep doctor --fix</span><br>
-        <span style="color:#555">  ✓ OpenPeep MCP server registered</span><br><br>
-        <span class="comment"># Step 2: Add the marketplace &amp; install plugin (inside Claude Code)</span><br>
+        <span class="comment"># Run these inside Claude Code</span><br>
         <span class="prompt">claude&gt;</span> <span class="cmd">/plugin marketplace add TaisoAI/openpeep</span><br>
+        <span style="color:#555">  ✓ Marketplace taiso-openpeep added</span><br><br>
         <span class="prompt">claude&gt;</span> <span class="cmd">/plugin install openpeep@taiso-openpeep</span><br>
+        <span style="color:#555">  ✓ MCP server: openpeep</span><br>
         <span style="color:#555">  ✓ Skills: create-content, peep-workflow</span><br>
         <span style="color:#555">  ✓ Agent: openpeep-creator</span>
       </div>
@@ -133,26 +132,19 @@
       <div class="step">
         <div class="step-num">1</div>
         <div>
-          <h3>Register the MCP server</h3>
-          <p>Run <code>npx openpeep doctor --fix</code> to register the MCP server with Claude Code. This gives Claude access to OpenPeep tools like <code>list_peeps</code> and <code>get_file_template</code>.</p>
+          <h3>Install the plugin</h3>
+          <p>Inside Claude Code, run <code>/plugin marketplace add TaisoAI/openpeep</code> then <code>/plugin install openpeep@taiso-openpeep</code>. This installs the MCP server, skills, and agents. You only need to do this once.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <div>
-          <h3>Install the plugin for skills</h3>
-          <p>Inside Claude Code, run <code>/plugin marketplace add TaisoAI/openpeep</code> then <code>/plugin install openpeep@taiso-openpeep</code>. This adds skills that teach Claude how to create files in the right format and folder structure &mdash; dated project folders with <code>project.json</code> metadata. You only need to do this once.</p>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
         <div>
           <h3>Start Claude Code in your Space's root folder</h3>
           <p>Each Space in OpenPeep has one or more <strong>root folders</strong>. <code>cd</code> into one and run <code>claude</code>. Files Claude creates there will show up in OpenPeep's sidebar. Hit the refresh button to see new files.</p>
         </div>
       </div>
       <div class="step">
-        <div class="step-num">4</div>
+        <div class="step-num">3</div>
         <div>
           <h3>Ask Claude to create files</h3>
           <p>Claude creates the file, you click it in OpenPeep, and it renders with the matching peep.<br><strong>Ask Claude → file created → see it live.</strong></p>
