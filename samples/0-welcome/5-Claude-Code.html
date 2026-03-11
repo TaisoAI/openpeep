@@ -107,44 +107,51 @@
 
     <div class="callout green">
       <h3>Already have Claude Code?</h3>
-      <p>If Claude Code was installed when you ran <code>npx openpeep</code> for the first time, the MCP plugin was already set up automatically. You're ready to go &mdash; skip to step 2 below.</p>
-    </div>
-
-    <div class="callout">
-      <h3>Don't have Claude Code yet?</h3>
-      <p>Install it first, then run the doctor command to connect the plugin:</p>
+      <p>If Claude Code was installed when you ran <code>npx openpeep</code> for the first time, the MCP server was already set up automatically. Install the plugin for full support:</p>
     </div>
 
     <div class="terminal" style="margin-top: 16px;">
       <div class="terminal-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
       <div class="terminal-code">
-        <span class="comment"># Install Claude Code</span><br>
-        <span class="prompt">$</span> <span class="cmd">npm install -g @anthropic-ai/claude-code</span><br>
-        <span class="prompt">$</span> <span class="cmd">claude</span>  <span class="comment"># first-time setup</span><br><br>
-        <span class="comment"># Then connect the OpenPeep MCP plugin</span><br>
+        <span class="comment"># Step 1: Register the MCP server (if not already done)</span><br>
         <span class="prompt">$</span> <span class="cmd">npx openpeep doctor --fix</span><br>
-        <span style="color:#555">  ✓ Claude Code detected</span><br>
-        <span style="color:#555">  ✓ OpenPeep MCP server installed</span>
+        <span style="color:#555">  ✓ OpenPeep MCP server registered</span><br><br>
+        <span class="comment"># Step 2: Install the OpenPeep plugin (inside Claude Code)</span><br>
+        <span class="prompt">claude&gt;</span> <span class="cmd">/plugin install openpeep</span><br>
+        <span style="color:#555">  ✓ Skills: create-content, peep-workflow</span><br>
+        <span style="color:#555">  ✓ Agent: openpeep-creator</span>
       </div>
+    </div>
+
+    <div class="callout" style="margin-top: 16px;">
+      <h3>Don't have Claude Code yet?</h3>
+      <p>Install it from <strong>claude.ai/code</strong>, then run the commands above.</p>
     </div>
 
     <div class="steps" style="margin-top: 16px;">
       <div class="step">
         <div class="step-num">1</div>
         <div>
-          <h3>Verify the plugin is connected</h3>
-          <p>Run <code>npx openpeep doctor</code> to check. You should see <strong>"OpenPeep MCP server installed"</strong>. If not, run <code>npx openpeep doctor --fix</code> to set it up.</p>
+          <h3>Register the MCP server</h3>
+          <p>Run <code>npx openpeep doctor --fix</code> to register the MCP server with Claude Code. This gives Claude access to OpenPeep tools like <code>list_peeps</code> and <code>get_file_template</code>.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div>
-          <h3>Start Claude Code in your Space's root folder</h3>
-          <p>Each Space in OpenPeep has one or more <strong>root folders</strong> &mdash; these are the directories you added when creating the Space. <code>cd</code> into one of those root folders and run <code>claude</code>. Files Claude creates there will show up in OpenPeep's sidebar immediately.</p>
+          <h3>Install the plugin for skills</h3>
+          <p>Inside Claude Code, run <code>/plugin install openpeep</code>. This adds skills that teach Claude how to create files in the right format and folder structure &mdash; dated project folders with <code>project.json</code> metadata.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
+        <div>
+          <h3>Start Claude Code in your Space's root folder</h3>
+          <p>Each Space in OpenPeep has one or more <strong>root folders</strong>. <code>cd</code> into one and run <code>claude</code>. Files Claude creates there will show up in OpenPeep's sidebar. Hit the refresh button to see new files.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
         <div>
           <h3>Ask Claude to create files</h3>
           <p>Claude creates the file, you click it in OpenPeep, and it renders with the matching peep.<br><strong>Ask Claude → file created → see it live.</strong></p>
