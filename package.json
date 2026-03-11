@@ -1,6 +1,6 @@
 {
   "name": "openpeep",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Every file type deserves its own app",
   "bin": {
     "openpeep": "cli/index.js"
@@ -18,7 +18,12 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "keywords": ["openpeep", "file-viewer", "claude-code", "peep"],
+  "keywords": [
+    "openpeep",
+    "file-viewer",
+    "claude-code",
+    "peep"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
