@@ -16,7 +16,7 @@
         "name": "Taiso Labs",
         "email": "hanley@taiso.ai"
       },
-      "source": "./",
+      "source": "./plugins/openpeep",
       "category": "productivity"
     }
   ]

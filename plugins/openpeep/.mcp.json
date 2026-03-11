@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "openpeep": {
+      "command": "npx",
+      "args": ["-y", "openpeep", "mcp"]
+    }
+  }
+}
