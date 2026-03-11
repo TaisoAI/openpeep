@@ -98,7 +98,8 @@ npx openpeep doctor --fix
 For full plugin support (skills that teach Claude how to create files in the right format and folder structure), install the plugin inside Claude Code:
 
 ```
-/plugin install openpeep
+/plugin marketplace add TaisoAI/openpeep
+/plugin install openpeep@taiso-openpeep
 ```
 
 ### What it provides

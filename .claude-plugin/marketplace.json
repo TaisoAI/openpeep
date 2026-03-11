@@ -16,7 +16,7 @@
         "name": "Taiso Labs",
         "email": "hanley@taiso.ai"
       },
-      "source": "./claude-plugin",
+      "source": "./",
       "category": "productivity"
     }
   ]

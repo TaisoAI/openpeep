@@ -1,0 +1,8 @@
+{
+  "name": "openpeep",
+  "description": "Turn Claude into a content creator — meeting notes, diagrams, documents, and custom viewers rendered in OpenPeep's specialized apps",
+  "author": {
+    "name": "Taiso Labs",
+    "email": "hanley@taiso.ai"
+  }
+}
